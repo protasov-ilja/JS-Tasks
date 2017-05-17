@@ -8,7 +8,7 @@ var MaxNumber = 10;
   }
 
 //Через WHILE
-var MaxNumber = 10, Counter = 2;
+  Counter = 2;
 
   while (Counter <= MaxNumber) {
     if (Counter % 2 == 0) {
