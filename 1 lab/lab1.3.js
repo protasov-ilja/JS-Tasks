@@ -1,18 +1,18 @@
 //Через FOR
-var MaxNumber = 10;
+var MAXNUMBER = 10;
 
-  for (var Counter = 2; Counter <= MaxNumber; Counter++) {
-    if (Counter % 2 == 0) {
-        console.log(Counter);
-    }
+for (var counter = 2; counter <= MAXNUMBER; counter++) {
+  if (counter % 2 === 0) {
+        console.log(counter);
   }
+}
 
 //Через WHILE
-  Counter = 2;
+counter = 2;
 
-  while (Counter <= MaxNumber) {
-    if (Counter % 2 == 0) {
-        console.log(Counter);
-    }
-    Counter++;
+while (counter <= MAXNUMBER) {
+  if (counter % 2 === 0) {
+    console.log(counter);
   }
+  counter++;
+}

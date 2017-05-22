@@ -1,25 +1,21 @@
-var FirstNumber, LastNumber;
+var firstNumber, lastNumber;
 
-function isPrime(Number) {
-    var NotPrime = true;
-    for (var Counter = 2; (Counter * Counter <= Number) && (NotPrime); Counter++) {
-        if (Number % Counter == 0) {
-            NotPrime = false;
+function isPrime(number) {
+    var notPrime = true;
+    if (number >= 2) {
+        for (var counter = 2; (counter * counter <= number) && (notPrime); counter++) {
+            if (number % counter === 0) {
+                notPrime = false;
+            }
         }
     }
-    return NotPrime;
+    return notPrime;
 }
 
-  FirstNumber = prompt("Введите начало интервала", '');
-  FirstNumber = +FirstNumber;
-  LastNumber = prompt("Введите конец интервала", '');
-  LastNumber = +LastNumber;
-  if (FirstNumber < 2) {
-      alert('Неверный интервал');
-  } else {
-      for (var Number = FirstNumber; Number <= LastNumber; Number++) {
-          if (isPrime(Number)) {
-              console.log(Number);
-          }
-      }
-  }
+firstNumber = +prompt("Введите начало интервала", '');
+lastNumber = +prompt("Введите конец интервала", '');
+for (var number = firstNumber; number <= lastNumber; number++) {
+    if (isPrime(number)) {
+        console.log(number);
+    }
+}

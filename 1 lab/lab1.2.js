@@ -1,19 +1,19 @@
 var ADMIN = 'Админ';
 var PASSWORD = 'Чёрный Властелин';
-var Login, Password;
+var login, password;
 
-  Login = prompt('Введите логин', undefined);
-  if (Login == ADMIN) {
-    Password = prompt('Введите пароль', undefined);
-    if (Password == PASSWORD) {
+login = prompt('Введите логин', undefined);
+if (login === ADMIN) {
+    password = prompt('Введите пароль', undefined);
+    if (password === PASSWORD) {
         alert('Добро пожаловать!');
-    } else if (Password != null){
+    } else if (password != null) {
         alert('Пароль неверен');
     } else {
         alert('Вход отменен');
     }
-  } else if (Login == null){
+} else if (login === null) {
     alert('Вход отменён');
-  } else {
+} else {
     alert('Я вас не знаю');
-  }
+}

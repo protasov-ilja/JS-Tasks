@@ -1,3 +1,3 @@
-var OurPlanetName = 'Земля', UserName = 'Петя';
+var ourPlanetName = 'Земля', userName = 'Петя';
 
-  console.log(OurPlanetName, UserName);
+console.log(ourPlanetName, userName);
