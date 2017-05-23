@@ -1,7 +1,8 @@
 var message = prompt('Введите сообщение: ', '');
-var SERCHINGSTRING = 'Чёрт побери';
+var SERCHINGSTRING = 'чёрт побери';
+var str = message.toLowerCase();
 
-if ( message.indexOf(SERCHINGSTRING) != -1 ) {
+if ( str.indexOf(SERCHINGSTRING) != -1 ) {
     alert('Подскользнулся, упал. Очнулся - гипс');
 } else {
     alert('Я вас не понимаю');
