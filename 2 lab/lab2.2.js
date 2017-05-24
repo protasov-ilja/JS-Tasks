@@ -2,14 +2,15 @@ var forbiddenWord = ['привет', 'пока'];
 var message = prompt('Введите сообщение: ', '');
 var position = 0;
 var recorectMessage = '';
+var forbiddenWordLength = '';
+var arrMessage = message.split(' ');
 
-message = message.toLowerCase();
 for (var i = 0; i <= max; i++) {
     var target = forbiddenWord[i];
-    message.indexOf(target, position);
-    while (position != -1) {
+
+    for (var a = 0; a <= max; a++) {
         recorectMessage = message.substr(position, target.length)
     }
 }
-message.toUpperCase();
 
+arr.join(str);

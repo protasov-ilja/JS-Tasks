@@ -1,24 +1,22 @@
-var ДядяФедор = {
-  bool: '',
-  int: '',
-  string: '',
-  пес: {
-    name: 'Шарик',
-    profession: 'Охотник'
-  }
+var uncleFedor = 
+{
+    adult: false,
+    age: 15,
+    name: 'Федор',
+    dog: {
+        name: 'Шарик',
+        age: 6,
+        profession: 'Фотоохота'
+    }
+};
+var cat = 
+{
+    name: 'Матроскин',
+    age: 6,
+    profession: 'Кот'
 };
 
-var Кот = {
-  name: 'Матроскин',
-  profession: 'Кот'
-};
-
-for (var prop in ДядяФедор) {
-  alert(prop, ДядяФедор[prop]);
-}
-
-ДядяФедор.Кот = 'Матроскин';
-Кот.name = 'Борис';
-for (var prop in ДядяФедор) {
-  alert(prop, ДядяФедор[prop]);
-}
+uncleFedor.cat = cat;
+console.log(uncleFedor);
+cat.name = 'Барсик';
+console.log(uncleFedor);

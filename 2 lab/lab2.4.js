@@ -1,25 +1,12 @@
-var FirstNumber, LastNumber;
+var vasya = {name: "Вася", age: 23};
+var masha = {name: "Маша", age: 18};
+var vovochka = {name: "Вовочка", age: 6};
+var people = [masha, vasya, masha, vovochka];
 
-function isPrime(Number) {
-    var NotPrime = true;
-
-    for (var Counter = 2; (Counter * Counter <= Number) && (NotPrime); Counter++) {
-        if (Number % Counter === 0) {
-            NotPrime = false;
-        }
-    }
-
-    return NotPrime;
+function compareAge(FirstPerson, SecondPerson) 
+{
+    return (FirstPerson.age - SecondPerson.age);
 }
 
-FirstNumber = +prompt("Введите начало интервала", '');
-LastNumber = +prompt("Введите конец интервала", '');
-  if (FirstNumber < 2) {
-      alert('Неверный интервал');
-  } else {
-      for (var Number = FirstNumber; Number <= LastNumber; Number++) {
-          if (isPrime(Number)) {
-              console.log(Number);
-          }
-      }
-  }
+people.sort(compareAge);
+console.log(people);
