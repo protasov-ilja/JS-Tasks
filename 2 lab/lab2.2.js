@@ -1,16 +1,33 @@
-var forbiddenWord = ['привет', 'пока'];
-var message = prompt('Введите сообщение: ', '');
-var position = 0;
-var recorectMessage = '';
-var forbiddenWordLength = '';
-var arrMessage = message.split(' ');
+var SPACE = ' ';
+var FORBIDDEN_WORDS = ['hello', 'world'];
 
-for (var i = 0; i <= max; i++) {
-    var target = forbiddenWord[i];
+var message = prompt('Write your message: ', '');
 
-    for (var a = 0; a <= max; a++) {
-        recorectMessage = message.substr(position, target.length)
+function moderateMessage (message, FORBIDDEN_WORDS) {
+    var Word = '';
+    var target = '';
+    var arrMessage = message.split(SPACE);
+    var maxArrForbid = FORBIDDEN_WORDS.length;
+    var maxArrMes = arrMessage.length;
+
+    for (var i = 0; i < maxArrForbid; i++) {
+        target = FORBIDDEN_WORDS[i];
+        for (var a = 0; a < maxArrMes; a++) {
+            Word = arrMessage[a].toLowerCase();
+            if (Word === target) {
+                var resultWord = '';
+
+                for (j = 0; j < Word.length; j++) {
+                    resultWord += '*';
+                }
+                arrMessage[a] = resultWord;
+            }
+        }
     }
+
+    return arrMessage.join(SPACE);
 }
 
-arr.join(str);
+var result = moderateMessage (message, FORBIDDEN_WORDS);
+
+alert(result);
