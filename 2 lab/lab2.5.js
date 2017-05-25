@@ -1,52 +1,39 @@
 var calculator = {
-    read: read(), // запрашивает prompt два значения и сохраняет их как свойства объекта
-    sum: sum(), // возвращает сумму этих двух значений
-    mul: mul(), // возвращает произведение этих двух значений
-    div: div(), // деление
-    sub: sub(), // вычитание
-    getResult: getResult() // - функция, возвращающая результат операции
-};
-var result = null;
+    read: function() { // запрашивает prompt два значения и сохраняет их как свойства объекта
+        this.operand1 = +prompt('Введите первое число: ', '');
+        this.operand2 = +prompt('Введите второе число: ', '');
+    },
+    sum: function() { // возвращает сумму этих двух значений
+        this.result = this.operand1 + this.operand2;
 
-function read() {
-    read.oper1 = ( operand1 = +prompt('Введите число: ', '') );
-    read.oper2 = ( operand2 = +prompt('Введите число: ', '') );
-    
-    return read;
-}
+        return this.getResult();
+    },
+    mul: function() { // возвращает произведение этих двух значений
+        this.result = this.operand1 * this.operand2;
 
-function sum(operand1, operand2) {
-    result = operand1 + operand2;
-    
-    return result;
-}
+        return this.getResult();
+    },
+    div: function() { // деление
+        if (this.operand2 !== 0) {
+            this.result = this.operand1 / this.operand2;
+        } else {
+            this.result = 'Error 0';
+        }
 
-function mul(operand1, operand2) {
-    result = operand1 * operand2;
-    
-    return result;
-}
+        return this.getResult();
+    },
+    sub: function() {  // вычитание
+        this.result = this.operand1 - this.operand2;
 
-function div(operand1, operand2) {
-    if (operand2 !== 0) {
-        result = operand1 / operand2;
-    } else {
-        result = 'Error 0';
+        return this.getResult();
+    },
+    getResult: function (result) { // - функция, возвращающая результат операции
+        return this.result;
     }
-    
-    return result;
-}
-
-function sub(operand1, operand2) {
-    result = operand1 - operand2;
-    
-    return result;
-}
-
-function getResult(result) {
-    return alert(result);
-}
+};
 
 calculator.read();
-console.log( calculator.sum(read.oper1, read.oper2) );
-console.log( calculator.mul(read.oper1, read.oper2) );
+console.log( calculator.sum() );
+console.log( calculator.mul() );
+console.log( calculator.div() );
+console.log( calculator.sub() );
