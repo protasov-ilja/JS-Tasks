@@ -6,17 +6,17 @@ var uncleFedor =
     dog: {
         name: 'Шарик',
         age: 6,
-        profession: 'Фотоохота'
+        profession: 'Фотограф'
     }
 };
-var cat = 
+var Cat =
 {
     name: 'Матроскин',
     age: 6,
     profession: 'Кот'
 };
 
-uncleFedor.cat = cat;
+uncleFedor.cat = Cat;
 console.log(uncleFedor);
-cat.name = 'Барсик';
+Cat.name = 'Барсик';
 console.log(uncleFedor);
