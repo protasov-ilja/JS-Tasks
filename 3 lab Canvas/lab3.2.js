@@ -50,3 +50,4 @@ function createImage() {
         alert('Canvas не работает(');
     }
 }
+createImage();
