@@ -3,85 +3,199 @@ function createImage() {
 
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
+        canvas.width = 400;
+        canvas.height = 380;
+        var width = canvas.width;
+        var height = canvas.height;
 
 //разметка холста
-        for (var x = 0.5; x < 500; x += 10) {
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, 380);
+        function canvasLines() {
+            for (var x = 0.5; x < width; x += 10) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+            }
+            for (var y = 0.5; y < height; y += 10) {
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+            }
+            ctx.strokeStyle = "#eee";
+            ctx.stroke();
         }
-        for (var y = 0.5; y < 380; y += 10) {
-            ctx.moveTo(0, y);
-            ctx.lineTo(500, y);
-        }
-        ctx.strokeStyle = "#eee";
-        ctx.stroke();
-
 //Main Picture
 //sky
         ctx.fillStyle = 'rgb(0, 191, 255)';
-        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillRect(0, 0, width, height);
 //floor
         ctx.beginPath();
         ctx.fillStyle = 'rgb(0, 168, 107)';
-        ctx.bezierCurveTo(0, 280, 200, 150, 400, 290);
+        ctx.moveTo(0, 280);
+        ctx.bezierCurveTo(0, 280, 200, 150, width, 290);
         ctx.fill();
 //floor
         ctx.beginPath();
         ctx.fillStyle = 'rgb(0, 168, 107)';
         ctx.moveTo(0, 240);
-        ctx.lineTo(400, 230);
-        ctx.moveTo(400, 230);
+        ctx.lineTo(width, 230);
+        ctx.moveTo(width, 230);
         ctx.fill();
         ctx.fillStyle = 'rgb(0, 168, 107)';
-        ctx.fillRect(0, 280, 400, 120);
-//house
-        ctx.fillStyle = 'rgb(250, 235, 280)';
-        ctx.fillRect(100, 150, 180, 150);
-//glass
-        ctx.fillStyle = 'rgb(230, 230, 250)';
-        ctx.fillRect(180, 180, 50, 50);
-//window
-        ctx.strokeStyle = '#E5AA70';
-        ctx.strokeRect(180, 180, 50, 50);
+        ctx.fillRect(0, 280, width, 120);
 
-        ctx.beginPath();
-        ctx.lineWidth = 5;
-        ctx.moveTo(180, 200);
-        ctx.lineTo(230, 200);
-        ctx.moveTo(205, 180);
-        ctx.lineTo(205, 230);
-        ctx.stroke();
-//roof
-        ctx.beginPath();
-        ctx.fillStyle = '#654321';
-        ctx.moveTo(100, 150);
-        ctx.lineTo(280, 150);
-        ctx.lineTo(190, 100);
-        ctx.fill();
-//sun
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(255, 215, 0, 0.9)';
-        ctx.arc(40, 40, 30, (Math.PI / 180) * 360, 0, true);
-        ctx.fill();
-//cloud
-        function cloud(a, b)
+
+        function house(xHouse, yHouse, widthHouse, heightHouse) {
+            ctx.fillStyle = '#CD5700';
+            ctx.fillRect(xHouse, yHouse, widthHouse, heightHouse);
+            ctx.beginPath();
+            ctx.fillStyle = '#CD5700';
+            ctx.moveTo(xHouse + widthHouse, yHouse);
+            ctx.lineTo(xHouse + widthHouse + 60, yHouse - 30);
+            ctx.lineTo(xHouse + widthHouse + 60, yHouse + heightHouse - 45);
+            ctx.lineTo(xHouse + widthHouse, yHouse + heightHouse);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#FFF5EE';
+            for (var i = 0; i < heightHouse; i = i + 10 ) {
+                ctx.moveTo(xHouse, (yHouse + i) );
+                ctx.lineTo( (xHouse + widthHouse), (yHouse + i) );
+                for (var a = 0; a < widthHouse; a = a + 20) {
+                    if ( (i % 2) == 0) {
+                        a = a + 10;
+                    } else {
+                        a = a - 5;
+                    }
+                    ctx.lineWidth = 5;
+                    ctx.moveTo( (xHouse + a), yHouse);
+                    ctx.lineTo( (xHouse + a), (yHouse + i) );
+                }
+            }
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.strokeStyle = '#C0C0C0';
+            for (var g = 0; g < heightHouse; g = g + 10) {
+                ctx.moveTo(xHouse, (yHouse + g) );
+                ctx.lineTo( (xHouse + widthHouse), (yHouse + g) );
+                for (var k = 0; k < widthHouse; k = k + 20) {
+                    if ( (g % 2) == 0) {
+                        k = k + 10;
+                    } else {
+                        k = k - 5;
+                    }
+                    ctx.lineWidth = 1;
+                    ctx.moveTo( (xHouse + k), yHouse);
+                    ctx.lineTo( (xHouse + k), (yHouse + g) );
+                }
+            }
+            ctx.stroke();
+        }
+        function window (xWindow, yWindow, wWidth, wHeight) {
+            //glass
+            ctx.fillStyle = 'rgb(230, 230, 250)';
+            ctx.fillRect(xWindow, yWindow, wWidth, wHeight);
+            //carcass
+            ctx.strokeStyle = '#E5AA70';
+            ctx.strokeRect(xWindow, yWindow, wWidth, wHeight);
+            //sashes
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.moveTo(xWindow, (yWindow + (wHeight / 2) ) );
+            ctx.lineTo( (xWindow + wWidth), (yWindow + (wHeight / 2) ) );
+            ctx.moveTo( (xWindow + (wWidth / 2) ), yWindow);
+            ctx.lineTo( (xWindow + (wWidth / 2) ), (yWindow + wHeight) );
+            ctx.stroke();
+        }
+        function chimney(xChimney, yChimney, wChimney, hChimney) {
+            ctx.fillRect(xChimney, yChimney, wChimney, hChimney);
+            ctx.fillStyle = 'F20D0D';
+            ctx.beginPath();
+            ctx.fillStyle = 'F20D0D';
+            ctx.moveTo(xChimney, (yChimney + hChimney) );
+            ctx.lineTo( (xChimney + wChimney), (yChimney + hChimney + 30) );
+            ctx.lineTo( ( (xChimney + wChimney) + 10), (yChimney + hChimney + 30) );
+            ctx.fill();
+        }
+        function roof(xRoof, yRoof, wRoof, hRoof) {
+            ctx.beginPath();
+            ctx.fillStyle = '#654321';
+            ctx.strokeStyle = '#DCA581';
+            ctx.moveTo(xRoof, yRoof);
+            ctx.lineTo(xRoof + wRoof, yRoof);
+            ctx.lineTo(xRoof + (wRoof / 2), (yRoof - hRoof) );
+            ctx.lineTo( (xRoof + (wRoof / 2) ), (yRoof - hRoof) );
+            ctx.stroke();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.fillStyle = '#654321';
+            ctx.strokeStyle = '#DCA581';
+            ctx.lineTo( (xRoof + wRoof), yRoof);
+            ctx.lineTo( (xRoof + wRoof + 60), (yRoof - 30) );
+            ctx.lineTo( ( (xRoof + wRoof + 60) - (wRoof / 2) ), (hRoof + 5) );
+            ctx.lineTo( (xRoof + (wRoof / 2) ), (yRoof - hRoof) );
+            ctx.stroke();
+            ctx.fill();
+        }
+        function sun(xSun, ySun, rSun) {
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255, 215, 0, 0.9)';
+            ctx.arc(xSun, ySun, rSun, (Math.PI / 180) * 360, 0, true);
+            ctx.fill();
+        }
+        function cloud(xCloud, yCloud)
         {
             ctx.beginPath();
             ctx.fillStyle = '#FAF0E6';
-            ctx.moveTo(a, b);
-            ctx.quadraticCurveTo(a + 10, b - 20, a + 20, b);
-            ctx.quadraticCurveTo(a + 30, b - 20, a + 40, b);
-            ctx.quadraticCurveTo(a + 60, b + 10, a + 40, b + 20);
-            ctx.quadraticCurveTo(a + 20, b + 40, a, b + 20);
-            ctx.quadraticCurveTo(a - 20, b + 10, a, b);
+            ctx.moveTo(xCloud, yCloud);
+            ctx.quadraticCurveTo(xCloud + 10 + 20, yCloud - 10, xCloud + 20 + 20, yCloud);
+            ctx.quadraticCurveTo(xCloud + 30 + 20, yCloud - 10, xCloud + 40 + 20, yCloud);
+            ctx.quadraticCurveTo(xCloud + 60 + 20, yCloud + 10, xCloud + 40 + 20, yCloud + 20);
+            ctx.quadraticCurveTo(xCloud + 20 + 20, yCloud + 40, xCloud, yCloud + 20);
+            ctx.quadraticCurveTo(xCloud - 20, yCloud + 10, xCloud, yCloud);
             ctx.closePath();
             ctx.fill();
         }
+        function zabor(xZabor, yZabor, wZabor, hZabor) {
+            ctx.fillRect(xZabor, yZabor, wZabor, hZabor);
+            ctx.beginPath();
+
+            ctx.moveTo(xZabor, yZabor);
+            ctx.lineTo( (xZabor + wZabor / 2), (yZabor - 10) );
+            ctx.lineTo( (xZabor + wZabor), yZabor);
+            ctx.fill();
+        }
+        sun(40, 40, 30);
         cloud(70, 40);
+        cloud(80, 50);
+        cloud(90, 30);
         cloud(280, 40);
         cloud(200, 50);
-        cloud(350, 100);
+        cloud(305, 50);
+        house(100, 150, 160, 145);
+        window(155, 170, 60, 60);
+        roof(100, 148, 160, 60);
+        chimney(220, 50, 25, 50);
+
+        var y = 230;
+        var w = 5;
+        var h = 100;
+
+        for (var x = 0; x < 110; x = x + w) {
+            zabor(x, y, w, h);
+            w = w + 1;
+            h = h + 2;
+            y = y - 2;
+        }
+        y = 230;
+        w = 5;
+        h = 100;
+        for (x = width; x > width - 150; x = x - w - 1) {
+            zabor(x, y, w, h);
+            w = w + 1;
+            h = h + 2;
+            y = y - 2;
+        }
     } else {
         alert('Canvas не работает(');
     }
 }
+createImage();
