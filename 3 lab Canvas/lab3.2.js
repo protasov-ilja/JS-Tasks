@@ -3,10 +3,10 @@ function createImage() {
 
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
-        canvas.width = 400;
-        canvas.height = 400;
-        var width = canvas.width;
-        var height = canvas.height;
+        var WIDTH = 400;
+        var HEIGHT = 380;
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
 
 
         function honeycomb1(xComb, yComb, wComb) {
@@ -32,11 +32,11 @@ function createImage() {
         }
         function printHoneycomb(xComb, yComb, wComb, amountCombCol, amountCombLine, space) {
             k = xComb;
-            for (var i = 1; (i < amountCombCol) && (yComb < height); ++i) {
+            for (var i = 1; (i < amountCombCol) && (yComb < HEIGHT); ++i) {
                 if (i % 2 === 0) {
                     xComb = xComb + wComb + space / 2;
                 }
-                for (var a = 1; (a < amountCombLine) && (xComb < width); ++a) {
+                for (var a = 1; (a < amountCombLine) && (xComb < WIDTH); ++a) {
                     honeycomb(xComb, yComb, wComb);
                     xComb = xComb + wComb * 2 + space;
                 }

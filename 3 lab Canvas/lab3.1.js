@@ -3,20 +3,20 @@ function createImage() {
 
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
-        canvas.width = 400;
-        canvas.height = 380;
-        var width = canvas.width;
-        var height = canvas.height;
+        var WIDTH = 400;
+        var HEIGHT = 380;
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
 
 //разметка холста
         function canvasLines() {
-            for (var x = 0.5; x < width; x += 10) {
+            for (var x = 0.5; x < WIDTH; x += 10) {
                 ctx.moveTo(x, 0);
-                ctx.lineTo(x, height);
+                ctx.lineTo(x, HEIGHT);
             }
-            for (var y = 0.5; y < height; y += 10) {
+            for (var y = 0.5; y < HEIGHT; y += 10) {
                 ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
+                ctx.lineTo(WIDTH, y);
             }
             ctx.strokeStyle = "#eee";
             ctx.stroke();
@@ -24,22 +24,22 @@ function createImage() {
 //Main Picture
 //sky
         ctx.fillStyle = 'rgb(0, 191, 255)';
-        ctx.fillRect(0, 0, width, height);
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
 //floor
         ctx.beginPath();
         ctx.fillStyle = 'rgb(0, 168, 107)';
         ctx.moveTo(0, 280);
-        ctx.bezierCurveTo(0, 280, 200, 150, width, 290);
+        ctx.bezierCurveTo(0, 280, 200, 150, WIDTH, 290);
         ctx.fill();
 //floor
         ctx.beginPath();
         ctx.fillStyle = 'rgb(0, 168, 107)';
         ctx.moveTo(0, 240);
-        ctx.lineTo(width, 230);
-        ctx.moveTo(width, 230);
+        ctx.lineTo(WIDTH, 230);
+        ctx.moveTo(WIDTH, 230);
         ctx.fill();
         ctx.fillStyle = 'rgb(0, 168, 107)';
-        ctx.fillRect(0, 280, width, 120);
+        ctx.fillRect(0, 280, WIDTH, 120);
 
 
         function house(xHouse, yHouse, widthHouse, heightHouse) {
@@ -188,7 +188,7 @@ function createImage() {
         y = 230;
         w = 5;
         h = 100;
-        for (x = width; x > width - 150; x = x - w - 1) {
+        for (x = WIDTH; x > WIDTH - 150; x = x - w - 1) {
             zabor(x, y, w, h);
             w = w + 1;
             h = h + 2;
