@@ -8,7 +8,7 @@ var score = 0;
 var bestScore = 0;
 var endOfGame = false;
 
-newGameButton.onklick = function () {
+newGameButton.onclick = function () {
     initGame();
 };
 
@@ -52,10 +52,7 @@ function initGame() {
         }
     } // создание и заполнение поля ячейками если number = 0 то их посути нет
 }
-//чистим канваз для начала новой игры
-function cleanCanvas() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-}
+
 //keyInputManager
 document.onkeydown = function(event) {
     if (!endOfGame) {
@@ -84,6 +81,7 @@ document.onkeydown = function(event) {
             bestScoreForm.innerHTML = bestScore;
         }
     }
+
 };
 //отрисовка текущего состояния поля
 function drawField(theField) {
@@ -149,8 +147,8 @@ function drawField(theField) {
             xBackH += 100;
         }
 
-        xBackW = 0;
-        yBackW = 100;
+        var xBackW = 0;
+        var yBackW = 100;
         var g = 0;
 
         for (var j = 1; j <= 3; ++j) {
@@ -188,5 +186,3 @@ function addNewCell(theField) {
         }
     }
 }
-
-initGame();

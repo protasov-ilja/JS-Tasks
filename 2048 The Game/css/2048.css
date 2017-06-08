@@ -95,7 +95,6 @@ body
 
 .game_container
 {
-    width: 445px;
     height: 445px;
     border-radius: 6px;
     border: 15px solid #baaea0;
@@ -104,6 +103,8 @@ body
 #canvas
 {
     background-color: #CDC1B3;
+    width: 445px;
+    height: 445px;
 }
 
 .clear
