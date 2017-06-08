@@ -16,7 +16,7 @@ function mainGame() {
     initGame();
 
     while(!endOfGame) {
-       startGame();
+       startGame(theField);
     }
 
     endGame();
@@ -53,36 +53,140 @@ function initGame() {
     } // создание и заполнение поля ячейками если number = 0 то их посути нет
 }
 
-//keyInputManager
-document.onkeydown = function(event) {
+document.onkeydown = function (event) {
     if (!endOfGame) {
         switch (event.keyCode) {
             case 38:
             case 87:
-                moveUp();
+                moveUp(theField);
                 break;
             case 39:
             case 68:
-                moveRight();
+                moveRight(theField);
                 break;
             case 40:
             case 83:
-                moveDown();
+                moveDown(theField);
                 break;
             case 37:
             case 65:
-                moveLeft();
+                moveLeft(theField);
         }
-        
+
         scoreForm.innerHTML = score;
-        
+
         if (bestScore < score) {
             bestScore = score;
             bestScoreForm.innerHTML = bestScore;
         }
     }
 
+    function moveRight(theField) {
+        for (var j = 0; j < COUNT_OF_CELLS; ++j) {
+            for (var i = COUNT_OF_CELLS; i == 0; --i) {
+                if (theField[i][j].value) {
+                    var duplicate = false;
+                    var currX = i;
+                    while (currX < COUNT_OF_CELLS - i && !duplicate) {
+                        if (!theField[currX + 1][j].value) {
+                            theField[currX + 1][j].value = theField[currX][j].value;
+                            theField[currX][j].value = 0;
+                            currX++;
+                        } else if (theField[i][j].value == theField[currX + 1][j].value) {
+                            theField[currX + 1][j].value *= 2;
+                            score += theField[currX + 1][j].value;
+                            theField[currX][j].value = 0;
+                            duplicate = true;
+                        } else {
+                            duplicate = true;
+                        }
+                    }
+                }
+            }
+        }
+        addNewCell(theField);
+    }
+
+    function moveLeft(theField) {
+        for (var j = 0; j < COUNT_OF_CELLS; ++j) {
+            for (var i = 0; i < COUNT_OF_CELLS; ++i) {
+                if (theField[i][j].value) {
+                    var duplicate = false;
+                    var currX = i;
+                    while (currX < 0 && !duplicate) {
+                        if (!theField[currX - 1][j].value) {
+                            theField[currX - 1][j].value = theField[currX][j].value;
+                            theField[currX][j].value = 0;
+                            currX--;
+                        } else if (theField[i][j].value == theField[currX - 1][j].value) {
+                            theField[currX - 1][j].value *= 2;
+                            score += theField[currX - 1][j].value;
+                            theField[currX][j].value = 0;
+                            duplicate = true;
+                        } else {
+                            duplicate = true;
+                        }
+                    }
+                }
+            }
+        }
+        addNewCell(theField);
+    }
+
+    function moveUp(theField) {
+        for (var i = 0; i < COUNT_OF_CELLS; ++i) {
+            for (var j = 0; j < COUNT_OF_CELLS; ++j) {
+                if (theField[i][j].value) {
+                    var duplicate = false;
+                    var currY = j;
+                    while (currY < 0 && !duplicate) {
+                        if (!theField[currY - 1][j].value) {
+                            theField[currY - 1][j].value = theField[currY][j].value;
+                            theField[currY][j].value = 0;
+                            currY--;
+                        } else if (theField[i][j].value == theField[currY + 1][j].value) {
+                            theField[currY - 1][j].value *= 2;
+                            score += theField[currY - 1][j].value;
+                            theField[currY][j].value = 0;
+                            duplicate = true;
+                        } else {
+                            duplicate = true;
+                        }
+                    }
+                }
+            }
+        }
+        addNewCell(theField);
+    }
+
+    function moveDown(theField) {
+        for (var i = 0; i < COUNT_OF_CELLS; ++i) {
+            for (var j = COUNT_OF_CELLS; j == 0; --j) {
+                if (theField[i][j].value) {
+                    var duplicate = false;
+                    var currY = j;
+                    while (currY < COUNT_OF_CELLS - j && !duplicate) {
+                        if (!theField[currY + 1][j].value) {
+                            theField[currY + 1][j].value = theField[currY][j].value;
+                            theField[currY][j].value = 0;
+                            currY++;
+                        } else if (theField[i][j].value == theField[currY + 1][j].value) {
+                            theField[currY + 1][j].value *= 2;
+                            score += theField[currY + 1][j].value;
+                            theField[currY][j].value = 0;
+                            duplicate = true;
+                        } else {
+                            duplicate = true;
+                        }
+                    }
+                }
+            }
+        }
+        addNewCell(theField);
+    }
 };
+
+
 //отрисовка текущего состояния поля
 function drawField(theField) {
     var canvas = document.getElementById("canvas");
