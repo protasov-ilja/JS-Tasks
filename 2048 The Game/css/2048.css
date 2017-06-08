@@ -1,0 +1,112 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Mogra', cursive;
+}
+
+body
+{
+    background-color: #fbf8ef;
+}
+
+.container
+{
+    margin: 0 auto;
+    width: 475px;
+    height: auto;
+}
+
+.header
+{
+    font-size: 40px;
+    margin-top: 32px;
+    margin-bottom: 30px;
+}
+
+.logo
+{
+    color: #776e65;
+    float: left;
+    font-size: 99px;
+}
+
+.records
+{
+    margin-left: 54px;
+    width: 200px;
+    height: auto;
+    float: left;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.score
+{
+    background-color: #bbada0;
+    float: left;
+    height: 56px;
+    width: 200px;
+    font-size: 25px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.score_text
+{
+    color: #e2d8cf;
+}
+
+.best_score
+{
+    background-color: #f59563;
+    float: left;
+    height: 56px;
+    border-radius: 10px;
+    width: 200px;
+    font-size: 25px;
+    text-align: center;
+}
+
+.score_number
+{
+    color: #fffefa;
+    font-weight: bold;
+}
+
+.best_score_number
+{
+    color: #fffefa;
+    font-weight: bold;
+}
+
+.new_game_button
+{
+    display: block;
+    background-color: #edc53f;
+    color: #f5faff;
+    height: 40px;
+    clear: both;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.game_container
+{
+    width: 445px;
+    height: 445px;
+    border-radius: 6px;
+    border: 15px solid #baaea0;
+}
+
+#canvas
+{
+    background-color: #CDC1B3;
+}
+
+.clear
+{
+    clear: both;
+}

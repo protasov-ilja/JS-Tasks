@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="css/2048.css">
+  <link href="https://fonts.googleapis.com/css?family=Mogra" rel="stylesheet">
+  <title>2048</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="logo">2048</h1>
+      <div class="records">
+        <div class="score">
+          <p class="score_text">SCORE</p>
+          <div class="score_number" id="score_number">0</div>
+        </div>
+        <div class="best_score">
+          <p class="score_text">BEST SCORE</p>
+          <div class="best_score_number" id="best_score_number">0</div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <a class="new_game_button" href="#">NEW GAME</a>
+      <div class="clear"></div>
+    </div>
+    <div class="main">
+      <div class="game_container">
+        <canvas id="canvas">Canvas не работает</canvas>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="source/game.js"></script>
+</body>
+</html>
