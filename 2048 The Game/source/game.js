@@ -8,7 +8,8 @@ var score = 0;
 var bestScore = 0;
 var endOfGame = false;
 
-newGameButton.onclick = function () {
+newGameButton.onclick = function (event) {
+    event.preventDefault();
     initGame();
 };
 
@@ -50,7 +51,7 @@ function initGame() {
             this.x = xCord * 100 + 15 * xCord;
             this.y = yCord * 100 + 15 * yCord;
         }
-    } // создание и заполнение поля ячейками если number = 0 то их посути нет
+    } // создание и заполнение поля ячейками если number = 0 то их посути нет на поле
 }
 
 document.onkeydown = function (event) {
