@@ -211,19 +211,17 @@ function drawField(theField) {
         var colorF;
         if (Cell.value != 0) {
             switch (Cell.value) {
-                case 0 : colorF = "#CDC1B3"; break;
-                case 2 : colorF = "#EEE4DA"; break;
-                case 4 : colorF = "#EEF4DE"; break;
-                case 8 : colorF = "#EEE4DA"; break;
-                case 16 : colorF = "#EEE4DC"; break;
-                case 32 : colorF = "#EEE4DC"; break;
-                case 64 : colorF = "#EEE4DC"; break;
-                case 128 : colorF = "#EEE4DC"; break;
-                case 256 : colorF = "#EEE4DC"; break;
-                case 512 : colorF = "#EEE4DC"; break;
-                case 1024 : colorF = "#EEE4DC"; break;
-                case 2048 : colorF = "#EEE4DC"; break;
-                case 4096 : colorF = "#EEE4DC"; break;
+                case 2 : colorF = "№EEE4DA"; break;
+                case 4 : colorF = "#ECE0C8"; break;
+                case 8 : colorF = "#F5AF7C"; break;
+                case 16 : colorF = "#F59563"; break;
+                case 32 : colorF = "#F27C3F"; break;
+                case 64 : colorF = "#F3651C"; break;
+                case 128 : colorF = "#E9A512"; break;
+                case 256 : colorF = "#F8BC3C"; break;
+                case 512 : colorF = "#EDC850"; break;
+                case 1024 : colorF = "#E91A1A"; break;
+                case 2048 : colorF = "#EDC63D"; break;
             }
 
             ctx.fillStyle = colorF;
