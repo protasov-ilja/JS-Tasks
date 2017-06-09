@@ -51,7 +51,7 @@ function initGame() {
             this.x = xCord * 100 + 15 * xCord;
             this.y = yCord * 100 + 15 * yCord;
         }
-    } // создание и заполнение поля ячейками если number = 0 то их посути нет на поле
+    } // создание и заполнение поля ячейками если number = 0 то их посути нет
 }
 
 document.onkeydown = function (event) {
@@ -211,7 +211,7 @@ function drawField(theField) {
         var colorF;
         if (Cell.value != 0) {
             switch (Cell.value) {
-                case 2 : colorF = "№EEE4DA"; break;
+                case 2 : colorF = "#EEE4DA"; break;
                 case 4 : colorF = "#ECE0C8"; break;
                 case 8 : colorF = "#F5AF7C"; break;
                 case 16 : colorF = "#F59563"; break;
