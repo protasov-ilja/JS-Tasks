@@ -16,7 +16,9 @@ var CELL_SIZE = 100;
 
 newGameButton.onclick = function (event) {
     event.preventDefault();
+    endOfGame = false;
     score = 0;
+    scoreForm.innerHTML = score;
     canvas.style.opacity = '1';
     canvas.style.transitionDuration = '0.5s';
     initGame();
@@ -148,7 +150,7 @@ function moveUp() {//частично готово
             if (theField[yPos][xPos].value != 0) {
                 var duplicate = false;
                 var currY = yPos;
-                while ( (currY >= 0) && !duplicate) {
+                while ( (currY > 0) && !duplicate) {
                     if (!theField[currY - 1][xPos].value) {
                         theField[currY - 1][xPos].value = theField[currY][xPos].value;
                         theField[currY][xPos].value = 0;
