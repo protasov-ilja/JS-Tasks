@@ -1,32 +1,31 @@
 var COUNT_OF_CELLS = 4;
 var DEFAULT_CELL = 2;
+var WIDTH = 445;
+var HEIGHT = 445;
+var CELL_SIZE = 100;
 
 var scoreForm = document.getElementById('scoreNumber');
 var bestScoreForm = document.getElementById('bestScoreNumber');
 var newGameButton = document.getElementById('newGameButton');
-var score;
+var score = 0;
 var bestScore = 0;
 var endOfGame = false;
 var theField = [];
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d');
-var WIDTH = 445;
-var HEIGHT = 445;
-var CELL_SIZE = 100;
+
 
 newGameButton.onclick = function (event) {
     event.preventDefault();
-    endOfGame = false;
     score = 0;
+    endOfGame = false;
+    canvas.classList.remove('end_game');
     scoreForm.innerHTML = score;
-    canvas.style.opacity = '1';
-    canvas.style.transitionDuration = '0.5s';
     initGame();
 };
 
 function endGame() {
-    canvas.style.opacity = '0.3';
-    canvas.style.transitionDuration = '0.5s';
+    canvas.classList.add('end_game');
 }
 
 function initGame() {
@@ -57,23 +56,26 @@ function Cell(yCord, xCord) {
 }
 
 document.onkeydown = function (event) {
-    event.preventDefault();
     if (!endOfGame) {
         switch (event.keyCode) {
             case 38:
             case 87:
+                event.preventDefault();
                 moveUp();
                 break;
             case 39:
             case 68:
+                event.preventDefault();
                 moveRight();
                 break;
             case 40:
             case 83:
+                event.preventDefault();
                 moveDown();
                 break;
             case 37:
             case 65:
+                event.preventDefault();
                 moveLeft();
         }
 
@@ -86,7 +88,7 @@ document.onkeydown = function (event) {
     }
 };
 
-function moveRight() {//частично готово
+function moveRight() {
     var CELLS_AMOUNT = COUNT_OF_CELLS - 1;
 
     for (var yPos = 0; yPos < COUNT_OF_CELLS; ++yPos) {
@@ -96,9 +98,9 @@ function moveRight() {//частично готово
                 var currX = xPos;
                 while ( (currX + 1 < COUNT_OF_CELLS) && !duplicate) {
                     if (!theField[yPos][currX + 1].value) {
+                        // moveCellTwo(currX, yPos); //анимация движения
                         theField[yPos][currX + 1].value = theField[yPos][currX].value;
                         theField[yPos][currX].value = 0;
-                        //анимация движения
                         currX++;
                     } else if (theField[yPos][currX].value == theField[yPos][currX + 1].value) {
                         theField[yPos][currX + 1].value *= 2;
@@ -116,12 +118,13 @@ function moveRight() {//частично готово
     addNewCell();
 }
 
-function moveLeft() {//частично готово
+function moveLeft() {
     for (var yPos = 0; yPos < COUNT_OF_CELLS; ++yPos) {
         for (var xPos = 1; xPos < COUNT_OF_CELLS; ++xPos) {
             if (theField[yPos][xPos].value != 0) {
                 var duplicate = false;
                 var currX = xPos;
+                
                 while ( (currX > 0) && !duplicate) {
                     if (!theField[yPos][currX - 1].value) {
                         theField[yPos][currX - 1].value = theField[yPos][currX].value;
@@ -144,12 +147,13 @@ function moveLeft() {//частично готово
     addNewCell();
 }
 
-function moveUp() {//частично готово
+function moveUp() {
     for (var xPos = 0; xPos < COUNT_OF_CELLS; ++xPos) {
         for (var yPos = 1; yPos < COUNT_OF_CELLS; ++yPos) {
             if (theField[yPos][xPos].value != 0) {
                 var duplicate = false;
                 var currY = yPos;
+                
                 while ( (currY > 0) && !duplicate) {
                     if (!theField[currY - 1][xPos].value) {
                         theField[currY - 1][xPos].value = theField[currY][xPos].value;
@@ -180,13 +184,14 @@ function moveDown() {
             if (theField[yPos][xPos].value != 0) {
                 var duplicate = false;
                 var currY = yPos;
+                
                 while ( (currY + 1 < COUNT_OF_CELLS) && !duplicate) {
                     if (!theField[currY + 1][xPos].value) {
+                        //
                         theField[currY + 1][xPos].value = theField[currY][xPos].value;
                         theField[currY][xPos].value = 0;
-                        //анимация движения
                         currY++;
-                    } else if (theField[yPos][xPos].value == theField[currY + 1][xPos].value) {
+                    } else if (theField[currY][xPos].value == theField[currY + 1][xPos].value) {
                         theField[currY + 1][xPos].value *= 2;
                         score += theField[currY + 1][xPos].value;
                         theField[currY][xPos].value = 0;
@@ -201,6 +206,29 @@ function moveDown() {
     }
     addNewCell();
 }
+
+// function moveCellTwo(changesCord, otherCord) {
+//     //сохраняется при начале анимации
+//     var ANIMATION_DURATION = 1000; //полная длительность анимации
+//     var DELTA = 1; // весь путь анимации
+//
+//     var startTime = Date.now(); // начальное время анимации
+//     var startPoint = changesCord; // начальная точка анимации
+//
+//     step();
+//
+//     function step() {
+//         var currTime = Date.now(); // время шага
+//
+//         ctx.clearRect(changesCord, otherCord, 190, CELL_SIZE); // избавление от дублей
+//         changesCord += ( (currTime - startTime) / ANIMATION_DURATION * DELTA); // увеличение кординаты
+//         drawCell(theField[otherCord][changesCord]); // отрисовка ячейки
+//
+//         if ( (changesCord < startPoint + DELTA) && ( (currTime - startTime) <= ANIMATION_DURATION) ) {
+//             requestAnimationFrame(step); // вызов шага
+//         }
+//     }
+// }
 
 //отрисовка текущего состояния поля
 function drawField() {
@@ -221,7 +249,8 @@ function drawCell(Cell) {
     var colorF;
     var posValueX = 50;
     var posValueY = 70;
-    var fontFamily = "60px Mogra";
+    var fontSize = 60;
+    var fontFamily;
 
     if (Cell.value != 0) {
         switch (Cell.value) {
@@ -237,7 +266,10 @@ function drawCell(Cell) {
             case 1024 : colorF = "#E91A1A"; break;
             case 2048 : colorF = "#EDC63D"; break;
         }
-
+        if (Cell.value > 1000) {
+            fontSize = 50;
+        }
+        fontFamily = fontSize + "px Mogra";
         ctx.fillStyle = colorF;
         ctx.strokeStyle = '#BAAEA0';
         ctx.fillRect(Cell.x, Cell.y, CELL_SIZE, CELL_SIZE);
