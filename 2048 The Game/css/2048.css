@@ -100,8 +100,15 @@ body
     border: 15px solid #baaea0;
 }
 
+.end_game
+{
+    opacity: 0.3;
+    transition-duration: 0.5s;
+}
+
 #canvas
 {
+    transition-duration: 0.5s;
     background-color: #CDC1B3;
     width: 445px;
     height: 445px;
