@@ -213,18 +213,19 @@ function moveDown() {
 //     var DELTA = 1; // весь путь анимации
 //
 //     var startPoint = changesCord; // начальная точка анимации
-//     var startTime = Date.now(); // начальное время анимации
+//     var startTime = new Date().getTime(); // начальное время анимации
 //
 //     step();
 //
 //     function step() {
-//         var currTime = Date.now() - startTime; // время шага
+//         var currTime = ( new Date().getTime() ) - startTime; // время шага
+//         var progressAnimation = currTime / ANIMATION_DURATION; // прогресс анимации
 //
 //         ctx.clearRect(changesCord, otherCord, 190, CELL_SIZE); // избавление от дублей
-//         changesCord += (currTime / ANIMATION_DURATION * DELTA); // увеличение кординаты
+//         changesCord = (DELTA - startPoint) * progressAnimation + startPoint; // увеличение кординаты
 //         drawCell(theField[otherCord][changesCord]); // отрисовка ячейки
 //
-//         if ( (changesCord < startPoint + DELTA) && (currTime <= ANIMATION_DURATION) ) {
+//         if (progressAnimation < DELTA) {
 //              requestAnimationFrame(step); // вызов шага
 //         }
 //     }
