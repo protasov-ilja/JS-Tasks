@@ -266,6 +266,7 @@ function drawCell(currCellCord) {
             case 512 : colorF = "#EDC850"; break;
             case 1024 : colorF = "#E91A1A"; break;
             case 2048 : colorF = "#EDC63D"; break;
+            case 4096 : colorF = "#EDC63F"; break;
         }
         if (currCellCord.value > 1000) {
             fontSize = 50;
