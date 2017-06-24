@@ -9,14 +9,13 @@ var cellX = 0;
 var cellY = 0;
 
 
-
-moveCellTwo();
 ctx.fillRect(215, 0, 15, 450);
+moveCellTwo();
 
 
 
 function moveCellOne() {
-    var move = setInterval(step, 40);
+    var move = setInterval(step, 16);
     var pos = 0.1;
     var DELTA = 1;
     var startPos = cellX;
@@ -34,22 +33,23 @@ function moveCellOne() {
 
 function moveCellTwo() {
     //сохраняется при начале анимации
-    var ANIMATION_DURATION = 1000; //полная длительность анимации
+    var ANIMATION_DURATION = 900; //полная длительность анимации
     var DELTA = 1; // весь путь анимации
 
-    var startTime = Date.now(); // начальное время анимации
     var startPoint = cellX; // начальная точка анимации
+    var startTime = new Date().getTime(); // начальное время анимации
 
     step();
 
     function step() {
-        var currTime = Date.now(); // время шага
+        var currTime = ( new Date().getTime() ) - startTime; // время шага
+        var progressAnimation = currTime / ANIMATION_DURATION; // прогресс анимации
 
         ctx.clearRect(cellX, cellY, 190, CELL_SIZE); // избавление от дублей
-        cellX += ( (currTime - startTime) / ANIMATION_DURATION * DELTA); // увеличение кординаты
+        cellX = (DELTA - startPoint) * progressAnimation + startPoint; // увеличение кординаты
         drawCell(cellX, cellY); // отрисовка ячейки
 
-        if ( (cellX < startPoint + DELTA) && ( (currTime - startTime) <= ANIMATION_DURATION) ) {
+        if (progressAnimation < DELTA) {
             requestAnimationFrame(step); // вызов шага
         }
     }

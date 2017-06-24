@@ -212,20 +212,20 @@ function moveDown() {
 //     var ANIMATION_DURATION = 1000; //полная длительность анимации
 //     var DELTA = 1; // весь путь анимации
 //
-//     var startTime = Date.now(); // начальное время анимации
 //     var startPoint = changesCord; // начальная точка анимации
+//     var startTime = Date.now(); // начальное время анимации
 //
 //     step();
 //
 //     function step() {
-//         var currTime = Date.now(); // время шага
+//         var currTime = Date.now() - startTime; // время шага
 //
 //         ctx.clearRect(changesCord, otherCord, 190, CELL_SIZE); // избавление от дублей
-//         changesCord += ( (currTime - startTime) / ANIMATION_DURATION * DELTA); // увеличение кординаты
+//         changesCord += (currTime / ANIMATION_DURATION * DELTA); // увеличение кординаты
 //         drawCell(theField[otherCord][changesCord]); // отрисовка ячейки
 //
-//         if ( (changesCord < startPoint + DELTA) && ( (currTime - startTime) <= ANIMATION_DURATION) ) {
-//             requestAnimationFrame(step); // вызов шага
+//         if ( (changesCord < startPoint + DELTA) && (currTime <= ANIMATION_DURATION) ) {
+//              requestAnimationFrame(step); // вызов шага
 //         }
 //     }
 // }
@@ -245,15 +245,16 @@ function drawField() {
 }
 
 //рисуем ячейки
-function drawCell(Cell) {
+function drawCell(currCellCord) {
     var colorF;
     var posValueX = 50;
     var posValueY = 70;
     var fontSize = 60;
     var fontFamily;
+    var emptyCell = 0;
 
-    if (Cell.value != 0) {
-        switch (Cell.value) {
+    if (currCellCord.value != emptyCell) {
+        switch (currCellCord.value) {
             case 2 : colorF = "#EEE4DA"; break;
             case 4 : colorF = "#ECE0C8"; break;
             case 8 : colorF = "#F5AF7C"; break;
@@ -266,19 +267,19 @@ function drawCell(Cell) {
             case 1024 : colorF = "#E91A1A"; break;
             case 2048 : colorF = "#EDC63D"; break;
         }
-        if (Cell.value > 1000) {
+        if (currCellCord.value > 1000) {
             fontSize = 50;
         }
         fontFamily = fontSize + "px Mogra";
         ctx.fillStyle = colorF;
         ctx.strokeStyle = '#BAAEA0';
-        ctx.fillRect(Cell.x, Cell.y, CELL_SIZE, CELL_SIZE);
-        ctx.strokeRect(Cell.x, Cell.y, CELL_SIZE, CELL_SIZE);
+        ctx.fillRect(currCellCord.x, currCellCord.y, CELL_SIZE, CELL_SIZE);
+        ctx.strokeRect(currCellCord.x, currCellCord.y, CELL_SIZE, CELL_SIZE);
         ctx.beginPath();
         ctx.fillStyle = '#776e65';
         ctx.textAlign = 'center';
         ctx.font = fontFamily;
-        ctx.fillText(Cell.value, Cell.x + posValueX, Cell.y + posValueY);
+        ctx.fillText(currCellCord.value, currCellCord.x + posValueX, currCellCord.y + posValueY);
         ctx.fill();
         ctx.closePath();
     }
@@ -290,7 +291,7 @@ function drawBackground() {
     var lWidth = 0;
     var lineWidth = 15;
 
-    for (var yPos = 1; yPos <= 3; ++yPos) {
+    for (var yPos = 1; yPos < COUNT_OF_CELLS; ++yPos) {
         ctx.fillStyle = '#BAAEA0';
         ctx.fillRect(xBackH + lWidth, yBackH, lineWidth, HEIGHT);
         lWidth += 15;
@@ -301,7 +302,7 @@ function drawBackground() {
     var yBackW = 100;
     var lHeight = 0;
 
-    for (var xPos = 1; xPos <= 3; ++xPos) {
+    for (var xPos = 1; xPos < COUNT_OF_CELLS; ++xPos) {
         ctx.fillStyle = '#BAAEA0';
         ctx.fillRect(xBackW, yBackW + lHeight, WIDTH, lineWidth);
         lHeight += 15;
