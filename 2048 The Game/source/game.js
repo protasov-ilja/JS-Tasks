@@ -97,14 +97,16 @@ function moveRight() {
                 var duplicate = false;
                 var currX = xPos;
                 while ( (currX + 1 < COUNT_OF_CELLS) && !duplicate) {
-                    if (!theField[yPos][currX + 1].value) {
+                    var nextX = currX + 1;
+
+                    if (!theField[yPos][nextX].value) {
                         // moveCellTwo(currX, yPos); //анимация движения
-                        theField[yPos][currX + 1].value = theField[yPos][currX].value;
+                        theField[yPos][nextX].value = theField[yPos][currX].value;
                         theField[yPos][currX].value = 0;
                         currX++;
-                    } else if (theField[yPos][currX].value == theField[yPos][currX + 1].value) {
-                        theField[yPos][currX + 1].value *= 2;
-                        score += theField[yPos][currX + 1].value;
+                    } else if (theField[yPos][currX].value == theField[yPos][nextX].value) {
+                        theField[yPos][nextX].value *= 2;
+                        score += theField[yPos][nextX].value;
                         theField[yPos][currX].value = 0;
                         //анимация движения + анимация слияния
                         duplicate = true;
@@ -121,19 +123,21 @@ function moveRight() {
 function moveLeft() {
     for (var yPos = 0; yPos < COUNT_OF_CELLS; ++yPos) {
         for (var xPos = 1; xPos < COUNT_OF_CELLS; ++xPos) {
-            if (theField[yPos][xPos].value != 0) {
+            if (theField[yPos][xPos].value) {
                 var duplicate = false;
                 var currX = xPos;
                 
                 while ( (currX > 0) && !duplicate) {
-                    if (!theField[yPos][currX - 1].value) {
-                        theField[yPos][currX - 1].value = theField[yPos][currX].value;
+                    var prevX = currX - 1;
+
+                    if (!theField[yPos][prevX].value) {
+                        theField[yPos][prevX].value = theField[yPos][currX].value;
                         theField[yPos][currX].value = 0;
                         //анимация движения
                         currX--;
-                    } else if (theField[yPos][currX].value == theField[yPos][currX - 1].value) {
-                        theField[yPos][currX - 1].value *= 2;
-                        score += theField[yPos][currX - 1].value;
+                    } else if (theField[yPos][currX].value == theField[yPos][prevX].value) {
+                        theField[yPos][prevX].value *= 2;
+                        score += theField[yPos][prevX].value;
                         theField[yPos][currX].value = 0;
                         //анимация движения + анимация слияния
                         duplicate = true;
@@ -155,14 +159,16 @@ function moveUp() {
                 var currY = yPos;
                 
                 while ( (currY > 0) && !duplicate) {
-                    if (!theField[currY - 1][xPos].value) {
-                        theField[currY - 1][xPos].value = theField[currY][xPos].value;
+                    var prevY = currY - 1;
+
+                    if (!theField[prevY][xPos].value) {
+                        theField[prevY][xPos].value = theField[currY][xPos].value;
                         theField[currY][xPos].value = 0;
                         //анимация движения
                         currY--;
-                    } else if (theField[currY][xPos].value == theField[currY - 1][xPos].value) {
-                        theField[currY - 1][xPos].value *= 2;
-                        score += theField[currY - 1][xPos].value;
+                    } else if (theField[currY][xPos].value == theField[prevY][xPos].value) {
+                        theField[prevY][xPos].value *= 2;
+                        score += theField[prevY][xPos].value;
                         theField[currY][xPos].value = 0;
                         //анимация движения + анимация слияния
                         duplicate = true;
@@ -186,14 +192,16 @@ function moveDown() {
                 var currY = yPos;
                 
                 while ( (currY + 1 < COUNT_OF_CELLS) && !duplicate) {
-                    if (!theField[currY + 1][xPos].value) {
+                    var nextY = currY + 1;
+
+                    if (!theField[nextY][xPos].value) {
                         //
-                        theField[currY + 1][xPos].value = theField[currY][xPos].value;
+                        theField[nextY][xPos].value = theField[currY][xPos].value;
                         theField[currY][xPos].value = 0;
                         currY++;
-                    } else if (theField[currY][xPos].value == theField[currY + 1][xPos].value) {
-                        theField[currY + 1][xPos].value *= 2;
-                        score += theField[currY + 1][xPos].value;
+                    } else if (theField[currY][xPos].value == theField[nextY][xPos].value) {
+                        theField[nextY][xPos].value *= 2;
+                        score += theField[nextY][xPos].value;
                         theField[currY][xPos].value = 0;
                         //анимация движения + анимация слияния
                         duplicate = true;
