@@ -13,9 +13,10 @@ var endOfGame = false;
 var theField = [];
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d');
-
+var freePlace = true;
 
 newGameButton.onclick = function (event) {
+    freePlace = true;
     event.preventDefault();
     score = 0;
     endOfGame = false;
@@ -33,7 +34,7 @@ function initGame() {
     drawField();
 
     for (var AmountCell = 1; AmountCell <= DEFAULT_CELL; ++AmountCell) {
-        addNewCell();
+        addNewCell(freePlace);
     }
 }
 
@@ -89,6 +90,7 @@ document.onkeydown = function (event) {
 };
 
 function moveRight() {
+    freePlace = false;
     var CELLS_AMOUNT = COUNT_OF_CELLS - 1;
 
     for (var yPos = 0; yPos < COUNT_OF_CELLS; ++yPos) {
@@ -100,15 +102,15 @@ function moveRight() {
                     var nextX = currX + 1;
 
                     if (!theField[yPos][nextX].value) {
-                        // moveCellTwo(currX, yPos); //анимация движения
+                        freePlace = true;
                         theField[yPos][nextX].value = theField[yPos][currX].value;
                         theField[yPos][currX].value = 0;
                         currX++;
                     } else if (theField[yPos][currX].value == theField[yPos][nextX].value) {
+                        freePlace = true;
                         theField[yPos][nextX].value *= 2;
                         score += theField[yPos][nextX].value;
                         theField[yPos][currX].value = 0;
-                        //анимация движения + анимация слияния
                         duplicate = true;
                     } else {
                         duplicate = true;
@@ -117,10 +119,12 @@ function moveRight() {
             }
         }
     }
-    addNewCell();
+    addNewCell(freePlace);
 }
 
 function moveLeft() {
+    freePlace = false;
+
     for (var yPos = 0; yPos < COUNT_OF_CELLS; ++yPos) {
         for (var xPos = 1; xPos < COUNT_OF_CELLS; ++xPos) {
             if (theField[yPos][xPos].value) {
@@ -131,15 +135,15 @@ function moveLeft() {
                     var prevX = currX - 1;
 
                     if (!theField[yPos][prevX].value) {
+                        freePlace = true;
                         theField[yPos][prevX].value = theField[yPos][currX].value;
                         theField[yPos][currX].value = 0;
-                        //анимация движения
                         currX--;
                     } else if (theField[yPos][currX].value == theField[yPos][prevX].value) {
+                        freePlace = true;
                         theField[yPos][prevX].value *= 2;
                         score += theField[yPos][prevX].value;
                         theField[yPos][currX].value = 0;
-                        //анимация движения + анимация слияния
                         duplicate = true;
                     } else {
                         duplicate = true;
@@ -148,10 +152,12 @@ function moveLeft() {
             }
         }
     }
-    addNewCell();
+    addNewCell(freePlace);
 }
 
 function moveUp() {
+    freePlace = false;
+
     for (var xPos = 0; xPos < COUNT_OF_CELLS; ++xPos) {
         for (var yPos = 1; yPos < COUNT_OF_CELLS; ++yPos) {
             if (theField[yPos][xPos].value != 0) {
@@ -162,15 +168,15 @@ function moveUp() {
                     var prevY = currY - 1;
 
                     if (!theField[prevY][xPos].value) {
+                        freePlace = true;
                         theField[prevY][xPos].value = theField[currY][xPos].value;
                         theField[currY][xPos].value = 0;
-                        //анимация движения
                         currY--;
                     } else if (theField[currY][xPos].value == theField[prevY][xPos].value) {
+                        freePlace = true;
                         theField[prevY][xPos].value *= 2;
                         score += theField[prevY][xPos].value;
                         theField[currY][xPos].value = 0;
-                        //анимация движения + анимация слияния
                         duplicate = true;
                     } else {
                         duplicate = true;
@@ -179,11 +185,12 @@ function moveUp() {
             }
         }
     }
-    addNewCell();
+    addNewCell(freePlace);
 }
 
 function moveDown() {
     var CELLS_AMOUNT = COUNT_OF_CELLS - 1;
+    freePlace = false;
 
     for (var xPos = 0; xPos < COUNT_OF_CELLS; ++xPos) {
         for (var yPos = CELLS_AMOUNT; yPos >= 0; --yPos) {
@@ -195,15 +202,15 @@ function moveDown() {
                     var nextY = currY + 1;
 
                     if (!theField[nextY][xPos].value) {
-                        //
+                        freePlace = true;
                         theField[nextY][xPos].value = theField[currY][xPos].value;
                         theField[currY][xPos].value = 0;
                         currY++;
                     } else if (theField[currY][xPos].value == theField[nextY][xPos].value) {
+                        freePlace = true;
                         theField[nextY][xPos].value *= 2;
                         score += theField[nextY][xPos].value;
                         theField[currY][xPos].value = 0;
-                        //анимация движения + анимация слияния
                         duplicate = true;
                     } else {
                         duplicate = true;
@@ -212,32 +219,8 @@ function moveDown() {
             }
         }
     }
-    addNewCell();
+    addNewCell(freePlace);
 }
-
-// function moveCellTwo(changesCord, otherCord) {
-//     //сохраняется при начале анимации
-//     var ANIMATION_DURATION = 1000; //полная длительность анимации
-//     var DELTA = 1; // весь путь анимации
-//
-//     var startPoint = changesCord; // начальная точка анимации
-//     var startTime = new Date().getTime(); // начальное время анимации
-//
-//     step();
-//
-//     function step() {
-//         var currTime = ( new Date().getTime() ) - startTime; // время шага
-//         var progressAnimation = currTime / ANIMATION_DURATION; // прогресс анимации
-//
-//         ctx.clearRect(changesCord, otherCord, 190, CELL_SIZE); // избавление от дублей
-//         changesCord = (DELTA - startPoint) * progressAnimation + startPoint; // увеличение кординаты
-//         drawCell(theField[otherCord][changesCord]); // отрисовка ячейки
-//
-//         if (progressAnimation < DELTA) {
-//              requestAnimationFrame(step); // вызов шага
-//         }
-//     }
-// }
 
 //отрисовка текущего состояния поля
 function drawField() {
@@ -320,7 +303,7 @@ function drawBackground() {
     }
 }
 
-function addNewCell() {
+function addNewCell(IsMove) {
     var freeCell = false;
     var emptyCell = false;
 
@@ -335,7 +318,7 @@ function addNewCell() {
     if (!freeCell) {
         endOfGame = true;
         endGame();
-    } else {
+    } else if (IsMove){
         while(!emptyCell) {
             var xCord = Math.floor(Math.random() * COUNT_OF_CELLS);
             var yCord = Math.floor(Math.random() * COUNT_OF_CELLS);
