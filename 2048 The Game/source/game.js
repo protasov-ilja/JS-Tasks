@@ -127,7 +127,7 @@ function moveLeft() {
 
     for (var yPos = 0; yPos < COUNT_OF_CELLS; ++yPos) {
         for (var xPos = 1; xPos < COUNT_OF_CELLS; ++xPos) {
-            if (theField[yPos][xPos].value) {
+            if (theField[yPos][xPos].value != 0) {
                 var duplicate = false;
                 var currX = xPos;
                 
@@ -258,10 +258,11 @@ function drawCell(currCellCord) {
             case 512 : colorF = "#EDC850"; break;
             case 1024 : colorF = "#E91A1A"; break;
             case 2048 : colorF = "#EDC63D"; break;
-            case 4096 : colorF = "#EDC63F"; break;
+            case 4096 : colorF = "#EDA63F"; break;
         }
         if (currCellCord.value > 1000) {
-            fontSize = 50;
+            posValueY = 65;
+            fontSize = 40;
         }
         fontFamily = fontSize + "px Mogra";
         ctx.fillStyle = colorF;
