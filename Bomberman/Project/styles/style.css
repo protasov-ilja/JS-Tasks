@@ -3,4 +3,155 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body
+{
+    background: url("../img/фон/Bomberman_fon.png") center;
+}
+
+.container_main
+{
+    background-color: chocolate;
+    margin: 0 auto;
+    width: 500px;
+    height: 640px;
+}
+
+.header
+{
+    background-color: chocolate;
+    padding-bottom: 20px;
+}
+
+.logo
+{
+    padding-top: 20px;
+    color: blue;
+    font-size: 50px;
+    text-align: center;
+}
+
+.menu
+{
+    margin-bottom: 20px;
+    background-color: darkorange;
+    height: 30px;
+    margin-top: 20px;
+    font-size: 10px;
+}
+
+.button
+{
+    margin-left: 5px;
+    margin-right: 10px;
+    padding-top: 10px;
+    display: block;
+    float: left;
+    color: #f5faff;
+    height: 20px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.button:hover
+{
+    color: azure;
+    background-color: #ffa241;
+}
+
+.exit
+{
+    background-color: firebrick;
+    padding-top: 10px;
+    display: block;
+    margin-right: 10px;
+    float: right;
+    color: #f5faff;
+    width: 100px;
+    height: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.exit:hover
+{
+    background-color: red;
+}
+
+.time
+{
+    margin-left: 10px;
+    width: 130px;
+    height: 20px;
+    float: left;
+}
+
+.time_text
+{
+    float: left;
+}
+
+.time_amount
+{
+    float: left;
+}
+
+.score
+{
+    margin-right: 10px;
+    width: 100px;
+    height: 20px;
+    float: right;
+}
+
+.live
+{
+    margin-right: 10px;
+    width: 120px;
+    height: 20px;
+    float: right;
+}
+
+.live_text
+{
+    float: left;
+}
+
+.live_amount
+{
+    float: left;
+}
+
+.bomb
+{
+    margin-top: 8px;
+    width: 118px;
+    height: 20px;
+    clear:both;
+    float: right;
+    margin-right: 10px;
+}
+
+.bomb_text
+{
+    float: left;
+}
+
+.bomb_amount
+{
+    float: left;
+}
+
+.game_container
+{
+    margin: 0 auto;
+    width: 480px;
+    height: 390px;
+}
+
+.clear
+{
+    clear: both;
 }
