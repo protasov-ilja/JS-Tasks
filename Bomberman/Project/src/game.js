@@ -8,8 +8,24 @@ let score = 0;
 let endOfGame = false;
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext('2d');
-let spriteBlock = new Image(); // "Создаём" изображение
-let spriteHero = new Image();
+let spriteBlock = createImage(); // "Создаём" изображение
+let spriteHero = createImage();
+
+let field = [
+    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+    [2, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+    [2, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 2, 0, 2, 0],
+    [2, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+    [2, 0, 2, 0, 2, 0, 2, 1, 2, 1, 2, 0, 2, 1, 2, 0],
+    [2, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0],
+    [2, 0, 2, 0, 2, 1, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+    [2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [2, 1, 2, 0, 2, 0, 2, 0, 2, 1, 2, 1, 2, 0, 2, 0],
+    [2, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1],
+    [2, 0, 2, 0, 2, 1, 2, 0, 2, 1, 2, 1, 2, 1, 2, 0],
+    [2, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+];
 
 class Player {
     constructor() {
@@ -17,6 +33,9 @@ class Player {
         this.posY = 30;
     }
 }
+
+const resourcesToLoadCount = 2;
+let loadedResourcesCount = 0;
 
 let user = new Player();
 
@@ -26,8 +45,20 @@ canvas.height = HEIGHT;
 spriteHero.src = 'img/sprites/sprite_hero.png';
 spriteBlock.src = 'img/sprites/sprite_block.png';
 
-initGame();
+function createImage() {
+    const image = new Image();
+    image.onload = onItemLoaded;
 
+    return image;
+}
+
+function onItemLoaded() {
+    ++loadedResourcesCount;
+    if (loadedResourcesCount == resourcesToLoadCount)
+    {
+        initGame();
+    }
+}
 
 document.onkeydown = function (event) {
     if (!endOfGame) {
@@ -118,50 +149,28 @@ function drawPlayer(currX, currY) {
 }
 
 function drawField() {
-    for (let currPosY = 1; currPosY < (COUNT_OF_CELLS_HEIGHT - 1); ++currPosY) {
-        for (let currPosX = 1; currPosX < COUNT_OF_CELLS_WIDTH; ++currPosX) {
-            ctx.fillStyle = 'green';
-            ctx.fillRect( (currPosX * CELL_SIZE), (currPosY * CELL_SIZE), CELL_SIZE, CELL_SIZE)
+    for (let currPosY = 0; currPosY < COUNT_OF_CELLS_HEIGHT; ++currPosY){
+        for (let currPosX = 0; currPosX < COUNT_OF_CELLS_WIDTH; ++currPosX) {
+            if (field[currPosY][currPosX] === 0) {
+                drawGrass(currPosY, currPosX);
+            } else if (field[currPosY][currPosX] === 1) {
+                drawCementBlock(currPosY, currPosX);
+            } else if (field[currPosY][currPosX] === 2) {
+                drawIronBlock(currPosY, currPosX);
+            }
         }
-    }
-
-    spriteBlock.onload = function () { // Событие onLoad, ждём момента пока загрузится изображение
-        drawIronBlock();
-
-        // drawCementBlock()
     }
 }
 
-function drawIronBlock() {
-    for (let currPos = 0; currPos < COUNT_OF_CELLS_WIDTH; ++currPos) {
-        let xPos = currPos * CELL_SIZE;
+function drawGrass(yPos, xPos) {
+    ctx.fillStyle = 'green';
+    ctx.fillRect( (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE);
+}
 
-        ctx.drawImage(spriteBlock, 0, 0, CELL_SIZE, CELL_SIZE, xPos, 0, CELL_SIZE, CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
-    }
+function drawIronBlock(yPos, xPos) {
+        ctx.drawImage(spriteBlock, 0, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
+}
 
-    for (let currPos = 0; currPos < COUNT_OF_CELLS_WIDTH; ++currPos) {
-        let yPos = (COUNT_OF_CELLS_HEIGHT - 1) * CELL_SIZE;
-        let xPos = currPos * CELL_SIZE;
-
-        ctx.drawImage(spriteBlock, 0, 0, CELL_SIZE, CELL_SIZE, xPos, yPos, CELL_SIZE, CELL_SIZE);
-    }
-
-    for (let currPos = 1; currPos < COUNT_OF_CELLS_HEIGHT - 1; ++currPos) {
-        let yPos = currPos * CELL_SIZE;
-        let xPos = 0;
-
-        ctx.drawImage(spriteBlock, 0, 0, CELL_SIZE, CELL_SIZE, xPos, yPos, CELL_SIZE, CELL_SIZE);
-    }
-
-    let nextBlock = 2;
-
-    for (let currPosY = nextBlock; currPosY < (COUNT_OF_CELLS_HEIGHT - 1); currPosY = currPosY + nextBlock) {
-        let yPos = currPosY * CELL_SIZE;
-
-        for (let currPosX = nextBlock; currPosX < COUNT_OF_CELLS_WIDTH; currPosX = currPosX + nextBlock) {
-            let xPos = currPosX * CELL_SIZE;
-
-            ctx.drawImage(spriteBlock, 0, 0, CELL_SIZE, CELL_SIZE, xPos, yPos, CELL_SIZE, CELL_SIZE);
-        }
-    }
+function drawCementBlock(yPos, xPos) {
+    ctx.drawImage(spriteBlock, 30, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 }
