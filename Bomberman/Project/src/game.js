@@ -1,4 +1,3 @@
-window.onload = () => {
 let score = 0;
 let endOfGame = false;
 let canvas = document.getElementById("canvas");
@@ -11,6 +10,7 @@ let user = new Player();
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 // Источник изображения
+
 spriteHero.src = 'img/sprites/sprite_hero.png';
 spriteBlock.src = 'img/sprites/sprite_block.png';
 
@@ -25,7 +25,9 @@ function onItemLoaded() {
     ++loadedResourcesCount;
     if (loadedResourcesCount === resourcesToLoadCount)
     {
-        initGame();
+        window.onload = () => {
+            initGame();
+        };
     }
 }
 
@@ -149,5 +151,3 @@ function drawIronBlock(yPos, xPos) {
 function drawCementBlock(yPos, xPos) {
     ctx.drawImage(spriteBlock, 30, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 }
-
-};
