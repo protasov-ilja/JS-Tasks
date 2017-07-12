@@ -12,7 +12,7 @@ canvas.height = HEIGHT;
 // Источник изображения
 
 spriteHero.src = 'img/sprites/sprite_hero.png';
-spriteBlock.src = 'img/sprites/sprite_block.png';
+spriteBlock.src = 'img/sprites/sprite_block1.png';
 
 function createImage() {
     const image = new Image();
@@ -122,10 +122,6 @@ function drawPlayer(currX, currY) {
 }
 
 function drawField() {
-    const GRASS = 0;
-    const CEMENT = 1;
-    const IRON = 2;
-
     for (let currPosY = 0; currPosY < COUNT_OF_CELLS_HEIGHT; ++currPosY) {
         for (let currPosX = 0; currPosX < COUNT_OF_CELLS_WIDTH; ++currPosX) {
             if (field[currPosY][currPosX] === GRASS) {
