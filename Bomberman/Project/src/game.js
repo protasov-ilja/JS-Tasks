@@ -1,56 +1,57 @@
 let score = 0;
 let endOfGame = false;
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext('2d');
-let spriteBlock = createImage(); // "Создаём" изображение
-let spriteHero = createImage();
+let canvas = null;
+let ctx = null;
+let spriteBlock = null;
+let spriteHero = null;
 let loadedResourcesCount = 0;
-let user = new Player();
+let user = null;
+let music = false;
 
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-// Источник изображения
+window.onload = () => {
+	canvas = document.getElementById("canvas");
+	canvas.width = WIDTH;
+	canvas.height = HEIGHT;
 
-spriteHero.src = 'img/sprites/sprite_hero.png';
-spriteBlock.src = 'img/sprites/sprite_block1.png';
+	ctx = canvas.getContext('2d');
 
-function createImage() {
-    const image = new Image();
-    image.onload = onItemLoaded;
+	user = new Player();
 
-    return image;
-}
+	spriteHero = createImage(onItemLoaded);
+	spriteHero.src = 'img/sprites/sprite_hero.png';
+
+	spriteBlock = createImage(onItemLoaded);
+	spriteBlock.src = 'img/sprites/sprite_block1.png';
+};
 
 function onItemLoaded() {
     ++loadedResourcesCount;
     if (loadedResourcesCount === resourcesToLoadCount)
     {
-        window.onload = () => {
-            initGame();
-        };
+		initGame();
     }
 }
 
 document.onkeydown = function (event) {
     if (!endOfGame) {
         switch (event.keyCode) {
-            case KEY_UP_FIRST:
-            case KEY_UP_SECOND:
+            case ARROW_UP:
+            case KEY_W:
                 event.preventDefault();
                 moveUp();
                 break;
-            case KEY_RIGHT_FIRST:
-            case KEY_RIGHT_SECOND:
+            case ARROW_RIGHT:
+            case KEY_D:
                 event.preventDefault();
                 moveRight();
                 break;
-            case KEY_DOWN_FIRST:
-            case KEY_DOWN_SECOND:
+            case ARROW_DOWN:
+            case KEY_S:
                 event.preventDefault();
                 moveDown();
                 break;
-            case KEY_LEFT_FIRST:
-            case KEY_LEFT_SECOND:
+            case ARROW_LEFT:
+            case KEY_A:
                 event.preventDefault();
                 moveLeft();
         }
@@ -103,9 +104,16 @@ function moveLeft() {
 
 function initGame() {
     const START_POS = 30;
+    const START_LIVE = 3;
 
+    user.bombCount = 1;
+    user.live = START_LIVE;
     user.posX = START_POS;
     user.posY = START_POS;
+    liveForm.innerHTML = user.live;
+    bombForm.innerHTML = user.bombCount;
+
+	useTimer();
     drawGame(user.posX, user.posY);
 }
 

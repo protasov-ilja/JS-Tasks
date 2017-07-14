@@ -8,23 +8,23 @@
   <title>Bomberman</title>
 </head>
 <body>
-<div class="container_options none">
+<div class="container_options none" id="optionsContainer">
   <div class="options_title">
     <h2>OPTIONS</h2>
-    <a class="exit_button" href="#">X</a>
+    <a class="exit_button" id="exitOptionsButton" href="#">X</a>
     <div class="clear"></div>
   </div>
   <div class="options_main">
     <div class="level_block">
-      <p class="level_text">LEVEL</p>
-      <a class="level_button" href="#">1</a>
-      <a class="level_button" href="#">2</a>
-      <a class="level_button" href="#">3</a>
+      <p class="level_text">LEVEL:</p>
+      <a class="level_button" id="levelOne" href="#">1</a>
+      <a class="level_button" id="levelTwo" href="#">2</a>
+      <a class="level_button" id="levelThree" href="#">3</a>
       <div class="clear"></div>
     </div>
     <div class="music_block">
       <p class="music_text">MUSIC</p>
-      <a class="music_button" href="#">ON</a>
+      <a class="music_button" id="musicButton" href="#">ON</a>
       <div class="clear"></div>
     </div>
   </div>
@@ -33,26 +33,25 @@
   <div class="header">
     <h1 class="logo">Bomberman</h1>
     <div class="menu">
-      <a class="button" href="#">NEWGAME</a>
-      <a class="button" href="#">OPTIONS</a>
-      <a class="button" href="#">HELP</a>
-      <a class="exit" href="#">EXIT</a>
+      <a class="button" id="newGameButton" href="#">NEWGAME</a>
+      <a class="button" id="gameOptions" href="#">OPTIONS</a>
+      <a class="exit" id="endGameButton" href="#">EXIT</a>
       <div class="clear"></div>
     </div>
     <div class="time">
       <p class="time_text">TIME:</p>
-      <p class="time_amount">000</p>
+      <p class="time_amount" id="timeForm">300</p>
       <div class="clear"></div>
     </div>
     <div class="live">
       <p class="live_text">LIVE:</p>
-      <p class="live_amount">00</p>
+      <p class="live_amount" id="liveNumber">00</p>
       <div class="clear"></div>
     </div>
-    <div class="score">0000</div>
+    <div class="score" id="scoreNumber">0000</div>
     <div class="bomb">
       <p class="bomb_text">BOMB:</p>
-      <p class="bomb_amount">0</p>
+      <p class="bomb_amount" id="bombNumber">0</p>
       <div class="clear"></div>
     </div>
     <div class="clear"></div>
@@ -62,11 +61,13 @@
       <div class="clear"></div>
     </div>
 </div>
+<script type="text/javascript" src="src/game.js"></script>
 <script type="text/javascript" src="src/Levels.js"></script>
 <script type="text/javascript" src="src/Player.js"></script>
 <script type="text/javascript" src="src/Keycodes.js"></script>
 <script type="text/javascript" src="src/Config.js"></script>
 <script type="text/javascript" src="src/Field.js"></script>
-<script type="text/javascript" src="src/game.js"></script>
+<script type="text/javascript" src="src/ImageUtils.js"></script>
+<script type="text/javascript" src="src/Interface.js"></script>
 </body>
 </html>

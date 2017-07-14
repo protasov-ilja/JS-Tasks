@@ -5,4 +5,4 @@ const HEIGHT = 390;
 const CELL_SIZE = 30;
 const PLAYER_SPEED = 10;
 const resourcesToLoadCount = 2;
-const field = level1;
+let field = level1;
