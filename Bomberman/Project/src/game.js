@@ -1,4 +1,3 @@
-let score = 0;
 let endOfGame = false;
 let canvas = null;
 let ctx = null;
@@ -6,7 +5,6 @@ let spriteBlock = null;
 let spriteHero = null;
 let loadedResourcesCount = 0;
 let user = null;
-let music = false;
 
 window.onload = () => {
 	canvas = document.getElementById("canvas");
@@ -110,8 +108,8 @@ function initGame() {
     user.live = START_LIVE;
     user.posX = START_POS;
     user.posY = START_POS;
-    liveForm.innerHTML = user.live;
-    bombForm.innerHTML = user.bombCount;
+    liveForm.innerHTML = '0' + user.live;
+    bombForm.innerHTML = '0' + user.bombCount;
 
 	useTimer();
     drawGame(user.posX, user.posY);

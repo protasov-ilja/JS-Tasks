@@ -13,6 +13,10 @@ const liveForm = document.getElementById('liveNumber');
 const levelOn = '#fff601';
 const levelOff = '#ffffff';
 
+let music = false;
+let clearStep = null;
+let score = 0;
+
 musicButton.onclick = musicOn;
 
 function musicOn(event) {
@@ -90,18 +94,19 @@ function closeOptionsMenu(event) {
 }
 
 function useTimer() {
-	let startTime = 300;
+	const startTime = 300;
+
 	let currTime = startTime;
 
-	let timerId = setInterval(step, 1000);
+	clearInterval(clearStep);
+	clearStep = setInterval(step, 1000);
 
 	function step() {
 		--currTime;
-		timer.innerHTML = currTime;
-		if (currTime >= 0) {
-			setInterval(step, 1000);
+		if (currTime > 0) {
+			timer.innerHTML = currTime;
 		} else {
-			clearInterval(timerId);
+			clearInterval(clearStep);
 			alert('Время вышло');
 		}
 	}
