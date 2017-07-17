@@ -16,10 +16,10 @@ window.onload = () => {
 	user = new Player();
 
 	spriteHero = createImage(onItemLoaded);
-	spriteHero.src = 'img/sprites/sprite_hero.png';
+	spriteHero.src = 'img/sprites/sprite_player.png';
 
 	spriteBlock = createImage(onItemLoaded);
-	spriteBlock.src = 'img/sprites/sprite_block1.png';
+	spriteBlock.src = 'img/sprites/sprite_block.png';
 };
 
 function onItemLoaded() {
@@ -57,47 +57,95 @@ document.onkeydown = function (event) {
 };
 
 function moveUp() {
-    let nextPos = user.posY - PLAYER_SPEED;
+	let currPosX = Math.round(user.posX / CELL_SIZE);
+	let currPosY = Math.round(user.posY / CELL_SIZE);
+	let nextPos = currPosY - 1;
 
-    if (nextPos >= CELL_SIZE) {
-        user.posY = nextPos;
+	if (field[nextPos][currPosX] === GRASS) {
+		user.posY = user.posY - PLAYER_SPEED;
 
-        drawGame(user.posX, user.posY);
-    }
+		drawGame(user.posX, user.posY);
+	} else {
+		let blockSize = nextPos * CELL_SIZE + CELL_SIZE;
+		let delta = user.posY - blockSize;
+
+		if (delta > 0) {
+			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+
+			user.posY = user.posY - step;
+
+			drawGame(user.posX, user.posY);
+		}
+	}
 }
 
 function moveDown() {
-    const maxHeight = HEIGHT - (CELL_SIZE * 2);
+	let currPosX = Math.round(user.posX / CELL_SIZE);
+	let currPosY = Math.round(user.posY / CELL_SIZE);
+	let nextPos = currPosY + 1;
 
-    let nextPos = user.posY + PLAYER_SPEED;
+	if (field[nextPos][currPosX] === GRASS) {
+		user.posY = user.posY + PLAYER_SPEED;
 
-    if (nextPos <= maxHeight) {
-        user.posY = nextPos;
+		drawGame(user.posX, user.posY);
+	} else {
+		let playerBlock = user.posY + PLAYER_SIZE;
+		let delta = (nextPos * CELL_SIZE) - playerBlock;
 
-        drawGame(user.posX, user.posY);
-    }
+		if (delta > 0) {
+			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+
+			user.posY = user.posY + step;
+
+			drawGame(user.posX, user.posY);
+		}
+	}
 }
 
 function moveRight() {
-    const maxWidth = WIDTH - CELL_SIZE;
+	let currPosX = Math.round(user.posX / CELL_SIZE);
+	let currPosY = Math.round(user.posY / CELL_SIZE);
+	let nextPos = currPosX + 1;
 
-    let nextPos = user.posX + PLAYER_SPEED;
+	if (field[currPosY][nextPos] === GRASS) {
+		user.posX = user.posX + PLAYER_SPEED;
 
-    if (nextPos <= maxWidth) {
-        user.posX = nextPos;
+		drawGame(user.posX, user.posY);
+	} else {
+		let playerBlock = user.posX + PLAYER_SIZE;
+		let delta = (nextPos * CELL_SIZE) - playerBlock;
 
-        drawGame(user.posX, user.posY);
-    }
+		if (delta > 0) {
+			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+
+			user.posX = user.posX + step;
+
+			drawGame(user.posX, user.posY);
+		}
+	}
 }
 
 function moveLeft() {
-    let nextPos = user.posX - PLAYER_SPEED;
+	let currPosX = Math.round(user.posX / CELL_SIZE);
+	let currPosY = Math.round(user.posY / CELL_SIZE);
+	let nextPos = currPosX - 1;
 
-    if (nextPos >= CELL_SIZE) {
-        user.posX = nextPos;
+	if (field[currPosY][nextPos] === GRASS) {
+		user.posX = user.posX - PLAYER_SPEED;
 
-        drawGame(user.posX, user.posY);
-    }
+		drawGame(user.posX, user.posY);
+	} else {
+		let blockSize = nextPos * CELL_SIZE + CELL_SIZE;
+		let delta = user.posX - blockSize;
+
+		if (delta > 0) {
+			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+
+			user.posX = user.posX - step;
+
+			drawGame(user.posX, user.posY);
+		}
+	}
 }
 
 function initGame() {
@@ -115,16 +163,57 @@ function initGame() {
     drawGame(user.posX, user.posY);
 }
 
-function drawGame(currX, currY) {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+function animatePlayer(currX, currY) {
+	//сохраняется при начале анимации
+	const START_FIRST_STEP = 0;
+	const END_FIRST_STEP = 100;
+	const START_SECOND_STEP = 101;
+	const END_SECOND_STEP = 200;
+	const START_THIRD_STEP = 201;
+	const END_THIRD_STEP = 300;
+	const ANIMATION_DURATION = 300; // полная длительность анимации
 
-    drawField();
-    drawPlayer(currX, currY);
+	let stepAnimation = null;
+	let startTime = new Date().getTime(); // начальное время анимации
+
+	step();
+
+	function step() {
+		let currTime = ( new Date().getTime() ) - startTime; // время шага
+		let progressAnimation = currTime % ANIMATION_DURATION; // прогресс анимации
+		let needNextStep = progressAnimation <= ANIMATION_DURATION;
+
+		progressAnimation = Math.min(ANIMATION_DURATION, progressAnimation);
+		if ( (progressAnimation >=  START_FIRST_STEP) && (progressAnimation <=  END_FIRST_STEP) ) {
+			stepAnimation = 'firstStep';
+		} else if ( (progressAnimation >=  START_SECOND_STEP) && (progressAnimation <=  END_SECOND_STEP) ) {
+			stepAnimation = 'secondStep';
+		} else if ( (progressAnimation >=  START_THIRD_STEP) && (progressAnimation <=  END_THIRD_STEP) ) {
+			stepAnimation = 'thirdStep';
+		}
+
+		ctx.clearRect(0, 0, WIDTH, HEIGHT);
+		drawField();
+		drawPlayer(currX, currY, stepAnimation);
+
+		if (needNextStep) {
+			requestAnimationFrame(step); // вызов шага
+		}
+	}
 }
 
-function drawPlayer(currX, currY) {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(currX, currY, CELL_SIZE, CELL_SIZE);
+function drawGame(currX, currY) {
+	animatePlayer(currX, currY);
+}
+
+function drawPlayer(currX, currY, currStep) {
+	if (currStep === 'firstStep') {
+		ctx.drawImage(spriteHero, 0, 0, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
+	} else if (currStep === 'secondStep') {
+		ctx.drawImage(spriteHero, 0, 21, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
+	} else {
+		ctx.drawImage(spriteHero, 0, 41, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
+	}
 }
 
 function drawField() {
