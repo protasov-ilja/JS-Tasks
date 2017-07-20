@@ -1,24 +1,20 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
     text-decoration: none;
     font-family: 'Press Start 2P', cursive;
 }
 
-body
-{
-    background: url("../img/фон/Bomberman_fon.png") center;
+body {
+    background: url("../img/background/Bomberman_fon.png") center;
 }
 
-.end_game
-{
+.end_game {
     opacity: 0.3;
     transition-duration: 0.5s;
 }
 
-.container_options
-{
+.container_options {
     opacity: 1;
     transition-duration: 0.5s;
     border-radius: 2px;
@@ -34,15 +30,13 @@ body
     z-index: 3;
 }
 
-.options_title
-{
+.options_title {
     background-color: #cb6724;
     height: 80px;
     width: 100%;
 }
 
-h2
-{
+h2 {
     color: #544d88;
     font-size: 32px;
     text-align: center;
@@ -51,8 +45,7 @@ h2
     margin-left: 129px;
 }
 
-.exit_button
-{
+.exit_button {
     border-radius: 4px;
     padding-left: 3px;
     padding-top: 4px;
@@ -65,20 +58,17 @@ h2
     background-color: firebrick;
 }
 
-.exit_button:hover
-{
+.exit_button:hover {
     background-color: red;
     color: azure;
 }
 
-.none
-{
+.none {
     display: none;
     opacity: 0;
 }
 
-.options_main
-{
+.options_main {
     background-color: #e7b365;
     color: #ffffff;
     font-size: 30px;
@@ -87,26 +77,22 @@ h2
     padding: 25px;
 }
 
-.level_block
-{
+.level_block {
     margin: 0 auto;
     padding-top: 20px;
     height: 30px;
 }
 
-.level_text
-{
+.level_text {
     float: left;
     margin-right: -9px;
 }
 
-#levelOne
-{
+#levelOne {
     color: #fff601;
 }
 
-.level_button
-{
+.level_button {
     border-radius: 5px;
     color: #ffffff;
     background-color: #43d6fa;
@@ -121,25 +107,21 @@ h2
     text-align: center;
 }
 
-.level_button:hover
-{
+.level_button:hover {
     background-color: #3fc5e6;
 }
 
-.music_block
-{
+.music_block {
     height: 30px;
     margin: 40px auto;
 }
 
-.music_text
-{
+.music_text {
     float: left;
     margin-right: 109px;
 }
 
-.music_button
-{
+.music_button {
     border-radius: 22px;
     color: #fff601;
     background-color: #43d6fa;
@@ -153,34 +135,30 @@ h2
     height: 39px;
 }
 
-.music_button:hover
-{
+.music_button:hover {
     background-color: #3fc5e6;
 }
-.container_main
-{
+
+.container_main {
     background-color: chocolate;
     margin: 0 auto;
     width: 500px;
     height: 640px;
 }
 
-.header
-{
+.header {
     background-color: chocolate;
     padding-bottom: 20px;
 }
 
-.logo
-{
+.logo {
     padding-top: 20px;
     color: blue;
     font-size: 50px;
     text-align: center;
 }
 
-.menu
-{
+.menu {
     margin-bottom: 20px;
     background-color: darkorange;
     height: 30px;
@@ -188,8 +166,7 @@ h2
     font-size: 10px;
 }
 
-.button
-{
+.button {
     margin-left: 5px;
     margin-right: 10px;
     padding-top: 10px;
@@ -201,77 +178,49 @@ h2
     text-align: center;
 }
 
-.button:hover
-{
+.button:hover {
     color: azure;
     background-color: #ffa241;
 }
 
-.exit
-{
-    background-color: firebrick;
-    padding-top: 10px;
-    display: block;
-    margin-right: 10px;
-    float: right;
-    color: #f5faff;
-    width: 100px;
-    height: 20px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.exit:hover
-{
-    background-color: red;
-}
-
-.time
-{
+.time {
     margin-left: 10px;
     width: 130px;
     height: 20px;
     float: left;
 }
 
-.time_text
-{
+.time_text {
     float: left;
 }
 
-.time_amount
-{
+.time_amount {
     float: left;
 }
 
-.score
-{
+.score {
     margin-right: 10px;
     width: 100px;
     height: 20px;
     float: right;
 }
 
-.live
-{
+.live {
     margin-right: 10px;
     width: 120px;
     height: 20px;
     float: right;
 }
 
-.live_text
-{
+.live_text {
     float: left;
 }
 
-.live_amount
-{
+.live_amount {
     float: left;
 }
 
-.bomb
-{
+.bomb {
     margin-top: 8px;
     width: 118px;
     height: 20px;
@@ -280,24 +229,20 @@ h2
     margin-right: 10px;
 }
 
-.bomb_text
-{
+.bomb_text {
     float: left;
 }
 
-.bomb_amount
-{
+.bomb_amount {
     float: left;
 }
 
-.game_container
-{
+.game_container {
     margin: 0 auto;
     width: 480px;
     height: 390px;
 }
 
-.clear
-{
+.clear {
     clear: both;
 }

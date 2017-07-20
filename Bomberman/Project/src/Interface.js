@@ -13,7 +13,7 @@ const liveForm = document.getElementById('liveNumber');
 const levelOn = '#fff601';
 const levelOff = '#ffffff';
 
-let music = false;
+let music = true;
 let clearStep = null;
 let score = 0;
 
@@ -45,7 +45,7 @@ chooseLevel1.onclick = selectLevel1;
 function selectLevel1(event) {
 	event.preventDefault();
 
-	field = level1;
+	field = LEVEL_1.slice(0);
 	chooseLevel1.style.color = levelOn;
 	chooseLevel2.style.color = levelOff;
 	chooseLevel3.style.color = levelOff;
@@ -58,7 +58,7 @@ chooseLevel2.onclick = selectLevel2;
 function selectLevel2(event) {
 	event.preventDefault();
 
-	field = level2;
+	field = LEVEL_2.slice(0);
 	chooseLevel1.style.color = levelOff;
 	chooseLevel2.style.color = levelOn;
 	chooseLevel3.style.color = levelOff;
@@ -71,7 +71,7 @@ chooseLevel3.onclick = selectLevel3;
 function selectLevel3(event) {
 	event.preventDefault();
 
-	field = level3;
+	field = LEVEL_3.slice(0);
 	chooseLevel1.style.color = levelOff;
 	chooseLevel2.style.color = levelOff;
 	chooseLevel3.style.color = levelOn;

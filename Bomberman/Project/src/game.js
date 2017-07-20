@@ -5,6 +5,7 @@ let spriteBlock = null;
 let spriteHero = null;
 let loadedResourcesCount = 0;
 let user = null;
+let moveDirection = 'moveDown';
 
 window.onload = () => {
 	canvas = document.getElementById("canvas");
@@ -30,124 +31,6 @@ function onItemLoaded() {
     }
 }
 
-document.onkeydown = function (event) {
-    if (!endOfGame) {
-        switch (event.keyCode) {
-            case ARROW_UP:
-            case KEY_W:
-                event.preventDefault();
-                moveUp();
-                break;
-            case ARROW_RIGHT:
-            case KEY_D:
-                event.preventDefault();
-                moveRight();
-                break;
-            case ARROW_DOWN:
-            case KEY_S:
-                event.preventDefault();
-                moveDown();
-                break;
-            case ARROW_LEFT:
-            case KEY_A:
-                event.preventDefault();
-                moveLeft();
-        }
-    }
-};
-
-function moveUp() {
-	let currPosX = Math.round(user.posX / CELL_SIZE);
-	let currPosY = Math.round(user.posY / CELL_SIZE);
-	let nextPos = currPosY - 1;
-
-	if (field[nextPos][currPosX] === GRASS) {
-		user.posY = user.posY - PLAYER_SPEED;
-
-		drawGame(user.posX, user.posY);
-	} else {
-		let blockSize = nextPos * CELL_SIZE + CELL_SIZE;
-		let delta = user.posY - blockSize;
-
-		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
-
-			user.posY = user.posY - step;
-
-			drawGame(user.posX, user.posY);
-		}
-	}
-}
-
-function moveDown() {
-	let currPosX = Math.round(user.posX / CELL_SIZE);
-	let currPosY = Math.round(user.posY / CELL_SIZE);
-	let nextPos = currPosY + 1;
-
-	if (field[nextPos][currPosX] === GRASS) {
-		user.posY = user.posY + PLAYER_SPEED;
-
-		drawGame(user.posX, user.posY);
-	} else {
-		let playerBlock = user.posY + PLAYER_SIZE;
-		let delta = (nextPos * CELL_SIZE) - playerBlock;
-
-		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
-
-			user.posY = user.posY + step;
-
-			drawGame(user.posX, user.posY);
-		}
-	}
-}
-
-function moveRight() {
-	let currPosX = Math.round(user.posX / CELL_SIZE);
-	let currPosY = Math.round(user.posY / CELL_SIZE);
-	let nextPos = currPosX + 1;
-
-	if (field[currPosY][nextPos] === GRASS) {
-		user.posX = user.posX + PLAYER_SPEED;
-
-		drawGame(user.posX, user.posY);
-	} else {
-		let playerBlock = user.posX + PLAYER_SIZE;
-		let delta = (nextPos * CELL_SIZE) - playerBlock;
-
-		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
-
-			user.posX = user.posX + step;
-
-			drawGame(user.posX, user.posY);
-		}
-	}
-}
-
-function moveLeft() {
-	let currPosX = Math.round(user.posX / CELL_SIZE);
-	let currPosY = Math.round(user.posY / CELL_SIZE);
-	let nextPos = currPosX - 1;
-
-	if (field[currPosY][nextPos] === GRASS) {
-		user.posX = user.posX - PLAYER_SPEED;
-
-		drawGame(user.posX, user.posY);
-	} else {
-		let blockSize = nextPos * CELL_SIZE + CELL_SIZE;
-		let delta = user.posX - blockSize;
-
-		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
-
-			user.posX = user.posX - step;
-
-			drawGame(user.posX, user.posY);
-		}
-	}
-}
-
 function initGame() {
     const START_POS = 30;
     const START_LIVE = 3;
@@ -160,17 +43,15 @@ function initGame() {
     bombForm.innerHTML = '0' + user.bombCount;
 
 	useTimer();
-    drawGame(user.posX, user.posY);
+    drawGame(user.posX, user.posY, moveDirection);
 }
 
-function animatePlayer(currX, currY) {
+function animatePlayer(currX, currY, currDirection) {
 	//сохраняется при начале анимации
-	const START_FIRST_STEP = 0;
-	const END_FIRST_STEP = 100;
-	const START_SECOND_STEP = 101;
-	const END_SECOND_STEP = 200;
-	const START_THIRD_STEP = 201;
-	const END_THIRD_STEP = 300;
+	const AMOUNT_OF_STEPS = 3;
+	const FIRST_STEP = 0;
+	const SECOND_STEP = 1;
+	const THIRD_STEP = 2;
 	const ANIMATION_DURATION = 300; // полная длительность анимации
 
 	let stepAnimation = null;
@@ -181,39 +62,59 @@ function animatePlayer(currX, currY) {
 	function step() {
 		let currTime = ( new Date().getTime() ) - startTime; // время шага
 		let progressAnimation = currTime % ANIMATION_DURATION; // прогресс анимации
-		let needNextStep = progressAnimation <= ANIMATION_DURATION;
 
-		progressAnimation = Math.min(ANIMATION_DURATION, progressAnimation);
-		if ( (progressAnimation >=  START_FIRST_STEP) && (progressAnimation <=  END_FIRST_STEP) ) {
+		progressAnimation = Math.floor(progressAnimation / (ANIMATION_DURATION / AMOUNT_OF_STEPS) );
+
+		if (progressAnimation === FIRST_STEP) {
 			stepAnimation = 'firstStep';
-		} else if ( (progressAnimation >=  START_SECOND_STEP) && (progressAnimation <=  END_SECOND_STEP) ) {
+		} else if (progressAnimation === SECOND_STEP) {
 			stepAnimation = 'secondStep';
-		} else if ( (progressAnimation >=  START_THIRD_STEP) && (progressAnimation <=  END_THIRD_STEP) ) {
+		} else if (progressAnimation === THIRD_STEP) {
 			stepAnimation = 'thirdStep';
 		}
 
 		ctx.clearRect(0, 0, WIDTH, HEIGHT);
 		drawField();
-		drawPlayer(currX, currY, stepAnimation);
-
-		if (needNextStep) {
-			requestAnimationFrame(step); // вызов шага
-		}
+		drawPlayer(currX, currY, stepAnimation, currDirection);
+		requestAnimationFrame(step); // вызов шага
 	}
 }
 
-function drawGame(currX, currY) {
-	animatePlayer(currX, currY);
+function drawGame(currX, currY, currDirection) {
+	animatePlayer(currX, currY, currDirection);
 }
 
-function drawPlayer(currX, currY, currStep) {
-	if (currStep === 'firstStep') {
-		ctx.drawImage(spriteHero, 0, 0, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
-	} else if (currStep === 'secondStep') {
-		ctx.drawImage(spriteHero, 0, 21, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
+function drawPlayer(currX, currY, currStep, currDirection) {
+	const FIRST_SPRITE = 0;
+	const SECOND_SPRITE = 21;
+	const THIRD_SPRITE = 42;
+	const MOVE_DOWN = 0;
+	const MOVE_UP = 42;
+	const MOVE_RIGHT = 63;
+	const MOVE_LEFT = 21;
+
+	let moveDirection;
+	let spriteNumber;
+
+	if (currDirection === 'moveDown') {
+		moveDirection = MOVE_DOWN;
+	} else if (currDirection === 'moveRight') {
+		moveDirection = MOVE_RIGHT;
+	} else if (currDirection === 'moveUp') {
+		moveDirection = MOVE_UP;
 	} else {
-		ctx.drawImage(spriteHero, 0, 41, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
+		moveDirection = MOVE_LEFT;
 	}
+
+	if (currStep === 'firstStep') {
+		spriteNumber = FIRST_SPRITE;
+	} else if (currStep === 'secondStep') {
+		spriteNumber = SECOND_SPRITE;
+	} else {
+		spriteNumber = THIRD_SPRITE;
+	}
+
+	ctx.drawImage(spriteHero, moveDirection, spriteNumber, PLAYER_SIZE, PLAYER_SIZE, currX, currY, PLAYER_SIZE, PLAYER_SIZE);
 }
 
 function drawField() {
