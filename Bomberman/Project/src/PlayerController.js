@@ -1,8 +1,7 @@
-const DOWN = 'moveDown';
-const UP = 'moveUp';
-const RIGHT = 'moveRight';
-const LEFT = 'moveLeft';
-let moveDirection = DOWN;
+const DOWN = 0;
+const UP = 1;
+const RIGHT = 2;
+const LEFT = 3;
 
 document.onkeydown = function (event) {
 	if (!endOfGame) {
@@ -10,114 +9,145 @@ document.onkeydown = function (event) {
 			case ARROW_UP:
 			case W:
 				event.preventDefault();
-				moveUp();
+				moveUp(player);
 				break;
 			case ARROW_RIGHT:
 			case D:
 				event.preventDefault();
-				moveRight();
+				moveRight(player);
 				break;
 			case ARROW_DOWN:
 			case S:
 				event.preventDefault();
-				moveDown();
+				moveDown(player);
 				break;
 			case ARROW_LEFT:
 			case A:
 				event.preventDefault();
-				moveLeft();
+				moveLeft(player);
 		}
 	}
 };
 
-function moveUp() {
-	let currPosX = Math.round(player.posX / CELL_SIZE);
-	let currPosY = Math.round(player.posY / CELL_SIZE);
+function monsterMove(monster) {
+	if (!endOfGame) {
+		switch (monster.direction) {
+			case UP:
+				moveUp(monster);
+				break;
+			case RIGHT:
+				moveRight(monster);
+				break;
+			case DOWN:
+				moveDown(monster);
+				break;
+			case LEFT:
+				moveLeft(monster);
+		}
+	}
+}
+
+function changeDirection(monster) {
+	monster.direction = Math.floor(Math.random() * 4);
+	console.log(monster.direction);
+}
+
+function moveUp(creature) {
+	let currPosX = Math.round(creature.posX / CELL_SIZE);
+	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosY - 1;
 
 	if (field[nextPos][currPosX] === GRASS) {
-		player.posY = player.posY - PLAYER_SPEED;
-		moveDirection = UP;
-		player.direction = moveDirection;
+		creature.posY = creature.posY - creature.moveSpeed;
+		creature.direction = UP;
 	} else {
 		let blockSize = nextPos * CELL_SIZE + CELL_SIZE;
-		let delta = player.posY - blockSize;
+		let delta = creature.posY - blockSize;
 
 		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+			let step = delta < creature.moveSpeed ? delta : creature.moveSpeed;
 
-			player.posY = player.posY - step;
-			moveDirection = UP;
-			player.direction = moveDirection;
+			creature.posY = creature.posY - step;
+			creature.direction = UP;
+		} else {
+			if (creature === monster) {
+				changeDirection(monster);
+			}
 		}
 	}
 }
 
-function moveDown() {
-	let currPosX = Math.round(player.posX / CELL_SIZE);
-	let currPosY = Math.round(player.posY / CELL_SIZE);
+function moveDown(creature) {
+	let currPosX = Math.round(creature.posX / CELL_SIZE);
+	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosY + 1;
 
 	if (field[nextPos][currPosX] === GRASS) {
-		player.posY = player.posY + PLAYER_SPEED;
-		moveDirection = DOWN;
-		player.direction = moveDirection;
+		creature.posY = creature.posY + creature.moveSpeed;
+		creature.direction = DOWN;
 	} else {
-		let playerBlock = player.posY + PLAYER_SIZE;
-		let delta = (nextPos * CELL_SIZE) - playerBlock;
+		let creatureBlock = creature.posY + creature.spriteSize;
+		let delta = (nextPos * CELL_SIZE) - creatureBlock;
 
 		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+			let step = delta < creature.moveSpeed ? delta : creature.moveSpeed;
 
-			player.posY = player.posY + step;
-			moveDirection = DOWN;
-			player.direction = moveDirection;
+			creature.posY = creature.posY + step;
+			creature.direction = DOWN;
+		} else {
+			if (creature === monster) {
+				changeDirection(monster);
+			}
 		}
 	}
 }
 
-function moveRight() {
-	let currPosX = Math.round(player.posX / CELL_SIZE);
-	let currPosY = Math.round(player.posY / CELL_SIZE);
+function moveRight(creature) {
+	let currPosX = Math.round(creature.posX / CELL_SIZE);
+	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosX + 1;
 
 	if (field[currPosY][nextPos] === GRASS) {
-		player.posX = player.posX + PLAYER_SPEED;
-		moveDirection = RIGHT;
-		player.direction = moveDirection;
+		creature.posX = creature.posX + creature.moveSpeed;
+		creature.direction = RIGHT;
 	} else {
-		let playerBlock = player.posX + PLAYER_SIZE;
-		let delta = (nextPos * CELL_SIZE) - playerBlock;
+		let creatureBlock = creature.posX + creature.spriteSize;
+		let delta = (nextPos * CELL_SIZE) - creatureBlock;
 
 		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+			let step = delta < creature.moveSpeed ? delta : creature.moveSpeed;
 
-			player.posX = player.posX + step;
-			moveDirection = RIGHT;
-			player.direction = moveDirection;
+			creature.posX = creature.posX + step;
+			creature.direction = RIGHT;
+		} else {
+			if (creature === monster) {
+				changeDirection(monster);
+			}
 		}
 	}
 }
 
-function moveLeft() {
-	let currPosX = Math.round(player.posX / CELL_SIZE);
-	let currPosY = Math.round(player.posY / CELL_SIZE);
+function moveLeft(creature) {
+	let currPosX = Math.round(creature.posX / CELL_SIZE);
+	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosX - 1;
 
 	if (field[currPosY][nextPos] === GRASS) {
-		player.posX = player.posX - PLAYER_SPEED;
-		moveDirection = LEFT;
-		player.direction = moveDirection;
+		creature.posX = creature.posX - creature.moveSpeed;
+		creature.direction = LEFT;
 	} else {
 		let blockSize = nextPos * CELL_SIZE + CELL_SIZE;
-		let delta = player.posX - blockSize;
+		let delta = creature.posX - blockSize;
 
 		if (delta > 0) {
-			let step = delta < PLAYER_SPEED ? delta : PLAYER_SPEED;
+			let step = delta < creature.moveSpeed ? delta : creature.moveSpeed;
 
-			player.posX = player.posX - step;
-			moveDirection = LEFT;
-			player.direction = moveDirection;
+			creature.posX = creature.posX - step;
+			creature.direction = LEFT;
+		} else {
+			if (creature === monster) {
+				changeDirection(monster);
+			}
 		}
 	}
 }
