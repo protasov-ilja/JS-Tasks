@@ -72,7 +72,7 @@ window.onload = () => {
 	balloonDownDirection.push(balloonDown1, balloonDown2, balloonDown3/*, four, five*/);
 
 	const balloonUp1 = createImage(onItemLoaded);
-	balloonUp1.src = 'img/sprites/monster_balloon/monster_up//1.png';
+	balloonUp1.src = 'img/sprites/monster_balloon/monster_up/1.png';
 	const balloonUp2 = createImage(onItemLoaded);
 	balloonUp2.src = 'img/sprites/monster_balloon/monster_up//2.png';
 	const balloonUp3 = createImage(onItemLoaded);

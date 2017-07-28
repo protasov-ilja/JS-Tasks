@@ -9,6 +9,14 @@ body {
     background: url("../img/background/Bomberman_fon.png") center;
 }
 
+.selected {
+    color: #fff601;
+}
+
+.unselected {
+    color: #ffffff;
+}
+
 .end_game {
     opacity: 0.3;
     transition-duration: 0.5s;
@@ -89,14 +97,9 @@ h2 {
     margin-right: -9px;
 }
 
-#levelOne {
-    color: #fff601;
-}
-
 .level_button {
     cursor: pointer;
     border-radius: 5px;
-    color: #ffffff;
     background-color: #43d6fa;
     display: block;
     float: left;

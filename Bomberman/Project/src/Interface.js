@@ -10,8 +10,6 @@ const musicButton = document.getElementById('musicButton');
 const timer = document.getElementById('timeForm');
 const bombForm = document.getElementById('bombNumber');
 const liveForm = document.getElementById('liveNumber');
-const levelOn = '#fff601';
-const levelOff = '#ffffff';
 const levelButtons = [chooseLevel1, chooseLevel2, chooseLevel3];
 const levelFields = [LEVEL_1, LEVEL_2, LEVEL_3];
 
@@ -41,23 +39,32 @@ function startNewGame() {
 
 for (let selButton = 0; selButton < levelButtons.length; ++selButton) {
 	levelButtons[selButton].onclick = () => {
-		changeLevel(selButton);
+		selectLevel(selButton);
 		initGame();
 		closeOptionsMenu();
 	};
 }
 
-function changeLevel(currButton) {
-	field = levelFields[currButton].slice(0);
-	levelButtons[currButton].style.color = levelOn;
+function selectLevel(indexButton) {
+	field = levelFields[indexButton].slice(0);
 
-	for (let button = 0; button < levelButtons.length; ++button) {
-		if (button == currButton) {
-			levelButtons[button].style.color = levelOn;
+	for (let i = 0; i < levelButtons.length; ++i) {
+		if (i == indexButton) {
+			levelOn(levelButtons[i]);
 		} else {
-			levelButtons[button].style.color = levelOff;
+			levelOff(levelButtons[i]);
 		}
 	}
+}
+
+function levelOn(CurrLevel) {
+	CurrLevel.classList.add('selected');
+	CurrLevel.classList.remove('unselected');
+}
+
+function levelOff(CurrLevel) {
+	CurrLevel.classList.remove('selected');
+	CurrLevel.classList.add('unselected');
 }
 
 optionsButton.onclick = openOptionsMenu;

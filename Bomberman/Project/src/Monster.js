@@ -1,12 +1,18 @@
-class Player extends Creature{
-    constructor() {
-    	super();
-		this.bombCount =  START_BOMB_COUNT;
-    }
+class Monster extends Creature{
+	constructor() {
+		super();
+		super.posX = 90;
+		super.posY = 120;
+		super.live = 1;
+		super.moveSpeed = MONSTER_SPEED;
+		super.spriteSize = MONSTER_SIZE;
+		super.numberOfFrames = balloonDownDirection.length;
+		super.stepDuration = 200;
+	}
 
 	getCurrSprite() {
 		let stepAnimation = null;
-		let animation = playerSprites;
+		let animation = balloonSprites;
 
 		switch (this.direction) {
 			case DOWN:
