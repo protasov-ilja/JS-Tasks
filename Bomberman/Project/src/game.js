@@ -17,15 +17,15 @@ let ctx = null;
 let spriteBlock = null;
 let loadedResourcesCount = 0;
 let player = null;
-let monster = null;
+let monsters = [];
+let balloon1 = null;
+let balloon2 = null;
 
 window.onload = () => {
 	canvas = document.getElementById("canvas");
 	canvas.width = WIDTH;
 	canvas.height = HEIGHT;
 	ctx = canvas.getContext('2d');
-
-	player = new Player();
 
 	const moveDown1 = createImage(onItemLoaded);
 	moveDown1.src = 'img/sprites/player/player_down/1.png';
@@ -60,8 +60,6 @@ window.onload = () => {
 	playerLeftDirection.push(moveLeft1, moveLeft2, moveLeft3);
 
 	playerSprites.push(playerDownDirection, playerUpDirection, playerRightDirection, playerLeftDirection);
-
-	monster = new Monster();
 
 	const balloonDown1 = createImage(onItemLoaded);
 	balloonDown1.src = 'img/sprites/monster_balloon/monster_down/1.png';
@@ -115,14 +113,25 @@ let requestAnimationFrameId;
 
 function initGame() {
 	player = new Player();
-	monster = new Monster();
+
     liveForm.innerHTML = '0' + player.live;
     bombForm.innerHTML = '0' + player.bombCount;
+	monsters = [];
 
+	addMonster(balloon1, 90, 120);
+	addMonster(balloon2, 180, 30);
 	cancelAnimationFrame(requestAnimationFrameId);
 	useTimer();
 	animate(player);
-	animate(monster);
+	// animate(balloon1);
+	// animate(balloon2);
+}
+
+function addMonster(monster, currX, currY) {
+	monster = new Monster();
+	monster.posX = currX;
+	monster.posY = currY;
+	monsters.push(monster);
 }
 
 function animate(creature) {
@@ -132,11 +141,17 @@ function animate(creature) {
 	step();
 
 	function step() {
-		monsterMove(monster);
 		ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
 		drawField();
-		drawCreature(monster, monster.getCurrSprite() );
-		drawCreature(player, player.getCurrSprite())
+
+		for (let i = 0; i < monsters.length; ++i) {
+			monsterMove(monsters[i]);
+			drawCreature(monsters[i], monsters[i].getCurrSprite() );
+		}
+
+		drawCreature(player, player.getCurrSprite() );
+
 		requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
 	}
 }
