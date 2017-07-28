@@ -135,7 +135,8 @@ function animate(creature) {
 		monsterMove(monster);
 		ctx.clearRect(0, 0, WIDTH, HEIGHT);
 		drawField();
-		drawCreature(creature, creature.getCurrSprite() );
+		drawCreature(monster, monster.getCurrSprite() );
+		drawCreature(player, player.getCurrSprite())
 		requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
 	}
 }
