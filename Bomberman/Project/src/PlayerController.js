@@ -70,7 +70,7 @@ function moveUp(creature) {
 			creature.posY = creature.posY - step;
 			creature.direction = UP;
 		} else {
-			if (creature === Monster) {
+			if (creature instanceof Monster) {
 				changeDirection(creature);
 			}
 		}
@@ -95,7 +95,7 @@ function moveDown(creature) {
 			creature.posY = creature.posY + step;
 			creature.direction = DOWN;
 		} else {
-			if (creature === Monster) {
+			if (creature instanceof Monster) {
 				changeDirection(creature);
 			}
 		}
@@ -120,7 +120,7 @@ function moveRight(creature) {
 			creature.posX = creature.posX + step;
 			creature.direction = RIGHT;
 		} else {
-			if (creature === Monster) {
+			if (creature instanceof Monster) {
 				changeDirection(creature);
 			}
 		}
@@ -145,7 +145,7 @@ function moveLeft(creature) {
 			creature.posX = creature.posX - step;
 			creature.direction = LEFT;
 		} else {
-			if (creature === Monster) {
+			if (creature instanceof Monster) {
 				changeDirection(creature);
 			}
 		}
