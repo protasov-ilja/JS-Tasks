@@ -57,14 +57,14 @@ function selectLevel(indexButton) {
 	}
 }
 
-function levelOn(CurrLevel) {
-	CurrLevel.classList.add('selected');
-	CurrLevel.classList.remove('unselected');
+function levelOn(currLevel) {
+	currLevel.classList.add('selected');
+	currLevel.classList.remove('unselected');
 }
 
-function levelOff(CurrLevel) {
-	CurrLevel.classList.remove('selected');
-	CurrLevel.classList.add('unselected');
+function levelOff(currLevel) {
+	currLevel.classList.remove('selected');
+	currLevel.classList.add('unselected');
 }
 
 optionsButton.onclick = openOptionsMenu;
