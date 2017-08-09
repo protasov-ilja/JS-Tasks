@@ -3,6 +3,7 @@ const playerDownDirection = [];
 const playerUpDirection = [];
 const playerRightDirection = [];
 const playerLeftDirection = [];
+const playerDeath =[];
 const balloonSprites = [];
 const balloonDownDirection = [];
 const balloonUpDirection = [];
@@ -50,7 +51,9 @@ function LoadingResources() {
 	moveDown2.src = 'img/sprites/player/player_down/2.png';
 	const moveDown3 = createImage(onItemLoaded);
 	moveDown3.src = 'img/sprites/player/player_down/3.png';
-	playerDownDirection.push(moveDown1, moveDown2, moveDown3/*, four, five*/);
+	const moveDown4 = createImage(onItemLoaded);
+	moveDown4.src = 'img/sprites/player/player_down/4.png';
+	playerDownDirection.push(moveDown1, moveDown2, moveDown3, moveDown4/*, five*/);
 
 	const moveUp1 = createImage(onItemLoaded);
 	moveUp1.src = 'img/sprites/player/player_up/1.png';
@@ -58,7 +61,9 @@ function LoadingResources() {
 	moveUp2.src = 'img/sprites/player/player_up/2.png';
 	const moveUp3 = createImage(onItemLoaded);
 	moveUp3.src = 'img/sprites/player/player_up/3.png';
-	playerUpDirection.push(moveUp1, moveUp2, moveUp3);
+	const moveUp4 = createImage(onItemLoaded);
+	moveUp4.src = 'img/sprites/player/player_up/4.png';
+	playerUpDirection.push(moveUp1, moveUp2, moveUp3, moveUp4);
 
 	const moveRight1 = createImage(onItemLoaded);
 	moveRight1.src = 'img/sprites/player/player_right/1.png';
@@ -66,7 +71,9 @@ function LoadingResources() {
 	moveRight2.src = 'img/sprites/player/player_right/2.png';
 	const moveRight3 = createImage(onItemLoaded);
 	moveRight3.src = 'img/sprites/player/player_right/3.png';
-	playerRightDirection.push(moveRight1, moveRight2, moveRight3);
+	const moveRight4 = createImage(onItemLoaded);
+	moveRight4.src = 'img/sprites/player/player_right/4.png';
+	playerRightDirection.push(moveRight1, moveRight2, moveRight3, moveRight4);
 
 	const moveLeft1 = createImage(onItemLoaded);
 	moveLeft1.src = 'img/sprites/player/player_left/1.png';
@@ -74,12 +81,26 @@ function LoadingResources() {
 	moveLeft2.src = 'img/sprites/player/player_left/2.png';
 	const moveLeft3 = createImage(onItemLoaded);
 	moveLeft3.src = 'img/sprites/player/player_left/3.png';
-	playerLeftDirection.push(moveLeft1, moveLeft2, moveLeft3);
+	const moveLeft4 = createImage(onItemLoaded);
+	moveLeft4.src = 'img/sprites/player/player_left/4.png';
+	playerLeftDirection.push(moveLeft1, moveLeft2, moveLeft3, moveLeft4);
 
 	playerSprites[DOWN] = playerDownDirection;
 	playerSprites[UP] = playerUpDirection;
 	playerSprites[RIGHT] = playerRightDirection;
 	playerSprites[LEFT] = playerLeftDirection;
+
+	const playerDeath1 = createImage(onItemLoaded);
+	playerDeath1.src = 'img/sprites/player/death/1.png';
+	const playerDeath2 = createImage(onItemLoaded);
+	playerDeath2.src = 'img/sprites/player/death/2.png';
+	const playerDeath3 = createImage(onItemLoaded);
+	playerDeath3.src = 'img/sprites/player/death/3.png';
+	const playerDeath4 = createImage(onItemLoaded);
+	playerDeath4.src = 'img/sprites/player/death/4.png';
+	const playerDeath5 = createImage(onItemLoaded);
+	playerDeath5.src = 'img/sprites/player/death/5.png';
+	playerDeath.push(playerDeath1, playerDeath2, playerDeath3, playerDeath4, playerDeath5/*, five*/);
 
 	const balloonDown1 = createImage(onItemLoaded);
 	balloonDown1.src = 'img/sprites/monster_balloon/monster_down/1.png';

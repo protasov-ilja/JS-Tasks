@@ -66,30 +66,37 @@ function animate() {
 		}
 
 		function logicOfExplode(bomb) {
-			drawExplode(burstCenter[1], bomb);
+			let currPosX = Math.round(bomb.posX / CELL_SIZE);
+			let currPosY = Math.round(bomb.posY / CELL_SIZE);
+			console.log('bomb', currPosX, currPosY);
+
+			field[currPosY][currPosX].getCreateTime( Date.now() );
+			drawExplode(field[currPosY][currPosX].getSprite(CENTER) );
 
 			moveExplodeTop();
 			moveExplodeRight();
 			moveExplodeLeft();
 			moveExplodeBottom();
 
-			function drawExplode(sprite, creature) {
-				ctx.drawImage(sprite, 0, 0, creature.spriteSize, creature.spriteSize, (Math.round(creature.posX / CELL_SIZE) ), (Math.round(creature.posY / CELL_SIZE) ), creature.spriteSize, creature.spriteSize);
+			function drawExplode(sprite) {
+				ctx.drawImage(sprite, 0, 0, CELL_SIZE, CELL_SIZE, (Math.round(bomb.posX / CELL_SIZE) ), (Math.round(bomb.posY / CELL_SIZE) ), CELL_SIZE, CELL_SIZE);
 			}
 
 			function moveExplodeTop() {
 
 			}
+
 			function moveExplodeRight() {
 
 			}
+
 			function moveExplodeLeft() {
 
 			}
+
 			function moveExplodeBottom() {
 
 			}
-
 		}
 			// аналогично со стеной, для получения спрайта используем getCurrentSprite
 
@@ -120,18 +127,20 @@ function animate() {
 			if ( MathUtils.intersectsRects(playerRect, monsterRect) ) {
 				player.startTimeAnimation = Date.now();
 				player.live--;
+				player.kill = true;
 
-				if (player.live < 0) {
+				if ( (player.live < 0) && !player.kill) {
 					endOfGame = true;
-				} else {
+				} else if (!player.kill) {
 					player.posX = START_POS_PLAYER;
 					player.posY = START_POS_PLAYER;
 					liveForm.innerHTML = '0' + player.live;
 				}
 			}
-
-			drawCreature(player, player.getCurrSprite());
 		}
+
+		player.setKillTime( Date.now() );
+		drawCreature(player, player.getCurrSprite());
 
 		if (endOfGame) {
 			endTheGame();
