@@ -46,7 +46,7 @@ for (let selButton = 0; selButton < levelButtons.length; ++selButton) {
 }
 
 function selectLevel(indexButton) {
-	field = levelFields[indexButton].slice(0);
+	field = getField(levelFields[indexButton]);
 
 	for (let i = 0; i < levelButtons.length; ++i) {
 		if (i == indexButton) {
@@ -93,15 +93,17 @@ function useTimer() {
 			timer.innerHTML = currTime;
 		} else {
 			clearInterval(clearStep);
+
+			endOfGame = true;
+
 			endTheGame();
-			alert('Время вышло');
 		}
 	}
 }
 
 function endTheGame() {
-	ctx.clearRect(0, 0, WIDTH, HEIGHT);
 	ctx.beginPath();
+	ctx.font = "italic 50px Arial";
 	ctx.fillStyle = '#017709';
 	ctx.textAlign = 'center';
 	ctx.fillText('Game Over', WIDTH / 2, HEIGHT / 2);

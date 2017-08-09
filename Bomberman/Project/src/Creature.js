@@ -10,6 +10,7 @@ class Creature {
 		this.sprites = null;
 		this.startTimeAnimation = null;
 		this.stepDuration = 100;
+		this.kill = false;
 	}
 
 	getCurrStep() {
@@ -38,6 +39,7 @@ class Creature {
 			stepAnimation = animation[RIGHT];
 			break;
 	}
+
 	let currAnimation = stepAnimation[this.getCurrStep()];
 
 	return currAnimation;

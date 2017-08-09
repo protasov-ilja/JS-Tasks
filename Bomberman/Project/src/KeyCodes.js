@@ -6,3 +6,4 @@ const ARROW_RIGHT = 39;
 const D = 68;
 const ARROW_LEFT = 37;
 const A = 65;
+const SPACE = 32;

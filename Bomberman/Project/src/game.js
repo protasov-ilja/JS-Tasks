@@ -1,38 +1,36 @@
-const FIELD_COLOR = 'green';
+const FIELD_COLOR1 = 'green';
+const FIELD_COLOR2 = '#ececb7';
 
 let endOfGame = false;
 let player = null;
 let balloon1 = null;
 let balloon2 = null;
 let requestAnimationFrameId;
+let bombs = [];
+let bombCount = 0;
 
 function initGame() {
-	player = new Player();
+	endOfGame = false;
+	player = new Player( Date.now() );
 
     liveForm.innerHTML = '0' + player.live;
     bombForm.innerHTML = '0' + player.bombCount;
+
 	monsters = [];
 
-	addMonster(balloon1, 90, 120);
-	addMonster(balloon2, 180, 30);
+	addMonster(balloon1, 90, 120, balloonSprites);
+	addMonster(balloon2, 180, 30, balloonSprites);
 	cancelAnimationFrame(requestAnimationFrameId);
 	useTimer();
-	animate(player);
-	// animate(balloon1);
-	// animate(balloon2);
+	animate();
 }
 
-function addMonster(monster, currX, currY) {
-	monster = new Monster();
-	monster.posX = currX;
-	monster.posY = currY;
+function addMonster(monster, currX, currY, sprites) {
+	monster = new Monster(currX, currY, sprites, Date.now() );
 	monsters.push(monster);
 }
 
-function animate(creature) {
-	// сохраняется при начале анимации
-	creature.startTimeAnimation = new Date().getTime(); // начальное время анимации
-
+function animate() {
 	step();
 
 	function step() {
@@ -40,12 +38,104 @@ function animate(creature) {
 
 		drawField();
 
-		for (let i = 0; i < monsters.length; ++i) {
-			monsterMove(monsters[i]);
-			drawCreature(monsters[i], monsters[i].getCurrSprite() );
+		for (let i = 0; i < bombs.length; ++i) {
+			if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < BOMB_TIMER) {
+				drawCreature(bombs[i], bombs[i].getCurrSprite());
+			} else {
+				if (!bombs[i].isExploded()) {
+					bombs[i].explode(bombs[i].getCurrTime());
+					console.log('bum');
+				}
+			}
 		}
 
-		drawCreature(player, player.getCurrSprite() );
+		for (let i = 0; i < bombs.length; ++i) {
+			if (bombs[i].isExploded()) {
+				// Рисуем взрыв
+				logicOfExplode(bombs[i]);
+				console.log('burst');
+
+				if (bombs[i].isExplodeCompleted(bombs[i].getCurrTime())) {
+					console.log('delete bomb', i, bombs.length);
+
+					bombs.splice(i, 1); // удаляем бомбу i
+					// уменьшаем индекс i на 1
+					--bombCount;
+				}
+			}
+		}
+
+		function logicOfExplode(bomb) {
+			drawExplode(burstCenter[1], bomb);
+
+			moveExplodeTop();
+			moveExplodeRight();
+			moveExplodeLeft();
+			moveExplodeBottom();
+
+			function drawExplode(sprite, creature) {
+				ctx.drawImage(sprite, 0, 0, creature.spriteSize, creature.spriteSize, (Math.round(creature.posX / CELL_SIZE) ), (Math.round(creature.posY / CELL_SIZE) ), creature.spriteSize, creature.spriteSize);
+			}
+
+			function moveExplodeTop() {
+
+			}
+			function moveExplodeRight() {
+
+			}
+			function moveExplodeLeft() {
+
+			}
+			function moveExplodeBottom() {
+
+			}
+
+		}
+			// аналогично со стеной, для получения спрайта используем getCurrentSprite
+
+		if (player.mooving) {
+			moveCreature(player);
+		}
+
+		for (let i = 0; i < monsters.length; ++i) {
+			moveCreature(monsters[i]);
+			drawCreature(monsters[i], monsters[i].getCurrSprite() );
+			killPlayer(monsters[i]);
+		}
+
+		function killPlayer(monster) {
+			const playerRect = {
+				left: player.posX,
+				top: player.posY - player.moveSpeed,
+				width: PLAYER_SIZE,
+				height: PLAYER_SIZE
+			};
+			const monsterRect = {
+				left: monster.posX,
+				top: monster.posY - monster.moveSpeed,
+				width: MONSTER_SIZE,
+				height: MONSTER_SIZE
+			};
+
+			if ( MathUtils.intersectsRects(playerRect, monsterRect) ) {
+				player.startTimeAnimation = Date.now();
+				player.live--;
+
+				if (player.live < 0) {
+					endOfGame = true;
+				} else {
+					player.posX = START_POS_PLAYER;
+					player.posY = START_POS_PLAYER;
+					liveForm.innerHTML = '0' + player.live;
+				}
+			}
+
+			drawCreature(player, player.getCurrSprite());
+		}
+
+		if (endOfGame) {
+			endTheGame();
+		}
 
 		requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
 	}
@@ -58,11 +148,11 @@ function drawCreature(creature, sprite) {
 function drawField() {
     for (let currPosY = 0; currPosY < COUNT_OF_CELLS_HEIGHT; ++currPosY) {
         for (let currPosX = 0; currPosX < COUNT_OF_CELLS_WIDTH; ++currPosX) {
-            if (field[currPosY][currPosX] === GRASS) {
+            if (field[currPosY][currPosX].type() === GRASS) {
                 drawGrass(currPosY, currPosX);
-            } else if (field[currPosY][currPosX] === CEMENT) {
+            } else if (field[currPosY][currPosX].type() === CEMENT) {
                 drawCementBlock(currPosY, currPosX);
-            } else if (field[currPosY][currPosX] === IRON) {
+            } else if (field[currPosY][currPosX].type() === IRON) {
                 drawIronBlock(currPosY, currPosX);
             }
         }
@@ -70,14 +160,14 @@ function drawField() {
 }
 
 function drawGrass(yPos, xPos) {
-    ctx.fillStyle = FIELD_COLOR;
+    ctx.fillStyle = FIELD_COLOR1;
     ctx.fillRect( (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 }
 
 function drawIronBlock(yPos, xPos) {
-    ctx.drawImage(spriteBlock, 0, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
+    ctx.drawImage(spriteBlock1, 0, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
 }
 
 function drawCementBlock(yPos, xPos) {
-    ctx.drawImage(spriteBlock, 30, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE);
+    ctx.drawImage(spriteBlock1, 30, 0, CELL_SIZE, CELL_SIZE, (xPos * CELL_SIZE), (yPos * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 }

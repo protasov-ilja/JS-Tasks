@@ -2,54 +2,140 @@ const DOWN = 0;
 const UP = 1;
 const RIGHT = 2;
 const LEFT = 3;
+const CENTER = 4;
+const LONG_LEFT = 5;
+const LONG_UP = 6;
 
 document.onkeydown = function (event) {
 	if (!endOfGame) {
+		console.log(player.posX, player.posY);
 		switch (event.keyCode) {
+			case SPACE:
+				stayBomb();
+				break;
 			case ARROW_UP:
 			case W:
 				event.preventDefault();
-				moveUp(player);
+				player.direction = UP;
+				player.mooving = true;
+
 				break;
 			case ARROW_RIGHT:
 			case D:
 				event.preventDefault();
-				moveRight(player);
+				player.direction = RIGHT;
+				player.mooving = true;
+
 				break;
 			case ARROW_DOWN:
 			case S:
 				event.preventDefault();
-				moveDown(player);
+				player.direction = DOWN;
+				player.mooving = true;
+
 				break;
 			case ARROW_LEFT:
 			case A:
 				event.preventDefault();
-				moveLeft(player);
+				player.direction = LEFT;
+				player.mooving = true;
 		}
 	}
 };
 
-function monsterMove(monster) {
+document.onkeyup = () => {
 	if (!endOfGame) {
-		switch (monster.direction) {
+		switch (event.keyCode) {
+			case ARROW_UP:
+			case W:
+				if (player.direction == UP)
+				{
+					player.mooving = false;
+				}
+
+				break;
+			case ARROW_RIGHT:
+			case D:
+				if (player.direction == RIGHT)
+				{
+					player.mooving = false;
+				}
+
+				break;
+			case ARROW_DOWN:
+			case S:
+				if (player.direction == DOWN)
+				{
+					player.mooving = false;
+				}
+
+				break;
+			case ARROW_LEFT:
+			case A:
+				if (player.direction == LEFT)
+				{
+					player.mooving = false;
+				}
+		}
+	}
+};
+
+function intersectCreatureAndBomb(creature) {
+	let colapse = false;
+
+	for (let i = 0; i < bombs.length; ++i) {
+		let bomb = bombs[i];
+
+		let creatureRect = {
+			left: creature.posX,
+			top: creature.posY - creature.moveSpeed,
+			width: creature.spriteSize,
+			height: creature.spriteSize
+		};
+
+		let bombRect = {
+			left: bomb.posX,
+			top: bomb.posY,
+			width: bomb.spriteSize,
+			height: bomb.spriteSize
+		};
+
+		if ( MathUtils.intersectsRects(creatureRect, bombRect) ) {
+			colapse = true;
+		}
+	}
+
+	return colapse;
+}
+
+function moveCreature(creature) {
+	if (!endOfGame) {
+		switch (creature.direction) {
 			case UP:
-				moveUp(monster);
+				moveUp(creature);
 				break;
 			case RIGHT:
-				moveRight(monster);
+				moveRight(creature);
 				break;
 			case DOWN:
-				moveDown(monster);
+				moveDown(creature);
 				break;
 			case LEFT:
-				moveLeft(monster);
+				moveLeft(creature);
 		}
+	}
+}
+
+function stayBomb() {
+	if (bombCount < START_BOMB_COUNT) {
+
+		bombCount++;
+		bombs.push( new Bomb( Date.now(), player.posX, player.posY ) );
 	}
 }
 
 function changeDirection(monster) {
 	monster.direction = Math.floor(Math.random() * 4);
-	console.log(monster.direction);
 }
 
 function moveUp(creature) {
@@ -57,7 +143,7 @@ function moveUp(creature) {
 	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosY - 1;
 
-	if (field[nextPos][currPosX] === GRASS) {
+	if (field[nextPos][currPosX].type() === GRASS) {
 		creature.posY = creature.posY - creature.moveSpeed;
 		creature.direction = UP;
 	} else {
@@ -82,7 +168,7 @@ function moveDown(creature) {
 	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosY + 1;
 
-	if (field[nextPos][currPosX] === GRASS) {
+	if (field[nextPos][currPosX].type() === GRASS) {
 		creature.posY = creature.posY + creature.moveSpeed;
 		creature.direction = DOWN;
 	} else {
@@ -107,7 +193,7 @@ function moveRight(creature) {
 	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosX + 1;
 
-	if (field[currPosY][nextPos] === GRASS) {
+	if (field[currPosY][nextPos].type() === GRASS) {
 		creature.posX = creature.posX + creature.moveSpeed;
 		creature.direction = RIGHT;
 	} else {
@@ -132,7 +218,7 @@ function moveLeft(creature) {
 	let currPosY = Math.round(creature.posY / CELL_SIZE);
 	let nextPos = currPosX - 1;
 
-	if (field[currPosY][nextPos] === GRASS) {
+	if (field[currPosY][nextPos].type() === GRASS) {
 		creature.posX = creature.posX - creature.moveSpeed;
 		creature.direction = LEFT;
 	} else {
