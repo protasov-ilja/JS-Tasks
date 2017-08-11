@@ -243,19 +243,16 @@ function getField(level) {
 
 		for (let j = 0; j < fieldJson[i].length; ++j)
 		{
-			if (fieldJson[i][j] == GRASS)
-			{
-				currLine.push(new Grass() );
-			}
-
-			if (fieldJson[i][j] == IRON)
-			{
-				currLine.push(new IronWall() );
-			}
-
-			if (fieldJson[i][j] == CEMENT)
-			{
-				currLine.push(new CementWall() );
+			switch(fieldJson[i][j]) {
+				case GRASS:
+					currLine.push( new Grass() );
+					break;
+				case IRON:
+					currLine.push( new IronWall() );
+					break;
+				case CEMENT:
+					currLine.push( new CementWall() );
+					break;
 			}
 		}
 

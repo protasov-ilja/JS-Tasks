@@ -40,22 +40,22 @@ function animate() {
 
 		for (let i = 0; i < bombs.length; ++i) {
 			if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < BOMB_TIMER) {
-				drawCreature(bombs[i], bombs[i].getCurrSprite());
+				drawCreature(bombs[i], bombs[i].getCurrSprite() );
 			} else {
 				if (!bombs[i].isExploded()) {
-					bombs[i].explode(bombs[i].getCurrTime());
+					bombs[i].explode( bombs[i].getCurrTime() );
 					console.log('bum');
 				}
 			}
 		}
 
 		for (let i = 0; i < bombs.length; ++i) {
-			if (bombs[i].isExploded()) {
+			if ( bombs[i].isExploded() ) {
 				// Рисуем взрыв
 				logicOfExplode(bombs[i]);
 				console.log('burst');
 
-				if (bombs[i].isExplodeCompleted(bombs[i].getCurrTime())) {
+				if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) ) {
 					console.log('delete bomb', i, bombs.length);
 
 					bombs.splice(i, 1); // удаляем бомбу i
@@ -68,10 +68,10 @@ function animate() {
 		function logicOfExplode(bomb) {
 			let currPosX = Math.round(bomb.posX / CELL_SIZE);
 			let currPosY = Math.round(bomb.posY / CELL_SIZE);
-			console.log('bomb', currPosX, currPosY);
 
 			field[currPosY][currPosX].getCreateTime( Date.now() );
-			drawExplode(field[currPosY][currPosX].getSprite(CENTER) );
+
+			drawExplode( field[currPosY][currPosX].getSprite(CENTER) );
 
 			moveExplodeTop();
 			moveExplodeRight();
@@ -110,40 +110,10 @@ function animate() {
 			killPlayer(monsters[i]);
 		}
 
-		function killPlayer(monster) {
-			const playerRect = {
-				left: player.posX,
-				top: player.posY - player.moveSpeed,
-				width: PLAYER_SIZE,
-				height: PLAYER_SIZE
-			};
-			const monsterRect = {
-				left: monster.posX,
-				top: monster.posY - monster.moveSpeed,
-				width: MONSTER_SIZE,
-				height: MONSTER_SIZE
-			};
-
-			if ( MathUtils.intersectsRects(playerRect, monsterRect) ) {
-				player.startTimeAnimation = Date.now();
-				player.live--;
-				player.kill = true;
-
-				if ( (player.live < 0) && !player.kill) {
-					endOfGame = true;
-				} else if (!player.kill) {
-					player.posX = START_POS_PLAYER;
-					player.posY = START_POS_PLAYER;
-					liveForm.innerHTML = '0' + player.live;
-				}
-			}
-		}
-
-		player.setKillTime( Date.now() );
-		drawCreature(player, player.getCurrSprite());
-
 		if (endOfGame) {
 			endTheGame();
+		} else {
+			drawCreature(player, player.getCurrSprite() );
 		}
 
 		requestAnimationFrameId = requestAnimationFrame(step); // вызов шага

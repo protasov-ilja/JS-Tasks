@@ -3,9 +3,9 @@ const EXPLODING_TIME = 2000;
 const BOMB_SIZE = 20;
 
 class Bomb {
-	constructor(createTime, _posX, _posY) {
-		this.posX = _posX;
-		this.posY = _posY;
+	constructor(createTime, x, y) {
+		this.posX = x;
+		this.posY = y;
 		this.spriteSize = BOMB_SIZE;
 		this._createTime = createTime;
 		this._exploded = false;
@@ -35,7 +35,7 @@ class Bomb {
 	}
 
 	getCurrStep() {
-		let currTime = ( new Date().getTime() ) - this._createTime;
+		let currTime = ( Date.now() ) - this._createTime;
 		let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
 		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames));
 
@@ -43,12 +43,13 @@ class Bomb {
 	}
 
 	getCurrTime() {
-		return new Date().getTime();
+		return Date.now();
 	}
 
 	getCurrSprite() {
 		let stepAnimation = this.sprites;
-		let currAnimation = stepAnimation[ this.getCurrStep() ];
+		this.numberOfFrames = stepAnimation.length;
+		let currAnimation = stepAnimation[this.getCurrStep()];
 
 		return currAnimation;
 	}

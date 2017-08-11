@@ -13,7 +13,7 @@ class Grass extends FieldCell {
 	}
 
 	getCurrStep() {
-		let currTime = ( new Date().getTime() ) - this._createTime;
+		let currTime = ( Date.now() ) - this._createTime;
 		let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
 		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames) );
 
@@ -23,7 +23,8 @@ class Grass extends FieldCell {
 	getSprite(type) {
 		let animation = this.sprites;
 		let stepAnimation = animation[type];
-		let currAnimation = stepAnimation[ this.getCurrStep() ];
+		this.numberOfFrames = stepAnimation.length;
+		let currAnimation = stepAnimation[this.getCurrStep()];
 
 		return currAnimation;
 	}

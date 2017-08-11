@@ -1,14 +1,14 @@
 class Monster extends Creature{
-	constructor(_posX, _posY, _sprites, _startTimeAnimation) {
+	constructor(x, y, monsterSprites, time) {
 		super();
-		super.posX = _posX;
-		super.posY = _posY;
+		super.posX = x;
+		super.posY = y;
 		super.live = 1;
-		super.startTimeAnimation = _startTimeAnimation;
+		super.startTimeAnimation = time;
 		super.moveSpeed = MONSTER_SPEED;
 		super.spriteSize = MONSTER_SIZE;
-		super.sprites = _sprites;
-		super.numberOfFrames = balloonDownDirection.length;
+		super.sprites = monsterSprites;
+		super.numberOfFrames = null;
 		super.stepDuration = 200;
 	}
 }
