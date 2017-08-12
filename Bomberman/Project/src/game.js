@@ -53,7 +53,6 @@ function animate() {
 			if ( bombs[i].isExploded() ) {
 				// Рисуем взрыв
 				logicOfExplode(bombs[i]);
-				console.log('burst');
 
 				if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) ) {
 					console.log('delete bomb', i, bombs.length);
@@ -62,40 +61,6 @@ function animate() {
 					// уменьшаем индекс i на 1
 					--bombCount;
 				}
-			}
-		}
-
-		function logicOfExplode(bomb) {
-			let currPosX = Math.round(bomb.posX / CELL_SIZE);
-			let currPosY = Math.round(bomb.posY / CELL_SIZE);
-
-			field[currPosY][currPosX].getCreateTime( Date.now() );
-
-			drawExplode( field[currPosY][currPosX].getSprite(CENTER) );
-
-			moveExplodeTop();
-			moveExplodeRight();
-			moveExplodeLeft();
-			moveExplodeBottom();
-
-			function drawExplode(sprite) {
-				ctx.drawImage(sprite, 0, 0, CELL_SIZE, CELL_SIZE, (Math.round(bomb.posX / CELL_SIZE) ), (Math.round(bomb.posY / CELL_SIZE) ), CELL_SIZE, CELL_SIZE);
-			}
-
-			function moveExplodeTop() {
-
-			}
-
-			function moveExplodeRight() {
-
-			}
-
-			function moveExplodeLeft() {
-
-			}
-
-			function moveExplodeBottom() {
-
 			}
 		}
 			// аналогично со стеной, для получения спрайта используем getCurrentSprite

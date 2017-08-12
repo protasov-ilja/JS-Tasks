@@ -1,5 +1,5 @@
-const BOMB_TIMER = 5000;
-const EXPLODING_TIME = 2000;
+const BOMB_TIMER = 4000;
+const EXPLODING_TIME = 200 * 4;
 const BOMB_SIZE = 20;
 
 class Bomb {
@@ -14,11 +14,15 @@ class Bomb {
 		this.sprites = bombMove;
 		this.stepDuration = 200;
 		this.numberOfFrames = bombMove.length;
-		this.explodeLenght = 3;
+		this.explodeLenght = 2;
 	}
 
 	getCreateTime() {
 		return this._createTime;
+	}
+
+	getExplodedTime() {
+		return this._startExplodeTime;
 	}
 
 	explode(time) {

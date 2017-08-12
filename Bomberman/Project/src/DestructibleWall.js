@@ -1,7 +1,8 @@
 class CementWall extends FieldCell {
-	constructor() {
+	constructor(posY, posX) {
 		super();
-
+		this._posX = posX * CELL_SIZE;
+		this._posY = posY * CELL_SIZE;
 		this._exploded = false;
 		this._startExplodeTime = null;
 	}

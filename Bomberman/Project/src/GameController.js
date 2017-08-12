@@ -5,13 +5,15 @@ const LEFT = 3;
 const CENTER = 4;
 const LONG_LEFT = 5;
 const LONG_UP = 6;
+const WALL = 7;
 
 document.onkeydown = function (event) {
 	if (!endOfGame && !player.kill) {
-		console.log(player.posX, player.posY);
+		//console.log(player.posX, player.posY);
 		switch (event.keyCode) {
 			case SPACE:
 				stayBomb();
+
 				break;
 			case ARROW_UP:
 			case W:
@@ -135,14 +137,21 @@ function intersectCreatureAndBomb(creature) {
 			height: creature.spriteSize
 		};
 
-		let bombRect = {
+		let bombRectVertical = {
 			left: bomb.posX,
-			top: bomb.posY,
-			width: bomb.spriteSize,
-			height: bomb.spriteSize
+			top: bomb.posY + (bomb.explodeLenght * CELL_SIZE),
+			width: CELL_SIZE,
+			height: (1 + (bomb.explodeLenght * 2) ) * CELL_SIZE
 		};
 
-		if ( MathUtils.intersectsRects(creatureRect, bombRect) ) {
+		let bombRectGorisontal = {
+			left: bomb.posX - bomb.explodeLenght,
+			top: bomb.posY,
+			width: ( (bomb.explodeLenght * 2) + 1) * CELL_SIZE,
+			height: CELL_SIZE
+		};
+
+		if ( MathUtils.intersectsRects(creatureRect, bombRectVertical) && MathUtils.intersectsRects(creatureRect, bombRectGorisontal) ) {
 			colapse = true;
 		}
 	}
@@ -170,9 +179,89 @@ function moveCreature(creature) {
 
 function stayBomb() {
 	if (bombCount < START_BOMB_COUNT) {
-
 		bombCount++;
 		bombs.push( new Bomb( Date.now(), player.posX, player.posY ) );
+	}
+}
+
+function logicOfExplode(bomb) {
+	let currPosX = Math.round(bomb.posX / CELL_SIZE);
+	let currPosY = Math.round(bomb.posY / CELL_SIZE);
+
+	field[currPosY][currPosX].getCreateTime( bomb.getExplodedTime() );
+
+	drawExplode(field[currPosY][currPosX].getSprite(CENTER), field[currPosY][currPosX]);
+	rightExplode(currPosY ,currPosX);
+	leftExplode(currPosY ,currPosX);
+	topExplode(currPosY ,currPosX);
+	bottomExplode(currPosY ,currPosX);
+
+	function rightExplode(PosY, PosX) {
+		for (let i = PosX + 1; i < PosX + bomb.explodeLenght; ++i) {
+			if (i < WIDTH) {
+				if (field[PosY][i].type() === GRASS) {
+					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][i].getSprite(RIGHT), field[PosY][i]);
+				} else if (field[PosY][i].type() === CEMENT){
+					field[PosY][i] = new Grass(PosY, i);
+					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][i].getSprite(WALL), field[PosY][i]);
+					break;
+				} else {break;}
+			}
+		}
+	}
+
+	function leftExplode(PosY, PosX) {
+		for (let i = PosX - 1; i > PosX - bomb.explodeLenght; --i) {
+			if (i > 0) {
+				if (field[PosY][i].type() === GRASS) {
+					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][i].getSprite(LEFT), field[PosY][i]);
+				} else if (field[PosY][i].type() === CEMENT){
+					field[PosY][i] = new Grass(PosY, i);
+					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][i].getSprite(WALL), field[PosY][i]);
+					break;
+				} else {break;}
+			}
+		}
+	}
+
+	function topExplode(PosY, PosX) {
+		for (let i = PosY - 1; i > PosY - bomb.explodeLenght; --i) {
+			if (i > 0) {
+				if (field[i][PosX].type() === GRASS) {
+					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[i][PosX].getSprite(UP), field[i][PosX]);
+				} else if (field[i][PosX].type() === CEMENT){
+					field[i][PosX] = new Grass(i, PosX);
+					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[i][PosX].getSprite(WALL), field[i][PosX]);
+					break;
+				} else {break;}
+			}
+		}
+	}
+
+	function bottomExplode(PosY, PosX) {
+		for (let i = PosY + 1; i < PosY + bomb.explodeLenght; ++i) {
+			if (i < HEIGHT) {
+				if (field[i][PosX].type() === GRASS) {
+					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[i][PosX].getSprite(DOWN), field[i][PosX]);
+				} else if (field[i][PosX].type() === CEMENT){
+					field[i][PosX] = new Grass(i, PosX);
+					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[i][PosX].getSprite(WALL), field[i][PosX]);
+					break;
+				} else {break;}
+			}
+		}
+	}
+
+	function drawExplode(sprite, object) {
+		ctx.drawImage(sprite, 0, 0, CELL_SIZE, CELL_SIZE, object._posX, object._posY, CELL_SIZE, CELL_SIZE);
 	}
 }
 

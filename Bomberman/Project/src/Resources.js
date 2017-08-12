@@ -18,6 +18,7 @@ const burstLeft = [];
 const burstRight = [];
 const burstLongUp = [];
 const burstLongLeft = [];
+const burstWall = [];
 
 let canvas = null;
 let ctx = null;
@@ -32,7 +33,7 @@ window.onload = () => {
 	canvas.height = HEIGHT;
 	ctx = canvas.getContext('2d');
 
-	LoadingResources();
+	loadingResources();
 };
 
 function onItemLoaded() {
@@ -44,7 +45,7 @@ function onItemLoaded() {
 	}
 }
 
-function LoadingResources() {
+function loadingResources() {
 	const moveDown1 = createImage(onItemLoaded);
 	moveDown1.src = 'img/sprites/player/player_down/1.png';
 	const moveDown2 = createImage(onItemLoaded);
@@ -217,13 +218,28 @@ function LoadingResources() {
 	burstLongLeft4.src = 'img/sprites/burst/long_left/4.png';
 	burstLongLeft.push(burstLongLeft1, burstLongLeft2, burstLongLeft3, burstLongLeft4);
 
+	const burstWall1 = createImage(onItemLoaded);
+	burstWall1.src = 'img/sprites/burst/wall/1.png';
+	const burstWall2 = createImage(onItemLoaded);
+	burstWall2.src = 'img/sprites/burst/wall/2.png';
+	const burstWall3 = createImage(onItemLoaded);
+	burstWall3.src = 'img/sprites/burst/wall/3.png';
+	const burstWall4 = createImage(onItemLoaded);
+	burstWall4.src = 'img/sprites/burst/wall/4.png';
+	const burstWall5 = createImage(onItemLoaded);
+	burstWall3.src = 'img/sprites/burst/wall/5.png';
+	const burstWall6 = createImage(onItemLoaded);
+	burstWall4.src = 'img/sprites/burst/wall/6.png';
+	burstWall.push(burstWall1, burstWall2, burstWall3, burstWall4, burstWall5, burstWall6);
+
 	burst[DOWN] = burstDown;
 	burst[UP] = burstUp;
 	burst[RIGHT] = burstRight;
 	burst[LEFT] = burstLeft;
-	burst[CENTER] = burstDown;
+	burst[CENTER] = burstCenter;
 	burst[LONG_UP] = burstUp;
 	burst[LONG_LEFT] = burstRight;
+	burst[WALL] = burstWall;
 
 	spriteBlock1 = createImage(onItemLoaded);
 	spriteBlock1.src = 'img/sprites/blocks/sprite_block1.png';
@@ -245,13 +261,13 @@ function getField(level) {
 		{
 			switch(fieldJson[i][j]) {
 				case GRASS:
-					currLine.push( new Grass() );
+					currLine.push( new Grass(i, j) );
 					break;
 				case IRON:
 					currLine.push( new IronWall() );
 					break;
 				case CEMENT:
-					currLine.push( new CementWall() );
+					currLine.push( new CementWall(i, j) );
 					break;
 			}
 		}

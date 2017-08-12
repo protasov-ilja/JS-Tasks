@@ -81,6 +81,7 @@ function closeOptionsMenu() {
 
 function useTimer() {
 	const startTime = 300;
+	timer.innerHTML = startTime;
 
 	let currTime = startTime;
 
@@ -88,23 +89,25 @@ function useTimer() {
 	clearStep = setInterval(step, 1000);
 
 	function step() {
-		--currTime;
-		if (currTime >= 0) {
-			timer.innerHTML = currTime;
-		} else {
-			clearInterval(clearStep);
+		if (!endOfGame) {
+			--currTime;
+			if (currTime >= 0) {
+				timer.innerHTML = currTime;
+			} else {
+				clearInterval(clearStep);
 
-			endOfGame = true;
+				endOfGame = true;
 
-			endTheGame();
+				endTheGame();
+			}
 		}
 	}
 }
 
 function endTheGame() {
 	ctx.beginPath();
-	ctx.font = "italic 50px Arial";
-	ctx.fillStyle = '#017709';
+	ctx.font = "bold 50pt Arial";
+	ctx.fillStyle = '#ffbe26';
 	ctx.textAlign = 'center';
 	ctx.fillText('Game Over', WIDTH / 2, HEIGHT / 2);
 	ctx.fill();

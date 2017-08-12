@@ -12,4 +12,4 @@ const START_POS_PLAYER = 30;
 const START_LIVE = 2;
 const START_BOMB_COUNT = 3;
 
-let field = getField(LEVEL_2);
+let field = getField(LEVEL_1);
