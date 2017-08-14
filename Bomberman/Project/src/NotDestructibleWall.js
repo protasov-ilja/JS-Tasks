@@ -1,4 +1,4 @@
-class IronWall extends FieldCell {
+class IronWall {
 	type() {
 		return IRON;
 	}

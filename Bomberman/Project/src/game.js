@@ -77,9 +77,12 @@ function animate() {
 
 		if (endOfGame) {
 			endTheGame();
+		} else if (monsters.length == 0) {
+			winTheGame();
 		} else {
 			drawCreature(player, player.getCurrSprite() );
 		}
+
 
 		requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
 	}

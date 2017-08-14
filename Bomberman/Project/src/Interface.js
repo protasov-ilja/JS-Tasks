@@ -113,3 +113,13 @@ function endTheGame() {
 	ctx.fill();
 	ctx.closePath();
 }
+
+function winTheGame() {
+	ctx.beginPath();
+	ctx.font = "bold 50pt Arial";
+	ctx.fillStyle = '#ff0021';
+	ctx.textAlign = 'center';
+	ctx.fillText('You WIN', WIDTH / 2, HEIGHT / 2);
+	ctx.fill();
+	ctx.closePath();
+}
