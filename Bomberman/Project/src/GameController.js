@@ -124,11 +124,68 @@ function killPlayer(monster) {
 	}
 }
 
-function intersectCreatureAndBomb(creature) {
-	let colapse = false;
+function IntersectCreatures(object) {
+	for (let i = 0; i < monsters.length; ++i) {
+		if ( intersect(object, monsters[i]) ) {
+			if ( killMonster(monsters[i]) ) {
+				monsters.splice(i, 1);
+			}
+		}
+	}
 
-	for (let i = 0; i < bombs.length; ++i) {
-		let bomb = bombs[i];
+	if ( intersect(object, player) ) {
+		burstPlayer();
+	}
+
+	if (player.live < 0 && !player.kill) {
+		endOfGame = true;
+	}
+	else if (player.killAnimationComplete)
+	{
+		player.killAnimationComplete = false;
+		player.killAnimationPlaying = false;
+		player.kill = false;
+
+		if (player.live >= 0) {
+			liveForm.innerHTML = '0' + player.live;
+			player.startTimeAnimation = Date.now();
+			player.posX = START_POS_PLAYER;
+			player.posY = START_POS_PLAYER;
+		}
+	}
+}
+
+function killMonster(monster) {
+	if (!monster.killAnimationPlaying)
+	{
+		monster.setKillTime( Date.now() );
+		monster.killAnimationPlaying = true;
+		monster.kill = true;
+	}
+
+	if (monster.killAnimationComplete)
+	{
+		monster.killAnimationComplete = false;
+		monster.killAnimationPlaying = false;
+		monster.kill = false;
+
+		return true;
+	}
+
+}
+
+function burstPlayer() {
+	if (!player.killAnimationPlaying)
+	{
+		player.setKillTime( Date.now() );
+		player.killAnimationPlaying = true;
+		player.kill = true;
+		player.live--;
+	}
+}
+
+function intersect(object, creature) {
+	let collision = false;
 
 		let creatureRect = {
 			left: creature.posX,
@@ -137,26 +194,18 @@ function intersectCreatureAndBomb(creature) {
 			height: creature.spriteSize
 		};
 
-		let bombRectVertical = {
-			left: bomb.posX,
-			top: bomb.posY + (bomb.explodeLenght * CELL_SIZE),
+		let objectRect = {
+			left: object._posX,
+			top: object._posY,
 			width: CELL_SIZE,
-			height: (1 + (bomb.explodeLenght * 2) ) * CELL_SIZE
-		};
-
-		let bombRectGorisontal = {
-			left: bomb.posX - bomb.explodeLenght,
-			top: bomb.posY,
-			width: ( (bomb.explodeLenght * 2) + 1) * CELL_SIZE,
 			height: CELL_SIZE
 		};
 
-		if ( MathUtils.intersectsRects(creatureRect, bombRectVertical) && MathUtils.intersectsRects(creatureRect, bombRectGorisontal) ) {
-			colapse = true;
+		if ( MathUtils.intersectsRects(objectRect, creatureRect) ) {
+			collision = true;
 		}
-	}
 
-	return colapse;
+	return collision;
 }
 
 function moveCreature(creature) {
@@ -197,15 +246,17 @@ function logicOfExplode(bomb) {
 	bottomExplode(currPosY ,currPosX);
 
 	function rightExplode(PosY, PosX) {
-		for (let i = PosX + 1; i < PosX + bomb.explodeLenght; ++i) {
-			if (i < WIDTH) {
-				if (field[PosY][i].type() === GRASS) {
-					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
-					drawExplode(field[PosY][i].getSprite(RIGHT), field[PosY][i]);
-				} else if (field[PosY][i].type() === CEMENT){
-					field[PosY][i] = new Grass(PosY, i);
-					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
-					drawExplode(field[PosY][i].getSprite(WALL), field[PosY][i]);
+		for (let j = PosX + 1; j < PosX + bomb.explodeLenght; ++j) {
+			if (j < WIDTH) {
+				if ( (field[PosY][j].type() === GRASS) && !(field[PosY][j].wallAnimation) ) {
+					field[PosY][j].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][j].getSprite(RIGHT), field[PosY][j]);
+					IntersectCreatures(field[PosY][j]);
+				} else if ( (field[PosY][j].type() === CEMENT) || (field[PosY][j].wallAnimation) ) {
+					field[PosY][j] = new Grass(PosY, j);
+					field[PosY][j].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][j].getSprite(WALL), field[PosY][j]);
+					field[PosY][j].wallAnimation = true;
 					break;
 				} else {break;}
 			}
@@ -213,31 +264,17 @@ function logicOfExplode(bomb) {
 	}
 
 	function leftExplode(PosY, PosX) {
-		for (let i = PosX - 1; i > PosX - bomb.explodeLenght; --i) {
-			if (i > 0) {
-				if (field[PosY][i].type() === GRASS) {
-					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
-					drawExplode(field[PosY][i].getSprite(LEFT), field[PosY][i]);
-				} else if (field[PosY][i].type() === CEMENT){
-					field[PosY][i] = new Grass(PosY, i);
-					field[PosY][i].getCreateTime( bomb.getExplodedTime() );
-					drawExplode(field[PosY][i].getSprite(WALL), field[PosY][i]);
-					break;
-				} else {break;}
-			}
-		}
-	}
-
-	function topExplode(PosY, PosX) {
-		for (let i = PosY - 1; i > PosY - bomb.explodeLenght; --i) {
-			if (i > 0) {
-				if (field[i][PosX].type() === GRASS) {
-					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
-					drawExplode(field[i][PosX].getSprite(UP), field[i][PosX]);
-				} else if (field[i][PosX].type() === CEMENT){
-					field[i][PosX] = new Grass(i, PosX);
-					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
-					drawExplode(field[i][PosX].getSprite(WALL), field[i][PosX]);
+		for (let j = PosX - 1; j > PosX - bomb.explodeLenght; --j) {
+			if (j > 0) {
+				if ( (field[PosY][j].type() === GRASS) && !(field[PosY][j].wallAnimation) ) {
+					field[PosY][j].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][j].getSprite(LEFT), field[PosY][j]);
+					IntersectCreatures(field[PosY][j]);
+				} else if ( (field[PosY][j].type() === CEMENT) || (field[PosY][j].wallAnimation) ) {
+					field[PosY][j] = new Grass(PosY, j);
+					field[PosY][j].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[PosY][j].getSprite(WALL), field[PosY][j]);
+					field[PosY][j].wallAnimation = true;
 					break;
 				} else {break;}
 			}
@@ -247,13 +284,33 @@ function logicOfExplode(bomb) {
 	function bottomExplode(PosY, PosX) {
 		for (let i = PosY + 1; i < PosY + bomb.explodeLenght; ++i) {
 			if (i < HEIGHT) {
-				if (field[i][PosX].type() === GRASS) {
+				if ( (field[i][PosX].type() === GRASS) && !(field[i][PosX].wallAnimation) ) {
 					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
 					drawExplode(field[i][PosX].getSprite(DOWN), field[i][PosX]);
-				} else if (field[i][PosX].type() === CEMENT){
+					IntersectCreatures(field[i][PosX]);
+				} else if ( (field[i][PosX].type() === CEMENT) || (field[i][PosX].wallAnimation) ) {
 					field[i][PosX] = new Grass(i, PosX);
 					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
 					drawExplode(field[i][PosX].getSprite(WALL), field[i][PosX]);
+					field[i][PosX].wallAnimation = true;
+					break;
+				} else {break;}
+			}
+		}
+	}
+
+	function topExplode(PosY, PosX) {
+		for (let i = PosY - 1; i > PosY - bomb.explodeLenght; --i) {
+			if (i > 0) {
+				if ( (field[i][PosX].type() === GRASS) && !(field[i][PosX].wallAnimation) ) {
+					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[i][PosX].getSprite(UP), field[i][PosX]);
+					IntersectCreatures(field[i][PosX]);
+				} else if ( (field[i][PosX].type() === CEMENT) || (field[i][PosX].wallAnimation) ) {
+					field[i][PosX] = new Grass(i, PosX);
+					field[i][PosX].getCreateTime( bomb.getExplodedTime() );
+					drawExplode(field[i][PosX].getSprite(WALL), field[i][PosX]);
+					field[i][PosX].wallAnimation = true;
 					break;
 				} else {break;}
 			}

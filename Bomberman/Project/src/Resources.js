@@ -9,6 +9,7 @@ const balloonDownDirection = [];
 const balloonUpDirection = [];
 const balloonRightDirection = [];
 const balloonLeftDirection = [];
+const balloonKill = [];
 const bombMove = [];
 const burst = [];
 const burstCenter = [];
@@ -134,6 +135,16 @@ function loadingResources() {
 	const balloonLeft3 = createImage(onItemLoaded);
 	balloonLeft3.src = 'img/sprites/monster_balloon/monster_left/3.png';
 	balloonLeftDirection.push(balloonLeft1, balloonLeft2, balloonLeft3);
+
+	const balloonKill1 = createImage(onItemLoaded);
+	balloonKill1.src = 'img/sprites/monster_balloon/death/1.png';
+	const balloonKill2 = createImage(onItemLoaded);
+	balloonKill2.src = 'img/sprites/monster_balloon/death/2.png';
+	const balloonKill3 = createImage(onItemLoaded);
+	balloonKill3.src = 'img/sprites/monster_balloon/death/3.png';
+	const balloonKill4 = createImage(onItemLoaded);
+	balloonKill4.src = 'img/sprites/monster_balloon/death/3.png';
+	balloonKill.push(balloonKill1, balloonKill2, balloonKill3, balloonKill4);
 
 	balloonSprites[DOWN] = balloonDownDirection;
 	balloonSprites[UP] = balloonUpDirection;

@@ -9,6 +9,7 @@ class Monster extends Creature{
 		super.spriteSize = MONSTER_SIZE;
 		super.sprites = monsterSprites;
 		super.numberOfFrames = null;
+		this.spritesKill = balloonKill;
 		super.stepDuration = 200;
 	}
 }

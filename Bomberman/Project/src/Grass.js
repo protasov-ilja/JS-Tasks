@@ -4,6 +4,7 @@ class Grass extends FieldCell {
 		this._posX = posX * CELL_SIZE;
 		this._posY = posY * CELL_SIZE;
 		this.sprites = burst;
+		this.wallAnimation = false;
 	}
 
 	type() {
@@ -19,6 +20,10 @@ class Grass extends FieldCell {
 		let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
 
 		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames) );
+
+		if ( (this.wallAnimation) && (progressAnimation >= this.numberOfFrames - 1) ) {
+			this.wallAnimation = false;
+		}
 
 		return progressAnimation;
 	}
