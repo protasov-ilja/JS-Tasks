@@ -1,5 +1,5 @@
 class Creature {
-	constructor() {
+	constructor(startTimeAnimation, sprites) {
 		this.posX = START_POS_PLAYER;
 		this.posY = START_POS_PLAYER;
 		this.live = START_LIVE;
@@ -28,7 +28,8 @@ class Creature {
 
 		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames));
 
-		if ( (this.kill) && (progressAnimation >= this.numberOfFrames - 1) ) {
+		if ( (this.kill) && (progressAnimation >= this.numberOfFrames - 1) )
+		{
 			this.killAnimationComplete = true;
 		}
 
@@ -38,10 +39,12 @@ class Creature {
 	getCurrSprite() {
 		let stepAnimation = null;
 
-		if (!this.kill) {
+		if (!this.kill)
+		{
 			let animation = this.sprites;
 
-			switch (this.direction) {
+			switch (this.direction)
+			{
 				case DOWN:
 					stepAnimation = animation[DOWN];
 					break;
@@ -55,7 +58,9 @@ class Creature {
 					stepAnimation = animation[RIGHT];
 					break;
 			}
-		} else {
+		}
+		else
+		{
 			stepAnimation = this.spritesKill;
 		}
 

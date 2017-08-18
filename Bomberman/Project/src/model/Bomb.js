@@ -1,6 +1,6 @@
 const BOMB_TIMER = 4000;
 const EXPLODING_TIME = 200 * 4;
-const BOMB_SIZE = 20;
+const BOMB_SIZE = CELL_SIZE;
 
 class Bomb {
 	constructor(createTime, x, y) {
@@ -15,6 +15,7 @@ class Bomb {
 		this.stepDuration = 200;
 		this.numberOfFrames = bombMove.length;
 		this.explodeLenght = 2;
+		this._fireBlocks = [];
 	}
 
 	getCreateTime() {
@@ -38,10 +39,10 @@ class Bomb {
 		return currTime - this._startExplodeTime > this._explodeDuration; //текущее время - время взрыва > продолжительность взрыва
 	}
 
-	getCurrStep() {
-		let currTime = ( Date.now() ) - this._createTime;
-		let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
-		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames));
+	getCurrStep(numberOfFrames) {
+		let currTime = ( Date.now() ) - (this._exploded ? this._startExplodeTime : this._createTime);
+		let progressAnimation = currTime % (this.stepDuration * numberOfFrames); // прогресс анимации
+		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * numberOfFrames) / numberOfFrames));
 
 		return progressAnimation;
 	}
@@ -52,42 +53,37 @@ class Bomb {
 
 	getCurrSprite() {
 		let stepAnimation = this.sprites;
-		this.numberOfFrames = stepAnimation.length;
-		let currAnimation = stepAnimation[this.getCurrStep()];
+		let currAnimation = stepAnimation[this.getCurrStep(stepAnimation.length)];
 
 		return currAnimation;
 	}
 
-	getFireBlocks() {
-		return [
-			{
-				type: DOWN,
-				rect: {x: 0, y: 30, width: 30, height: 30},
-			},
-			{
-				type: UP,
-				rect: {x: 0, y: -30, width: 30, height: 30},
-			},
-			{
-				type: RIGHT,
-				rect: {x: 30, y: 0, width: 30, height: 30},
-			},
-			{
-				type: LEFT,
-				rect: {x: -30, y: 0, width: 30, height: 30},
-			},
-			{
-				type: CENTER,
-				rect: {x: 0, y: 0, width: 30, height: 30},
-			},
-			{
-				type: LONG_LEFT,
-				rect: {x: 60, y: 0, width: 30, height: 30},
-			},
-			{
-				type: LONG_UP,
-				rect: {x: 0, y: 60, width: 30, height: 30},
-			},
-		]
+	addFireBlock(direction, type) {
+		const delta = this._getFireBlocksDelta(direction);
+		this._fireBlocks.push( {
+			type: type,
+			x: this.posX + delta.x,
+			y: this.posY + delta.y
+		} );
+	}
+
+	fireBlocks() {
+		return this._fireBlocks;
+	}
+
+	_getFireBlocksDelta(direction) {
+		switch (direction)
+		{
+			case CENTER:
+				return {x: 0, y: 0};
+			case DOWN:
+				return {x: 0, y: BOMB_SIZE};
+			case UP:
+				return {x: 0, y: -BOMB_SIZE};
+			case RIGHT:
+				return {x: BOMB_SIZE, y: 0};
+			case LEFT:
+				return {x: -BOMB_SIZE, y: 0};
+		}
 	}
 }

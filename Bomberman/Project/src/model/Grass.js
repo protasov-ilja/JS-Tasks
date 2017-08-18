@@ -15,27 +15,27 @@ class Grass extends FieldCell {
 		this._createTime = time;
 	}
 
-	getCurrStep() {
-		let currTime = ( Date.now() ) - this._createTime;
-		let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
-
-		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames) );
-
-		if ( (this.wallAnimation) && (progressAnimation >= this.numberOfFrames - 1) ) {
-			this.wallAnimation = false;
-		}
-
-		return progressAnimation;
-	}
-
-	getSprite(type) {
-		let animation = this.sprites;
-		let stepAnimation = animation[type];
-
-		this.numberOfFrames = stepAnimation.length;
-
-		let currAnimation = stepAnimation[this.getCurrStep()];
-
-		return currAnimation;
-	}
+	// getCurrStep() {
+	// 	let currTime = ( Date.now() ) - this._createTime;
+	// 	let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
+	//
+	// 	progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames) );
+	//
+	// 	if ( (this.wallAnimation) && (progressAnimation >= this.numberOfFrames - 1) ) {
+	// 		this.wallAnimation = false;
+	// 	}
+	//
+	// 	return progressAnimation;
+	// }
+	//
+	// getSprite(type) {
+	// 	let animation = this.sprites;
+	// 	let stepAnimation = animation[type];
+	//
+	// 	this.numberOfFrames = stepAnimation.length;
+	//
+	// 	let currAnimation = stepAnimation[this.getCurrStep()];
+	//
+	// 	return currAnimation;
+	// }
 }
