@@ -1,12 +1,3 @@
-const DOWN = 0;
-const UP = 1;
-const RIGHT = 2;
-const LEFT = 3;
-const CENTER = 4;
-const LONG_LEFT = 5;
-const LONG_UP = 6;
-const WALL = 5;
-
 field = getField(LEVEL_1);
 
 document.onkeydown = function (event) {
@@ -101,13 +92,7 @@ function killPlayer(monster) {
 	};
 
 	if ( MathUtils.intersectsRects(playerRect, monsterRect) ) {
-		if (!player.killAnimationPlaying)
-		{
-			player.setKillTime( Date.now() );
-			player.killAnimationPlaying = true;
-			player.kill = true;
-			player.live--;
-		}
+		burstPlayer();
 	}
 
 	if (player.live < 0 && !player.kill)
@@ -134,8 +119,11 @@ function IntersectCreatures(object) {
 	for (let i = 0; i < monsters.length; ++i)
 	{
 		if ( intersect(object, monsters[i]) ) {
-			if ( killMonster(monsters[i]) ) {
-				monsters.splice(i, 1);
+			if (!monsters[i].killAnimationPlaying)
+			{
+				monsters[i].setKillTime( Date.now() );
+				monsters[i].killAnimationPlaying = true;
+				monsters[i].kill = true;
 			}
 		}
 	}
@@ -144,41 +132,14 @@ function IntersectCreatures(object) {
 	{
 		burstPlayer();
 	}
-
-	if (player.live < 0 && !player.kill)
-	{
-		endOfGame = true;
-	}
-	else if (player.killAnimationComplete)
-	{
-		player.killAnimationComplete = false;
-		player.killAnimationPlaying = false;
-		player.kill = false;
-
-		if (player.live >= 0)
-		{
-			liveForm.innerHTML = '0' + player.live;
-			player.startTimeAnimation = Date.now();
-			player.posX = START_POS_PLAYER;
-			player.posY = START_POS_PLAYER;
-		}
-	}
 }
 
 function killMonster(monster) {
-	if (!monster.killAnimationPlaying)
-	{
-		monster.setKillTime( Date.now() );
-		monster.killAnimationPlaying = true;
-		monster.kill = true;
-	}
-
 	if (monster.killAnimationComplete)
 	{
 		monster.killAnimationComplete = false;
 		monster.killAnimationPlaying = false;
 		monster.kill = false;
-
 		return true;
 	}
 }
@@ -247,6 +208,7 @@ function logicOfExplode(bomb) {
 	let currPosY = Math.round(bomb.posY / CELL_SIZE);
 
 	bomb.addFireBlock(CENTER, CENTER);
+	IntersectCreatures(field[currPosY][currPosX]);
 	rightExplode(currPosY ,currPosX);
 	leftExplode(currPosY ,currPosX);
 	topExplode(currPosY ,currPosX);
@@ -265,7 +227,7 @@ function logicOfExplode(bomb) {
 				}
 				else if (field[PosY][j].type() === CEMENT)
 				{
-					field[PosY][j] = new Grass(PosY, j);
+					field[PosY][j] = new FieldCell(GRASS, PosY, j);
 					bomb.addFireBlock(RIGHT, WALL);
 					break;
 				}
@@ -291,7 +253,7 @@ function logicOfExplode(bomb) {
 					}
 					else if (field[PosY][j].type() === CEMENT)
 					{
-						field[PosY][j] = new Grass(PosY, j);
+						field[PosY][j] = new FieldCell(GRASS, PosY, j);
 						bomb.addFireBlock(LEFT, WALL);
 						break;
 					}
@@ -316,7 +278,7 @@ function logicOfExplode(bomb) {
 				}
 				else if (field[i][PosX].type() === CEMENT)
 				{
-					field[i][PosX] = new Grass(i, PosX);
+					field[i][PosX] = new FieldCell(GRASS, i, PosX);
 					bomb.addFireBlock(DOWN, WALL);
 					break;
 				}
@@ -340,7 +302,7 @@ function logicOfExplode(bomb) {
 				}
 				else if (field[i][PosX].type() === CEMENT)
 				{
-					field[i][PosX] = new Grass(i, PosX);
+					field[i][PosX] = new FieldCell(GRASS, i, PosX);
 					bomb.addFireBlock(UP, WALL);
 					break;
 				}
@@ -458,7 +420,7 @@ function moveDown(creature) {
 	let stayOnBomb = false;
 	let dy = creature.moveSpeed;
 
-	if (downRowIndex <= HEIGHT)
+	if ( (downRowIndex < HEIGHT / CELL_SIZE) && (downRowIndex >= 0) )
 	{
 		for (let currColumn = Math.max(0, j - 1); (currColumn < downRow.length) && (currColumn <= j + 1) ; ++currColumn)
 		{
@@ -542,20 +504,20 @@ function moveRight(creature) {
 	let i = Math.floor(creature.posY / CELL_SIZE);
 
 	const rightRowIndex = j + 1;
-	const rightRow = field[rightRowIndex];
+	const rightRow = field;
 
 	let wallFound = false;
 	let stayOnBomb = false;
 	let dy = creature.moveSpeed;
 
-	if (rightRowIndex <= WIDTH)
+	if ( (rightRowIndex < WIDTH / CELL_SIZE) && (rightRowIndex >= 0) )
 	{
 		for (let currColumn = Math.max(0, i - 1); (currColumn < rightRow.length) && (currColumn <= i + 1) ; ++currColumn)
 		{
-			if (rightRow[currColumn].type() != GRASS)
+			if (rightRow[currColumn][rightRowIndex].type() != GRASS)
 			{
 				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
-				const wallRect = {left: currColumn * CELL_SIZE, top: rightRowIndex * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
+				const wallRect = {left: rightRowIndex * CELL_SIZE, top: currColumn * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
 
 				if ( MathUtils.intersectsHorisontal(creatureRect, wallRect) )
 				{
@@ -633,7 +595,7 @@ function moveLeft(creature) {
 	let i = Math.floor(creature.posY / CELL_SIZE);
 
 	const leftRowIndex = j - 1;
-	const leftRow = field[i][leftRowIndex];
+	const leftRow = field;
 
 	let wallFound = false;
 	let stayOnBomb = false;
@@ -643,10 +605,10 @@ function moveLeft(creature) {
 	{
 		for (let currColumn = Math.max(0, i - 1); (currColumn < leftRow.length) && (currColumn <= i + 1) ; ++currColumn)
 		{
-			if (leftRow[currColumn].type() != GRASS)
+			if (leftRow[currColumn][leftRowIndex].type() != GRASS)
 			{
 				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
-				const wallRect = {left: currColumn * CELL_SIZE, top: leftRowIndex * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
+				const wallRect = {left: leftRowIndex * CELL_SIZE, top: currColumn * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
 
 				if ( MathUtils.intersectsHorisontal(creatureRect, wallRect) )
 				{

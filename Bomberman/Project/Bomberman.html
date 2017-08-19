@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="shortcut icon" href="img/bomber_favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="res/img/bomber_favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <title>Bomberman</title>
   </head>
@@ -60,21 +60,19 @@
           <div class="clear"></div>
         </div>
     </div>
-    <audio id="gameMusic" loop autoplay src="music/game.mp3">
-      <sourc src="music/game.mp3">
+    <audio id="gameMusic" loop autoplay src="res/music/game.mp3">
+      <source src="res/music/game.mp3">
     </audio>
     <audio id="winMusic" loop>
-      <source src="music/win.mp3">
+      <source src="res/music/win.mp3">
     </audio>
     <audio id="explodeMusic">
-      <source src="music/explode.mp3">
+      <source src="res/music/explode.mp3">
     </audio>
     <script type="text/javascript" src="src/loader/ResourcesLoader.js"></script>
     <script type="text/javascript" src="src/enum/Field.js"></script>
     <script type="text/javascript" src="src/model/FieldCell.js"></script>
-    <script type="text/javascript" src="src/model/DestructibleWall.js"></script>
-    <script type="text/javascript" src="src/model/NotDestructibleWall.js"></script>
-    <script type="text/javascript" src="src/model/Grass.js"></script>
+    <script type="text/javascript" src="src/enum/DirectionConst.js"></script>
     <script type="text/javascript" src="src/game.js"></script>
     <script type="text/javascript" src="src/config/Levels.js"></script>
     <script type="text/javascript" src="src/model/Creature.js"></script>

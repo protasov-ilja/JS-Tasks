@@ -1,5 +1,5 @@
 const BOMB_TIMER = 4000;
-const EXPLODING_TIME = 200 * 4;
+const EXPLODING_TIME = 50 * 4;
 const BOMB_SIZE = CELL_SIZE;
 
 class Bomb {
@@ -13,6 +13,7 @@ class Bomb {
 		this._explodeDuration = EXPLODING_TIME;
 		this.sprites = bombMove;
 		this.stepDuration = 200;
+		this.explodeStepDuration = EXPLODING_TIME / 4;
 		this.numberOfFrames = bombMove.length;
 		this.explodeLenght = 2;
 		this._fireBlocks = [];
@@ -20,10 +21,6 @@ class Bomb {
 
 	getCreateTime() {
 		return this._createTime;
-	}
-
-	getExplodedTime() {
-		return this._startExplodeTime;
 	}
 
 	explode(time) {
@@ -41,8 +38,8 @@ class Bomb {
 
 	getCurrStep(numberOfFrames) {
 		let currTime = ( Date.now() ) - (this._exploded ? this._startExplodeTime : this._createTime);
-		let progressAnimation = currTime % (this.stepDuration * numberOfFrames); // прогресс анимации
-		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * numberOfFrames) / numberOfFrames));
+		let progressAnimation = currTime % ( (this._exploded ? this.explodeStepDuration : this.stepDuration) * numberOfFrames); // прогресс анимации
+		progressAnimation = Math.floor(progressAnimation / ( ( (this._exploded ? this.explodeStepDuration : this.stepDuration) * numberOfFrames) / numberOfFrames) );
 
 		return progressAnimation;
 	}

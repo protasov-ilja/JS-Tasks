@@ -28,8 +28,8 @@ function initGame() {
 
 	monsters = [];
 
-	//addMonster(balloon1, 90, 120, balloonSprites);
-	//addMonster(balloon2, 180, 30, balloonSprites);
+	addMonster(balloon1, 90, 120, balloonSprites);
+	addMonster(balloon2, 180, 30, balloonSprites);
 	cancelAnimationFrame(requestAnimationFrameId);
 	useTimer();
 	animate();
@@ -101,16 +101,19 @@ function animate() {
 			moveCreature(monsters[i]);
 			drawCreature(monsters[i], monsters[i].getCurrSprite() );
 			killPlayer(monsters[i]);
+			if ( killMonster(monsters[i]) ) {
+				monsters.splice(i, 1);
+			}
 		}
 
 		if (endOfGame)
 		{
 			endTheGame();
 		}
-		//else if (monsters.length == 0)
-		//{
-			//winTheGame();
-		//}
+		else if (monsters.length == 0)
+		{
+			winTheGame();
+		}
 		else
 		{
 			drawCreature(player, player.getCurrSprite() );

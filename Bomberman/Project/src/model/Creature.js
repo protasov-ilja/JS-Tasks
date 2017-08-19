@@ -21,14 +21,14 @@ class Creature {
 		this.killTime = time;
 	}
 
-	getCurrStep() {
+	getCurrStep(numberOfFrames) {
 		let time = (!this.kill) ? this.startTimeAnimation : this.killTime;
 		let currTime = ( Date.now() ) - time;
-		let progressAnimation = currTime % (this.stepDuration * this.numberOfFrames); // прогресс анимации
+		let progressAnimation = currTime % (this.stepDuration * numberOfFrames); // прогресс анимации
 
-		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * this.numberOfFrames) / this.numberOfFrames));
+		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * numberOfFrames) / numberOfFrames) );
 
-		if ( (this.kill) && (progressAnimation >= this.numberOfFrames - 1) )
+		if ( (this.kill) && (progressAnimation >= numberOfFrames - 1) )
 		{
 			this.killAnimationComplete = true;
 		}
@@ -43,21 +43,7 @@ class Creature {
 		{
 			let animation = this.sprites;
 
-			switch (this.direction)
-			{
-				case DOWN:
-					stepAnimation = animation[DOWN];
-					break;
-				case UP:
-					stepAnimation = animation[UP];
-					break;
-				case LEFT:
-					stepAnimation = animation[LEFT];
-					break;
-				case RIGHT:
-					stepAnimation = animation[RIGHT];
-					break;
-			}
+			stepAnimation = animation[this.direction];
 		}
 		else
 		{
@@ -66,7 +52,7 @@ class Creature {
 
 		this.numberOfFrames = stepAnimation.length;
 
-		let currAnimation = stepAnimation[this.getCurrStep()];
+		let currAnimation = stepAnimation[this.getCurrStep(stepAnimation.length)];
 
 		return currAnimation;
 	}
