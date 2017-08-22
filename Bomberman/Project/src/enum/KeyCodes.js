@@ -1,9 +1,11 @@
-const ARROW_UP = 38;
-const W = 87;
-const ARROW_DOWN = 40;
-const S = 83;
-const ARROW_RIGHT = 39;
-const D = 68;
-const ARROW_LEFT = 37;
-const A = 65;
-const SPACE = 32;
+KeyCode = {
+	ARROW_UP: 38,
+	W: 87,
+	ARROW_DOWN: 40,
+	S: 83,
+	ARROW_RIGHT: 39,
+	D: 68,
+	ARROW_LEFT: 37,
+	A: 65,
+	SPACE: 32
+};

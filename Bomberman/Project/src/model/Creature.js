@@ -1,12 +1,12 @@
 class Creature {
-	constructor(startTimeAnimation, sprites) {
+	constructor(startTimeAnimation, sprites, spritesKill) {
 		this.posX = START_POS_PLAYER;
 		this.posY = START_POS_PLAYER;
 		this.live = START_LIVE;
-		this.direction = DOWN;
+		this.direction = Direction.DOWN;
 		this.moveSpeed = PLAYER_SPEED;
 		this.spriteSize = PLAYER_SIZE;
-		this.numberOfFrames = playerDownDirection.length;
+		this.numberOfFrames = null;
 		this.sprites = null;
 		this.spritesKill = playerDeath;
 		this.killTime = null;

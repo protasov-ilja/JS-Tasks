@@ -71,15 +71,15 @@ class Bomb {
 	_getFireBlocksDelta(direction) {
 		switch (direction)
 		{
-			case CENTER:
+			case Direction.CENTER:
 				return {x: 0, y: 0};
-			case DOWN:
+			case Direction.DOWN:
 				return {x: 0, y: BOMB_SIZE};
-			case UP:
+			case Direction.UP:
 				return {x: 0, y: -BOMB_SIZE};
-			case RIGHT:
+			case Direction.RIGHT:
 				return {x: BOMB_SIZE, y: 0};
-			case LEFT:
+			case Direction.LEFT:
 				return {x: -BOMB_SIZE, y: 0};
 		}
 	}

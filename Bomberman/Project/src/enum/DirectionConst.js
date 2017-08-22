@@ -1,8 +1,11 @@
-const DOWN = 0;
-const UP = 1;
-const RIGHT = 2;
-const LEFT = 3;
-const CENTER = 4;
-const LONG_LEFT = 5;
-const LONG_UP = 6;
-const WALL = 5;
+Direction = {
+	DOWN: 0,
+	UP: 1,
+	RIGHT: 2,
+	LEFT: 3,
+	CENTER: 4,
+	LONG_LEFT: 5,
+	LONG_UP: 6,
+	WALL: 5
+};
+

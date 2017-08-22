@@ -5,34 +5,34 @@ document.onkeydown = function (event) {
 	{
 		switch (event.keyCode)
 		{
-			case SPACE:
+			case KeyCode.SPACE:
 				stayBomb();
 				break;
-			case ARROW_UP:
-			case W:
+			case KeyCode.ARROW_UP:
+			case KeyCode.W:
 				event.preventDefault();
-				player.direction = UP;
+				player.direction = Direction.UP;
 				player.mooving = true;
 
 				break;
-			case ARROW_RIGHT:
-			case D:
+			case KeyCode.ARROW_RIGHT:
+			case KeyCode.D:
 				event.preventDefault();
-				player.direction = RIGHT;
+				player.direction = Direction.RIGHT;
 				player.mooving = true;
 
 				break;
-			case ARROW_DOWN:
-			case S:
+			case KeyCode.ARROW_DOWN:
+			case KeyCode.S:
 				event.preventDefault();
-				player.direction = DOWN;
+				player.direction = Direction.DOWN;
 				player.mooving = true;
 
 				break;
-			case ARROW_LEFT:
-			case A:
+			case KeyCode.ARROW_LEFT:
+			case KeyCode.A:
 				event.preventDefault();
-				player.direction = LEFT;
+				player.direction = Direction.LEFT;
 				player.mooving = true;
 		}
 	}
@@ -43,33 +43,33 @@ document.onkeyup = () => {
 	{
 		switch (event.keyCode)
 		{
-			case ARROW_UP:
-			case W:
-				if (player.direction == UP)
+			case KeyCode.ARROW_UP:
+			case KeyCode.W:
+				if (player.direction == Direction.UP)
 				{
 					player.mooving = false;
 				}
 
 				break;
-			case ARROW_RIGHT:
-			case D:
-				if (player.direction == RIGHT)
+			case KeyCode.ARROW_RIGHT:
+			case KeyCode.D:
+				if (player.direction == Direction.RIGHT)
 				{
 					player.mooving = false;
 				}
 
 				break;
-			case ARROW_DOWN:
-			case S:
-				if (player.direction == DOWN)
+			case KeyCode.ARROW_DOWN:
+			case KeyCode.S:
+				if (player.direction == Direction.DOWN)
 				{
 					player.mooving = false;
 				}
 
 				break;
-			case ARROW_LEFT:
-			case A:
-				if (player.direction == LEFT)
+			case KeyCode.ARROW_LEFT:
+			case KeyCode.A:
+				if (player.direction == Direction.LEFT)
 				{
 					player.mooving = false;
 				}
@@ -157,7 +157,7 @@ function burstPlayer() {
 function intersect(object, creature) {
 		let creatureRect = {
 			left: creature.posX,
-			top: creature.posY - creature.moveSpeed,
+			top: creature.posY,
 			width: creature.spriteSize,
 			height: creature.spriteSize
 		};
@@ -177,16 +177,16 @@ function moveCreature(creature) {
 	{
 		switch (creature.direction)
 		{
-			case UP:
+			case Direction.UP:
 				moveUp(creature);
 				break;
-			case RIGHT:
+			case Direction.RIGHT:
 				moveRight(creature);
 				break;
-			case DOWN:
+			case Direction.DOWN:
 				moveDown(creature);
 				break;
-			case LEFT:
+			case Direction.LEFT:
 				moveLeft(creature);
 		}
 	}
@@ -207,7 +207,7 @@ function logicOfExplode(bomb) {
 	let currPosX = Math.round(bomb.posX / CELL_SIZE);
 	let currPosY = Math.round(bomb.posY / CELL_SIZE);
 
-	bomb.addFireBlock(CENTER, CENTER);
+	bomb.addFireBlock(Direction.CENTER, Direction.CENTER);
 	IntersectCreatures(field[currPosY][currPosX]);
 	rightExplode(currPosY ,currPosX);
 	leftExplode(currPosY ,currPosX);
@@ -219,16 +219,16 @@ function logicOfExplode(bomb) {
 		{
 			if (j < WIDTH)
 			{
-				if (field[PosY][j].type() === GRASS)
+				if (field[PosY][j].type() === FieldType.GRASS)
 				{
-					bomb.addFireBlock(RIGHT, RIGHT);
+					bomb.addFireBlock(Direction.RIGHT, Direction.RIGHT);
 
 					IntersectCreatures(field[PosY][j]);
 				}
-				else if (field[PosY][j].type() === CEMENT)
+				else if (field[PosY][j].type() === FieldType.CEMENT)
 				{
-					field[PosY][j] = new FieldCell(GRASS, PosY, j);
-					bomb.addFireBlock(RIGHT, WALL);
+					field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
+					bomb.addFireBlock(Direction.RIGHT, Direction.WALL);
 					break;
 				}
 				else
@@ -245,16 +245,16 @@ function logicOfExplode(bomb) {
 			if (j > 0) {
 				if (j < WIDTH)
 				{
-					if (field[PosY][j].type() === GRASS)
+					if (field[PosY][j].type() === FieldType.GRASS)
 					{
-						bomb.addFireBlock(LEFT, LEFT);
+						bomb.addFireBlock(Direction.LEFT, Direction.LEFT);
 
 						IntersectCreatures(field[PosY][j]);
 					}
-					else if (field[PosY][j].type() === CEMENT)
+					else if (field[PosY][j].type() === FieldType.CEMENT)
 					{
-						field[PosY][j] = new FieldCell(GRASS, PosY, j);
-						bomb.addFireBlock(LEFT, WALL);
+						field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
+						bomb.addFireBlock(Direction.LEFT, Direction.WALL);
 						break;
 					}
 					else
@@ -270,16 +270,16 @@ function logicOfExplode(bomb) {
 		for (let i = PosY + 1; i < PosY + bomb.explodeLenght; ++i)
 		{
 			if (i < HEIGHT) {
-				if (field[i][PosX].type() === GRASS)
+				if (field[i][PosX].type() === FieldType.GRASS)
 				{
-					bomb.addFireBlock(DOWN, DOWN);
+					bomb.addFireBlock(Direction.DOWN, Direction.DOWN);
 
 					IntersectCreatures(field[i][PosX]);
 				}
-				else if (field[i][PosX].type() === CEMENT)
+				else if (field[i][PosX].type() === FieldType.CEMENT)
 				{
-					field[i][PosX] = new FieldCell(GRASS, i, PosX);
-					bomb.addFireBlock(DOWN, WALL);
+					field[i][PosX] = new FieldCell(FieldType.GRASS, i, PosX);
+					bomb.addFireBlock(Direction.DOWN, Direction.WALL);
 					break;
 				}
 				else
@@ -294,16 +294,16 @@ function logicOfExplode(bomb) {
 		for (let i = PosY - 1; i > PosY - bomb.explodeLenght; --i)
 		{
 			if (i > 0) {
-				if (field[i][PosX].type() === GRASS)
+				if (field[i][PosX].type() === FieldType.GRASS)
 				{
-					bomb.addFireBlock(UP, UP);
+					bomb.addFireBlock(Direction.UP, Direction.UP);
 
 					IntersectCreatures(field[i][PosX]);
 				}
-				else if (field[i][PosX].type() === CEMENT)
+				else if (field[i][PosX].type() === FieldType.CEMENT)
 				{
-					field[i][PosX] = new FieldCell(GRASS, i, PosX);
-					bomb.addFireBlock(UP, WALL);
+					field[i][PosX] = new FieldCell(FieldType.GRASS, i, PosX);
+					bomb.addFireBlock(Direction.UP, Direction.WALL);
 					break;
 				}
 				else
@@ -334,7 +334,7 @@ function moveUp(creature) {
 	{
 		for (let currColumn = Math.max(0, j - 1); (currColumn < upRow.length) && (currColumn <= j + 1) ; ++currColumn)
 		{
-			if (upRow[currColumn].type() != GRASS)
+			if (upRow[currColumn].type() != FieldType.GRASS)
 			{
 				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
 				const wallRect = {left: currColumn * CELL_SIZE, top: upRowIndex * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
@@ -405,7 +405,7 @@ function moveUp(creature) {
 	else
 	{
 		creature.posY = creature.posY - dy;
-		creature.direction = UP;
+		creature.direction = Direction.UP;
 	}
 }
 
@@ -424,7 +424,7 @@ function moveDown(creature) {
 	{
 		for (let currColumn = Math.max(0, j - 1); (currColumn < downRow.length) && (currColumn <= j + 1) ; ++currColumn)
 		{
-			if (downRow[currColumn].type() != GRASS)
+			if (downRow[currColumn].type() != FieldType.GRASS)
 			{
 				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
 				const wallRect = {left: currColumn * CELL_SIZE, top: downRowIndex * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
@@ -495,7 +495,7 @@ function moveDown(creature) {
 	else
 	{
 		creature.posY = creature.posY + dy;
-		creature.direction = DOWN;
+		creature.direction = Direction.DOWN;
 	}
 }
 
@@ -514,7 +514,7 @@ function moveRight(creature) {
 	{
 		for (let currColumn = Math.max(0, i - 1); (currColumn < rightRow.length) && (currColumn <= i + 1) ; ++currColumn)
 		{
-			if (rightRow[currColumn][rightRowIndex].type() != GRASS)
+			if (rightRow[currColumn][rightRowIndex].type() != FieldType.GRASS)
 			{
 				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
 				const wallRect = {left: rightRowIndex * CELL_SIZE, top: currColumn * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
@@ -586,7 +586,7 @@ function moveRight(creature) {
 	else
 	{
 		creature.posX = creature.posX + dy;
-		creature.direction = RIGHT;
+		creature.direction = Direction.RIGHT;
 	}
 }
 
@@ -605,7 +605,7 @@ function moveLeft(creature) {
 	{
 		for (let currColumn = Math.max(0, i - 1); (currColumn < leftRow.length) && (currColumn <= i + 1) ; ++currColumn)
 		{
-			if (leftRow[currColumn][leftRowIndex].type() != GRASS)
+			if (leftRow[currColumn][leftRowIndex].type() != FieldType.GRASS)
 			{
 				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
 				const wallRect = {left: leftRowIndex * CELL_SIZE, top: currColumn * CELL_SIZE, width: CELL_SIZE, height: CELL_SIZE};
@@ -677,6 +677,6 @@ function moveLeft(creature) {
 	else
 	{
 		creature.posX = creature.posX - dy;
-		creature.direction = LEFT;
+		creature.direction = Direction.LEFT;
 	}
 }

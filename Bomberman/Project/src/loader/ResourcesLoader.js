@@ -1,3 +1,58 @@
+// class ResourceType {
+// 	static PLAYER_SPRITES = "PLAYER_SPRITES";
+// 	static PLAYER_UP_DIRECTION = "PLAYER_UP_DIRECTION";
+// 	static PLAYER_DOWN_DIRECTION = "PLAYER_DOWN_DIRECTION";
+// 	static PLAYER_LEFT_DIRECTION = "PLAYER_LEFT_DIRECTION";
+// 	static PLAYER_RIGHT_DIRECTION = "PLAYER_RIGHT_DIRECTION";
+// 	static PLAYER_DEATH = "PLAYER_DEATH";
+// 	static BALLOON_SPRITES = "BALLOON_SPRITES";
+// 	static BALLOON_UP_DIRECTION = "BALLOON_UP_DIRECTION";
+// 	static BALLOON_DOWN_DIRECTION = "BALLOON_DOWN_DIRECTION";
+// 	static BALLOON_LEFT_DIRECTION = "BALLOON_LEFT_DIRECTION";
+// 	static BALLOON_RIGHT_DIRECTION = "BALLOON_RIGHT_DIRECTION";
+// 	static MONSTER_DEATH = "MONSTER_DEATH";
+// 	static BOMB_SPRITES = "BOMB_SPRITES";
+// 	static BURST_SPRITES = "BURST_SPRITES";
+// 	static BURST_CENTER = "BURST_CENTER";
+// 	static BURST_DOWN = "BURST_DOWN";
+// 	static BURST_UP = "BURST_UP";
+// 	static BURST_LEFT = "BURST_LEFT";
+// 	static BURST_RIGHT = "BURST_RIGHT";
+// 	static BURST_LONG_UP = "BURST_LONG_UP";
+// 	static BURST_LONG_LEFT = "BURST_LONG_LEFT";
+// 	static BURST_WALL = "BURST_WALL";
+// }
+
+// this._resources = {
+// 	[ResourceType.PLAYER_SPRITES]: [],
+// 	[ResourceType.PLAYER_DOWN_DIRECTION]: [],
+// 	[ResourceType.PLAYER_UP_DIRECTION]: [],
+// 	[ResourceType.PLAYER_LEFT_DIRECTION]: [],
+// 	[ResourceType.PLAYER_RIGHT_DIRECTION]: [],
+// 	[ResourceType.PLAYER_DEATH]: [],
+// 	[ResourceType.BALLOON_SPRITES]: [],
+// 	[ResourceType.BALLOON_DOWN_DIRECTION]: [],
+// 	[ResourceType.BALLOON_UP_DIRECTION]: [],
+// 	[ResourceType.BALLOON_LEFT_DIRECTION]: [],
+// 	[ResourceType.BALLOON_RIGHT_DIRECTION]: [],
+// 	[ResourceType.MONSTER_DEATH]: [],
+// 	[ResourceType.BOMB_SPRITES]: [],
+// 	[ResourceType.BURST_SPRITES]: [],
+// 	[ResourceType.BURST_CENTER]: [],
+// 	[ResourceType.BURST_DOWN]: [],
+// 	[ResourceType.BURST_UP]: [],
+// 	[ResourceType.BURST_LEFT]: [],
+// 	[ResourceType.BURST_RIGHT]: [],
+// 	[ResourceType.BURST_LONG_UP]: [],
+// 	[ResourceType.BURST_LONG_LEFT]: [],
+// 	[ResourceType.BURST_WALL]: []
+//
+// };
+//
+// function getSpritesByType(type) {
+// 	return this._resources[type];
+// }
+
 const playerSprites = [];
 const playerDownDirection = [];
 const playerUpDirection = [];
@@ -86,10 +141,10 @@ function loadingPlayerSprites() {
 	moveLeft4.src = 'res/img/sprites/player/player_left/4.png';
 	playerLeftDirection.push(moveLeft1, moveLeft2, moveLeft3, moveLeft4);
 
-	playerSprites[DOWN] = playerDownDirection;
-	playerSprites[UP] = playerUpDirection;
-	playerSprites[RIGHT] = playerRightDirection;
-	playerSprites[LEFT] = playerLeftDirection;
+	playerSprites[Direction.DOWN] = playerDownDirection;
+	playerSprites[Direction.UP] = playerUpDirection;
+	playerSprites[Direction.RIGHT] = playerRightDirection;
+	playerSprites[Direction.LEFT] = playerLeftDirection;
 
 	const playerDeath1 = ImageUtils.createImage(onItemLoaded);
 	playerDeath1.src = 'res/img/sprites/player/death/1.png';
@@ -147,10 +202,10 @@ function loadingMonsterBaloonSprites() {
 	balloonKill4.src = 'res/img/sprites/monster_balloon/death/3.png';
 	balloonKill.push(balloonKill1, balloonKill2, balloonKill3, balloonKill4);
 
-	balloonSprites[DOWN] = balloonDownDirection;
-	balloonSprites[UP] = balloonUpDirection;
-	balloonSprites[RIGHT] = balloonRightDirection;
-	balloonSprites[LEFT] = balloonLeftDirection;
+	balloonSprites[Direction.DOWN] = balloonDownDirection;
+	balloonSprites[Direction.UP] = balloonUpDirection;
+	balloonSprites[Direction.RIGHT] = balloonRightDirection;
+	balloonSprites[Direction.LEFT] = balloonLeftDirection;
 }
 
 function loadingBombSprites() {
@@ -248,14 +303,14 @@ function loadingExplodeSprites() {
 	burstWall4.src = 'res/img/sprites/burst/wall/6.png';
 	burstWall.push(burstWall1, burstWall2, burstWall3, burstWall4, burstWall5, burstWall6);
 
-	burst[DOWN] = burstDown;
-	burst[UP] = burstUp;
-	burst[RIGHT] = burstRight;
-	burst[LEFT] = burstLeft;
-	burst[CENTER] = burstCenter;
-	burst[LONG_UP] = burstUp;
-	burst[LONG_LEFT] = burstRight;
-	burst[WALL] = burstWall;
+	burst[Direction.DOWN] = burstDown;
+	burst[Direction.UP] = burstUp;
+	burst[Direction.RIGHT] = burstRight;
+	burst[Direction.LEFT] = burstLeft;
+	burst[Direction.CENTER] = burstCenter;
+	burst[Direction.LONG_UP] = burstUp;
+	burst[Direction.LONG_LEFT] = burstRight;
+	burst[Direction.WALL] = burstWall;
 }
 
 function loadingBlockSprites() {
@@ -278,14 +333,14 @@ function getField(level) {
 		for (let j = 0; j < fieldJson[i].length; ++j)
 		{
 			switch(fieldJson[i][j]) {
-				case GRASS:
-					currLine.push( new FieldCell(GRASS, i, j) );
+				case FieldType.GRASS:
+					currLine.push( new FieldCell(FieldType.GRASS, i, j) );
 					break;
-				case IRON:
-					currLine.push( new FieldCell(IRON, i, j) );
+				case FieldType.IRON:
+					currLine.push( new FieldCell(FieldType.IRON, i, j) );
 					break;
-				case CEMENT:
-					currLine.push( new FieldCell(CEMENT, i, j) );
+				case FieldType.CEMENT:
+					currLine.push( new FieldCell(FieldType.CEMENT, i, j) );
 					break;
 			}
 		}

@@ -27,20 +27,28 @@ function musicOn() {
 	{
 		musicButton.innerHTML = 'OFF';
 		music = false;
-		gameMusic.pause();
 	}
 	else
 	{
 		musicButton.innerHTML = 'ON';
 		music = true;
-		gameMusic.play();
 	}
+
+	SoundController(music);
+}
+
+function SoundController(music) {
+	let i = music ? 1 : 0;
+	gameMusic.volume = i;
+	winMusic.volume = i;
+	explodeMusic.volume = i;
 }
 
 newGameButton.onclick = startNewGame;
 
 function startNewGame() {
 	canvas.classList.remove('end_game');
+	winMusic.pause();
 
 	initGame();
 }
@@ -133,6 +141,7 @@ function endTheGame() {
 
 function winTheGame() {
 	gameMusic.pause();
+	gameMusic.CurrentTime = 0;
 	winMusic.play();
 
 	ctx.beginPath();

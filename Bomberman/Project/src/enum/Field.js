@@ -1,3 +1,5 @@
-const GRASS = 0;
-const CEMENT = 1;
-const IRON = 2;
+FieldType = {
+	GRASS: 0,
+	CEMENT: 1,
+	IRON: 2
+};
