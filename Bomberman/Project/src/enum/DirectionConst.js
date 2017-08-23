@@ -8,4 +8,3 @@ Direction = {
 	LONG_UP: 6,
 	WALL: 5
 };
-

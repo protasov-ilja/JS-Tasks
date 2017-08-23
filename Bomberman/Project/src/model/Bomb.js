@@ -1,19 +1,15 @@
-const BOMB_TIMER = 4000;
-const EXPLODING_TIME = 50 * 4;
-const BOMB_SIZE = CELL_SIZE;
-
 class Bomb {
 	constructor(createTime, x, y) {
 		this.posX = x;
 		this.posY = y;
-		this.spriteSize = BOMB_SIZE;
+		this.spriteSize = Config.BOMB_SIZE;
 		this._createTime = createTime;
 		this._exploded = false;
 		this._startExplodeTime = null;
-		this._explodeDuration = EXPLODING_TIME;
+		this._explodeDuration = Config.EXPLODING_TIME;
 		this.sprites = bombMove;
 		this.stepDuration = 200;
-		this.explodeStepDuration = EXPLODING_TIME / 4;
+		this.explodeStepDuration = Config.EXPLODING_TIME / 4;
 		this.numberOfFrames = bombMove.length;
 		this.explodeLenght = 2;
 		this._fireBlocks = [];
@@ -74,13 +70,13 @@ class Bomb {
 			case Direction.CENTER:
 				return {x: 0, y: 0};
 			case Direction.DOWN:
-				return {x: 0, y: BOMB_SIZE};
+				return {x: 0, y: Config.BOMB_SIZE};
 			case Direction.UP:
-				return {x: 0, y: -BOMB_SIZE};
+				return {x: 0, y: -Config.BOMB_SIZE};
 			case Direction.RIGHT:
-				return {x: BOMB_SIZE, y: 0};
+				return {x: Config.BOMB_SIZE, y: 0};
 			case Direction.LEFT:
-				return {x: -BOMB_SIZE, y: 0};
+				return {x: -Config.BOMB_SIZE, y: 0};
 		}
 	}
 }

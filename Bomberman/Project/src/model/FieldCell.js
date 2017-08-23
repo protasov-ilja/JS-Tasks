@@ -1,8 +1,8 @@
 class FieldCell {
 	constructor(typeCell, posY, posX) {
 		this._type = typeCell;
-		this._posX = posX * CELL_SIZE;
-		this._posY = posY * CELL_SIZE;
+		this._posX = posX * Config.CELL_SIZE;
+		this._posY = posY * Config.CELL_SIZE;
 	}
 
 	type() {
