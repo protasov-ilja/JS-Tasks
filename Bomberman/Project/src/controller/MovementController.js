@@ -6,7 +6,7 @@ class MovementController {
 				switch (event.keyCode)
 				{
 					case KeyCode.SPACE:
-						stayBomb();
+						this.stayBomb();
 						break;
 					case KeyCode.ARROW_UP:
 					case KeyCode.W:
@@ -93,7 +93,7 @@ class MovementController {
 		};
 
 		if ( MathUtils.intersectsRects(playerRect, monsterRect) ) {
-			burstPlayer();
+			this.burstPlayer();
 		}
 
 		if (player.live < 0 && !player.kill)
@@ -119,7 +119,7 @@ class MovementController {
 	IntersectCreatures(object) {
 		for (let i = 0; i < monsters.length; ++i)
 		{
-			if ( intersect(object, monsters[i]) ) {
+			if ( this.intersect(object, monsters[i]) ) {
 				if (!monsters[i].killAnimationPlaying)
 				{
 					monsters[i].setKillTime( Date.now() );
@@ -129,9 +129,9 @@ class MovementController {
 			}
 		}
 
-		if ( intersect(object, player) )
+		if ( this.intersect(object, player) )
 		{
-			burstPlayer();
+			this.burstPlayer();
 		}
 	}
 
@@ -179,16 +179,16 @@ class MovementController {
 			switch (creature.direction)
 			{
 				case Direction.UP:
-					moveUp(creature);
+					this.moveUp(creature);
 					break;
 				case Direction.RIGHT:
-					moveRight(creature);
+					this.moveRight(creature);
 					break;
 				case Direction.DOWN:
-					moveDown(creature);
+					this.moveDown(creature);
 					break;
 				case Direction.LEFT:
-					moveLeft(creature);
+					this.moveLeft(creature);
 			}
 		}
 	}
@@ -209,7 +209,7 @@ class MovementController {
 		let currPosY = Math.round(bomb.posY / Config.CELL_SIZE);
 
 		bomb.addFireBlock(Direction.CENTER, Direction.CENTER);
-		IntersectCreatures(field[currPosY][currPosX]);
+		this.IntersectCreatures(field[currPosY][currPosX]);
 		rightExplode(currPosY ,currPosX);
 		leftExplode(currPosY ,currPosX);
 		topExplode(currPosY ,currPosX);
@@ -224,7 +224,7 @@ class MovementController {
 					{
 						bomb.addFireBlock(Direction.RIGHT, Direction.RIGHT);
 
-						IntersectCreatures(field[PosY][j]);
+						this.IntersectCreatures(field[PosY][j]);
 					}
 					else if (field[PosY][j].type() === FieldType.CEMENT)
 					{
@@ -250,7 +250,7 @@ class MovementController {
 						{
 							bomb.addFireBlock(Direction.LEFT, Direction.LEFT);
 
-							IntersectCreatures(field[PosY][j]);
+							this.IntersectCreatures(field[PosY][j]);
 						}
 						else if (field[PosY][j].type() === FieldType.CEMENT)
 						{
@@ -275,7 +275,7 @@ class MovementController {
 					{
 						bomb.addFireBlock(Direction.DOWN, Direction.DOWN);
 
-						IntersectCreatures(field[i][PosX]);
+						this.IntersectCreatures(field[i][PosX]);
 					}
 					else if (field[i][PosX].type() === FieldType.CEMENT)
 					{
@@ -299,7 +299,7 @@ class MovementController {
 					{
 						bomb.addFireBlock(Direction.UP, Direction.UP);
 
-						IntersectCreatures(field[i][PosX]);
+						this.IntersectCreatures(field[i][PosX]);
 					}
 					else if (field[i][PosX].type() === FieldType.CEMENT)
 					{
@@ -401,7 +401,7 @@ class MovementController {
 
 		if ( (dy == 0) && (creature instanceof Monster) )
 		{
-			changeDirection(creature)
+			this.changeDirection(creature)
 		}
 		else
 		{
@@ -491,7 +491,7 @@ class MovementController {
 
 		if ( (dy == 0) && (creature instanceof Monster) )
 		{
-			changeDirection(creature)
+			this.changeDirection(creature)
 		}
 		else
 		{
@@ -582,7 +582,7 @@ class MovementController {
 
 		if ( (dy == 0) && (creature instanceof Monster) )
 		{
-			changeDirection(creature)
+			this.changeDirection(creature)
 		}
 		else
 		{
@@ -673,7 +673,7 @@ class MovementController {
 
 		if ( (dy == 0) && (creature instanceof Monster) )
 		{
-			changeDirection(creature)
+			this.changeDirection(creature)
 		}
 		else
 		{

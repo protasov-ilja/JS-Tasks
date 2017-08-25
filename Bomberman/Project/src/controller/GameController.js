@@ -36,11 +36,11 @@ class NewGameController {
 
 		monsters = [];
 
-		addMonster(balloon1, 90, 120, balloonSprites);
-		addMonster(balloon2, 180, 30, balloonSprites);
+		this.addMonster(balloon1, 90, 120, balloonSprites);
+		this.addMonster(balloon2, 180, 30, balloonSprites);
 		cancelAnimationFrame(requestAnimationFrameId);
 		useTimer();
-		animate();
+		this.animate();
 	}
 
 	addMonster(monster, currX, currY, sprites) {
@@ -54,13 +54,13 @@ class NewGameController {
 		function step() {
 			ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-			drawField();
+			this.drawField();
 
 			for (let i = 0; i < bombs.length; ++i)
 			{
 				if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < BOMB_TIMER)
 				{
-					drawCreature(bombs[i], bombs[i].getCurrSprite() );
+					this.drawCreature(bombs[i], bombs[i].getCurrSprite() );
 				}
 				else
 				{
@@ -86,7 +86,7 @@ class NewGameController {
 					{
 						console.log(block);
 						const sprites = burst[block.type];
-						drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
+						this.drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
 					}
 
 					if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) )
@@ -128,7 +128,7 @@ class NewGameController {
 			}
 			else
 			{
-				drawCreature(player, player.getCurrSprite() );
+				this.drawCreature(player, player.getCurrSprite() );
 			}
 
 			requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
@@ -162,15 +162,15 @@ class NewGameController {
 			{
 				if (field[currPosY][currPosX].type() === FieldType.GRASS)
 				{
-					drawGrass(currPosY, currPosX);
+					this.drawGrass(currPosY, currPosX);
 				}
 				else if (field[currPosY][currPosX].type() === FieldType.CEMENT)
 				{
-					drawCementBlock(currPosY, currPosX);
+					this.drawCementBlock(currPosY, currPosX);
 				}
 				else if (field[currPosY][currPosX].type() === FieldType.IRON)
 				{
-					drawIronBlock(currPosY, currPosX);
+					this.drawIronBlock(currPosY, currPosX);
 				}
 			}
 		}
@@ -189,7 +189,3 @@ class NewGameController {
 		ctx.drawImage(spriteBlock1, 30, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
 	}
 }
-
-window.onload = () => {
-
-};
