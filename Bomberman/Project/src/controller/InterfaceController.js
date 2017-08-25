@@ -3,130 +3,130 @@ class InterfaceController {
 		this.music = true;
 		this.clearStep = null;
 		this.score = 0;
+		this.gameMusic = document.getElementById('gameMusic');
+		this.winMusic = document.getElementById('winMusic');
+		this.explodeMusic = document.getElementById('explodeMusic');
+		this.bombForm = document.getElementById('bombNumber');
+		this.liveForm = document.getElementById('liveNumber');
+		this.scoreForm = document.getElementById('scoreNumber');
 
-		const gameMusic = document.getElementById('gameMusic');
-		const winMusic = document.getElementById('winMusic');
-		const explodeMusic = document.getElementById('explodeMusic');
-		const scoreForm = document.getElementById('scoreNumber');
-		const newGameButton = document.getElementById('newGameButton');
-		const optionsButton = document.getElementById('gameOptions');
-		const optionsContainer = document.getElementById('optionsContainer');
-		const exitOptionsButton = document.getElementById('exitOptionsButton');
+		this._newGameButton = document.getElementById('newGameButton');
+		this._optionsButton = document.getElementById('gameOptions');
+		this._optionsContainer = document.getElementById('optionsContainer');
+		this._exitOptionsButton = document.getElementById('exitOptionsButton');
+
+		this._musicButton = document.getElementById('musicButton');
+		this._timer = document.getElementById('timeForm');
+		this._levelFields = [LEVEL_1, LEVEL_2, LEVEL_3];
+
+		this._musicButton.onclick = () => this._musicOn();
+		this._newGameButton.onclick = () => this._startNewGame();
+		this._optionsButton.onclick = () => this._openOptionsMenu();
+		this._exitOptionsButton.onclick = () => this._closeOptionsMenu();
+
 		const chooseLevel1 = document.getElementById('levelOne');
 		const chooseLevel2 = document.getElementById('levelTwo');
 		const chooseLevel3 = document.getElementById('levelThree');
-		const musicButton = document.getElementById('musicButton');
-		const timer = document.getElementById('timeForm');
-		const bombForm = document.getElementById('bombNumber');
-		const liveForm = document.getElementById('liveNumber');
-		const levelButtons = [chooseLevel1, chooseLevel2, chooseLevel3];
-		const levelFields = [LEVEL_1, LEVEL_2, LEVEL_3];
+
+		this._levelButtons = [chooseLevel1, chooseLevel2, chooseLevel3];
+
+		for (let selButton = 0; selButton < this._levelButtons.length; ++selButton)
+		{
+			this._levelButtons[selButton].onclick = () => {
+				this._selectLevel(selButton);
+				gameController.initGame();
+				this._closeOptionsMenu();
+			};
+		}
 	}
 
-	musicButton.onclick = musicOn;
-
-	musicOn() {
-		if (music)
+	_musicOn() {
+		if (this.music)
 		{
-			musicButton.innerHTML = 'OFF';
-			music = false;
+			this._musicButton.innerHTML = 'OFF';
+			this.music = false;
 		}
 		else
 		{
-			musicButton.innerHTML = 'ON';
-			music = true;
+			this._musicButton.innerHTML = 'ON';
+			this.music = true;
 		}
 
-		SoundController(music);
+		this._soundController(this.music);
 	}
 
-	SoundController(music) {
+	_soundController(music) {
 		let i = music ? 1 : 0;
-		gameMusic.volume = i;
-		winMusic.volume = i;
-		explodeMusic.volume = i;
+		this.gameMusic.volume = i;
+		this.winMusic.volume = i;
+		this.explodeMusic.volume = i;
 	}
 
-	newGameButton.onclick = startNewGame;
-
-	startNewGame() {
+	_startNewGame() {
 		canvas.classList.remove('end_game');
-		winMusic.pause();
+		this.winMusic.pause();
 
 		initGame();
 	}
 
-	for (let selButton = 0; selButton < levelButtons.length; ++selButton)
-	{
-		levelButtons[selButton].onclick = () => {
-			selectLevel(selButton);
-			initGame();
-			closeOptionsMenu();
-		};
-	}
+	_selectLevel(indexButton) {
+		field = getField(this._levelFields[indexButton]);
 
-	selectLevel(indexButton) {
-		field = getField(levelFields[indexButton]);
-
-		for (let i = 0; i < levelButtons.length; ++i)
+		for (let i = 0; i < this._levelButtons.length; ++i)
 		{
 			if (i == indexButton)
 			{
-				levelOn(levelButtons[i]);
+				this._levelOn(this._levelButtons[i]);
 			}
 			else
 			{
-				levelOff(levelButtons[i]);
+				this._levelOff(this._levelButtons[i]);
 			}
 		}
 	}
 
-	levelOn(currLevel) {
+	_levelOn(currLevel) {
 		currLevel.classList.add('selected');
 		currLevel.classList.remove('unselected');
 	}
 
-	levelOff(currLevel) {
+	_levelOff(currLevel) {
 		currLevel.classList.remove('selected');
 		currLevel.classList.add('unselected');
 	}
 
-	optionsButton.onclick = openOptionsMenu;
-
-	openOptionsMenu() {
-		optionsContainer.classList.remove('none');
+	_openOptionsMenu() {
+		this._optionsContainer.classList.remove('none');
 	}
 
-	exitOptionsButton.onclick = closeOptionsMenu;
-
-	closeOptionsMenu() {
-		optionsContainer.classList.add('none');
+	_closeOptionsMenu() {
+		this._optionsContainer.classList.add('none');
 	}
 
 	useTimer() {
-		const startTime = 300;
+		this._startTime = 300;
 
-		timer.innerHTML = startTime;
+		this._timer.innerHTML = this._startTime;
 
-		let currTime = startTime;
+		let currTime = this._startTime;
 
-		clearInterval(clearStep);
-		clearStep = setInterval(step, 1000);
+		clearInterval(this.clearStep);
+		this.clearStep = setInterval(step, 1000);
 
 		function step() {
-			if (!endOfGame)
+			if (!gameController.endOfGame)
 			{
 				--currTime;
 
 				if (currTime >= 0)
 				{
-					timer.innerHTML = currTime;
+					this._timer.innerHTML = currTime;
 				}
 				else
 				{
-					clearInterval(clearStep);
-					endOfGame = true;
-					endTheGame();
+					clearInterval(this.clearStep);
+					gameController.endOfGame = true;
+					this.endTheGame();
 				}
 			}
 		}
@@ -137,159 +137,22 @@ class InterfaceController {
 		ctx.font = "bold 50pt Arial";
 		ctx.fillStyle = '#ffbe26';
 		ctx.textAlign = 'center';
-		ctx.fillText('Game Over', WIDTH / 2, HEIGHT / 2);
+		ctx.fillText('Game Over', Config.WIDTH / 2, Config.HEIGHT / 2);
 		ctx.fill();
 		ctx.closePath();
 	}
 
 	winTheGame() {
-		gameMusic.pause();
-		gameMusic.CurrentTime = 0;
-		winMusic.play();
+		this.gameMusic.pause();
+		this.gameMusic.CurrentTime = 0;
+		this.winMusic.play();
 
 		ctx.beginPath();
 		ctx.font = "bold 50pt Arial";
 		ctx.fillStyle = '#ff0021';
 		ctx.textAlign = 'center';
-		ctx.fillText('You WIN', WIDTH / 2, HEIGHT / 2);
+		ctx.fillText('You WIN', Config.WIDTH / 2, Config.HEIGHT / 2);
 		ctx.fill();
 		ctx.closePath();
 	}
 }
-
-// let music = true;
-// let clearStep = null;
-// let score = 0;
-
-// musicButton.onclick = musicOn;
-//
-// function musicOn() {
-// 	if (music)
-// 	{
-// 		musicButton.innerHTML = 'OFF';
-// 		music = false;
-// 	}
-// 	else
-// 	{
-// 		musicButton.innerHTML = 'ON';
-// 		music = true;
-// 	}
-//
-// 	SoundController(music);
-// }
-//
-// function SoundController(music) {
-// 	let i = music ? 1 : 0;
-// 	gameMusic.volume = i;
-// 	winMusic.volume = i;
-// 	explodeMusic.volume = i;
-// }
-//
-// newGameButton.onclick = startNewGame;
-//
-// function startNewGame() {
-// 	canvas.classList.remove('end_game');
-// 	winMusic.pause();
-//
-// 	initGame();
-// }
-//
-// for (let selButton = 0; selButton < levelButtons.length; ++selButton)
-// {
-// 	levelButtons[selButton].onclick = () => {
-// 		selectLevel(selButton);
-// 		initGame();
-// 		closeOptionsMenu();
-// 	};
-// }
-//
-// function selectLevel(indexButton) {
-// 	field = getField(levelFields[indexButton]);
-//
-// 	for (let i = 0; i < levelButtons.length; ++i)
-// 	{
-// 		if (i == indexButton)
-// 		{
-// 			levelOn(levelButtons[i]);
-// 		}
-// 		else
-// 		{
-// 			levelOff(levelButtons[i]);
-// 		}
-// 	}
-// }
-//
-// function levelOn(currLevel) {
-// 	currLevel.classList.add('selected');
-// 	currLevel.classList.remove('unselected');
-// }
-//
-// function levelOff(currLevel) {
-// 	currLevel.classList.remove('selected');
-// 	currLevel.classList.add('unselected');
-// }
-//
-// optionsButton.onclick = openOptionsMenu;
-//
-// function openOptionsMenu() {
-// 	optionsContainer.classList.remove('none');
-// }
-//
-// exitOptionsButton.onclick = closeOptionsMenu;
-//
-// function closeOptionsMenu() {
-// 	optionsContainer.classList.add('none');
-// }
-//
-// function useTimer() {
-// 	const startTime = 300;
-//
-// 	timer.innerHTML = startTime;
-//
-// 	let currTime = startTime;
-//
-// 	clearInterval(clearStep);
-// 	clearStep = setInterval(step, 1000);
-//
-// 	function step() {
-// 		if (!endOfGame)
-// 		{
-// 			--currTime;
-//
-// 			if (currTime >= 0)
-// 			{
-// 				timer.innerHTML = currTime;
-// 			}
-// 			else
-// 			{
-// 				clearInterval(clearStep);
-// 				endOfGame = true;
-// 				endTheGame();
-// 			}
-// 		}
-// 	}
-// }
-//
-// function endTheGame() {
-// 	ctx.beginPath();
-// 	ctx.font = "bold 50pt Arial";
-// 	ctx.fillStyle = '#ffbe26';
-// 	ctx.textAlign = 'center';
-// 	ctx.fillText('Game Over', WIDTH / 2, HEIGHT / 2);
-// 	ctx.fill();
-// 	ctx.closePath();
-// }
-//
-// function winTheGame() {
-// 	gameMusic.pause();
-// 	gameMusic.CurrentTime = 0;
-// 	winMusic.play();
-//
-// 	ctx.beginPath();
-// 	ctx.font = "bold 50pt Arial";
-// 	ctx.fillStyle = '#ff0021';
-// 	ctx.textAlign = 'center';
-// 	ctx.fillText('You WIN', WIDTH / 2, HEIGHT / 2);
-// 	ctx.fill();
-// 	ctx.closePath();
-// }

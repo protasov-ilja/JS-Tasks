@@ -8,7 +8,7 @@ class Creature {
 		this.spriteSize = Config.PLAYER_SIZE;
 		this.numberOfFrames = null;
 		this.sprites = null;
-		this.spritesKill = playerDeath;
+		this.spritesKill = resourcesLoader.getSpritesByType(ResourceType.PLAYER_DEATH);
 		this.killTime = null;
 		this.startTimeAnimation = null;
 		this.stepDuration = 150;

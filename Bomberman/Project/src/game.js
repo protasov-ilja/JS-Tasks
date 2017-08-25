@@ -1,3 +1,3 @@
 window.onload = () => {
-	NewGameController();
+	const gameController = new GameController();
 };

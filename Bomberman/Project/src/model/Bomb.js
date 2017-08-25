@@ -7,10 +7,10 @@ class Bomb {
 		this._exploded = false;
 		this._startExplodeTime = null;
 		this._explodeDuration = Config.EXPLODING_TIME;
-		this.sprites = bombMove;
+		this.sprites = resourcesLoader.getSpritesByType(ResourceType.BOMB_SPRITES);
 		this.stepDuration = 200;
 		this.explodeStepDuration = Config.EXPLODING_TIME / 4;
-		this.numberOfFrames = bombMove.length;
+		this.numberOfFrames = this.sprites.length;
 		this.explodeLenght = 2;
 		this._fireBlocks = [];
 	}

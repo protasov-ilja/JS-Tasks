@@ -1,4 +1,3 @@
-
 class ResourceType {
 	static PLAYER_SPRITES = "PLAYER_SPRITES";
 	static PLAYER_UP_DIRECTION = "PLAYER_UP_DIRECTION";
@@ -22,10 +21,6 @@ class ResourceType {
 	static BURST_LONG_UP = "BURST_LONG_UP";
 	static BURST_LONG_LEFT = "BURST_LONG_LEFT";
 	static BURST_WALL = "BURST_WALL";
-}
-
-function getSpritesByType(type) {
-	return this._resources[type];
 }
 
 class ResourcesLoader {
@@ -55,6 +50,10 @@ class ResourcesLoader {
 			[ResourceType.BURST_LONG_LEFT]: [],
 			[ResourceType.BURST_WALL]: []
 		};
+	}
+
+	getSpritesByType(type) {
+		return this._resources[type];
 	}
 
 	loadResources(readyHandler) {

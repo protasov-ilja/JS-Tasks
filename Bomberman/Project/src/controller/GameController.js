@@ -1,51 +1,55 @@
 const FIELD_COLOR1 = 'green';
 const FIELD_COLOR2 = '#ececb7';
 
-class NewGameController {
+class GameController {
 	constructor() {
 		canvas = document.getElementById("canvas");
 		canvas.width = Config.WIDTH;
 		canvas.height = Config.HEIGHT;
 		ctx = canvas.getContext('2d');
-		gameMusic.play();
 
 		this.field = getField(LEVEL_1);
-		this._endOfGame = false;
-		this._player = null;
+		this.endOfGame = false;
+		this.player = null;
+		this.monsters = null;
+		this._requestAnimationFrameId;
 		this._balloon1 = null;
 		this._balloon2 = null;
-		this._requestAnimationFrameId;
-		this._bombs = [];
-		this._bombCount = 0;
+		this.bombs = [];
+		this.bombCount = 0;
 
 		const resourcesLoader = new ResourcesLoader();
+		const movementController = new MovementController();
+		const interfaceController = new InterfaceController();
+
+		interfaceController.gameMusic.play();
 		resourcesLoader.loadResources(() => { this.initGame(); });
 	}
 
 
 	initGame() {
-		winMusic.pause();
-		winMusic.CurrentTime = 0;
-		gameMusic.play();
+		interfaceController.winMusic.pause();
+		interfaceController.winMusic.CurrentTime = 0;
+		interfaceController.gameMusic.play();
 
-		endOfGame = false;
-		player = new Player( Date.now() );
+		this.endOfGame = false;
+		this.player = new Player( Date.now() );
 
-		liveForm.innerHTML = '0' + player.live;
-		bombForm.innerHTML = '0' + player.bombCount;
+		interfaceController.liveForm.innerHTML = '0' + this.player.live;
+		interfaceController.bombForm.innerHTML = '0' + this.player.bombCount;
 
-		monsters = [];
+		this.monsters = [];
 
-		this.addMonster(balloon1, 90, 120, balloonSprites);
-		this.addMonster(balloon2, 180, 30, balloonSprites);
-		cancelAnimationFrame(requestAnimationFrameId);
-		useTimer();
+		this.addMonster(this._balloon1, 90, 120, balloonSprites);
+		this.addMonster(this._balloon2, 180, 30, balloonSprites);
+		cancelAnimationFrame(this._requestAnimationFrameId);
+		interfaceController.useTimer();
 		this.animate();
 	}
 
 	addMonster(monster, currX, currY, sprites) {
 		monster = new Monster(currX, currY, sprites, Date.now() );
-		monsters.push(monster);
+		this.monsters.push(monster);
 	}
 
 	animate() {
@@ -56,82 +60,76 @@ class NewGameController {
 
 			this.drawField();
 
-			for (let i = 0; i < bombs.length; ++i)
+			for (let i = 0; i < this.bombs.length; ++i)
 			{
-				if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < BOMB_TIMER)
+				if (this.bombs[i].getCurrTime() - this.bombs[i].getCreateTime() < BOMB_TIMER)
 				{
-					this.drawCreature(bombs[i], bombs[i].getCurrSprite() );
+					this.drawCreature(this.bombs[i], this.bombs[i].getCurrSprite() );
 				}
 				else
 				{
-					if (!bombs[i].isExploded())
+					if (!this.bombs[i].isExploded())
 					{
-						explodeMusic.pause();
-						explodeMusic.currentTime = 0;
-						explodeMusic.play();
-						bombs[i].explode( bombs[i].getCurrTime() );
-						logicOfExplode(bombs[i]);
-						console.log('bum');
+						interfaceController.explodeMusic.pause();
+						interfaceController.explodeMusic.currentTime = 0;
+						interfaceController.explodeMusic.play();
+						this.bombs[i].explode( this.bombs[i].getCurrTime() );
+						logicOfExplode(this.bombs[i]);
 					}
 				}
 			}
 
-			for (let i = 0; i < bombs.length; ++i)
+			for (let i = 0; i < this.bombs.length; ++i)
 			{
-				if ( bombs[i].isExploded() )
+				if ( this.bombs[i].isExploded() )
 				{
 					// Рисуем взрыв
-					const fireBlocks = bombs[i].fireBlocks();
+					const fireBlocks = this.bombs[i].fireBlocks();
 					for (const block of fireBlocks)
 					{
-						console.log(block);
 						const sprites = burst[block.type];
-						this.drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
+						this.drawExplode(sprites[this.bombs[i].getCurrStep(sprites.length)], block.x, block.y);
 					}
 
-					if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) )
+					if ( this.bombs[i].isExplodeCompleted(this.bombs[i].getCurrTime() ) )
 					{
-						console.log('delete bomb', i, bombs.length);
-
-						bombs.splice(i, 1); // удаляем бомбу i
-						// уменьшаем индекс i на 1
-						--bombCount;
+						this.bombs.splice(i, 1); // удаляем бомбу i
+						--this.bombCount;// уменьшаем bombCount на 1
 					}
 				}
 			}
-			// аналогично со стеной, для получения спрайта используем getCurrentSprite
 
-			if (player.mooving)
+			if (this.player.mooving)
 			{
-				moveCreature(player);
+				moveCreature(this.player);
 			}
 
-			for (let i = 0; i < monsters.length; ++i)
+			for (let i = 0; i < this.monsters.length; ++i)
 			{
-				moveCreature(monsters[i]);
-				drawCreature(monsters[i], monsters[i].getCurrSprite() );
-				killPlayer(monsters[i]);
-				if ( killMonster(monsters[i]) ) {
-					score = score + 100;
-					scoreForm.innerHTML = score;
-					monsters.splice(i, 1);
+				moveCreature(this.monsters[i]);
+				this.drawCreature(this.monsters[i], this.monsters[i].getCurrSprite() );
+				killPlayer(this.monsters[i]);
+				if ( killMonster(this.monsters[i]) ) {
+					interfaceController.score = score + 100;
+					interfaceController.scoreForm.innerHTML = score;
+					this.monsters.splice(i, 1);
 				}
 			}
 
-			if (endOfGame)
+			if (this.endOfGame)
 			{
-				endTheGame();
+				interfaceController.endTheGame();
 			}
-			else if (monsters.length == 0)
+			else if (this.monsters.length == 0)
 			{
-				winTheGame();
+				interfaceController.winTheGame();
 			}
 			else
 			{
-				this.drawCreature(player, player.getCurrSprite() );
+				this.drawCreature(this.player, this.player.getCurrSprite() );
 			}
 
-			requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
+			this._requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
 		}
 	}
 //сетка
@@ -156,19 +154,19 @@ class NewGameController {
 	}
 
 	drawField() {
-		for (let currPosY = 0; currPosY < COUNT_OF_CELLS_HEIGHT; ++currPosY)
+		for (let currPosY = 0; currPosY < Config.COUNT_OF_CELLS_HEIGHT; ++currPosY)
 		{
 			for (let currPosX = 0; currPosX < Config.COUNT_OF_CELLS_WIDTH; ++currPosX)
 			{
-				if (field[currPosY][currPosX].type() === FieldType.GRASS)
+				if (this.field[currPosY][currPosX].type() === FieldType.GRASS)
 				{
 					this.drawGrass(currPosY, currPosX);
 				}
-				else if (field[currPosY][currPosX].type() === FieldType.CEMENT)
+				else if (this.field[currPosY][currPosX].type() === FieldType.CEMENT)
 				{
 					this.drawCementBlock(currPosY, currPosX);
 				}
-				else if (field[currPosY][currPosX].type() === FieldType.IRON)
+				else if (this.field[currPosY][currPosX].type() === FieldType.IRON)
 				{
 					this.drawIronBlock(currPosY, currPosX);
 				}
