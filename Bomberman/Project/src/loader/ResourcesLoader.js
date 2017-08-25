@@ -25,6 +25,7 @@ class ResourceType {
 
 class ResourcesLoader {
 	constructor() {
+		this.loadedResourcesCount = 0;
 		this._readyHandler = null;
 		this._resources = {
 			[ResourceType.PLAYER_SPRITES]: [],
@@ -63,16 +64,16 @@ class ResourcesLoader {
 	}
 
 	_onItemLoaded() {
-		++loadedResourcesCount;
+		++this.loadedResourcesCount;
 
-		if (loadedResourcesCount === resourcesToLoadCount) {
+		if (this.loadedResourcesCount === Config.resourcesToLoadCount) {
 			this._readyHandler();
 		}
 	}
 
 	_loadingResources() {
 		this._loadingPlayerSprites();
-		this._loadingMonsterBaloonSprites();
+		this._loadingMonsterBalloonSprites();
 		this._loadingBombSprites();
 		this._loadingExplodeSprites();
 		this._loadingBlockSprites();
@@ -137,7 +138,7 @@ class ResourcesLoader {
 		this._resources.PLAYER_DEATH.push(playerDeath1, playerDeath2, playerDeath3, playerDeath4, playerDeath5);
 	}
 
-	_loadingMonsterBaloonSprites() {
+	_loadingMonsterBalloonSprites() {
 		const balloonDown1 = ImageUtils.createImage(onItemLoaded);
 		balloonDown1.src = 'res/img/sprites/monster_balloon/monster_down/1.png';
 		const balloonDown2 = ImageUtils.createImage(onItemLoaded);
@@ -299,7 +300,7 @@ class ResourcesLoader {
 		this._resources.BLOCK_SPRITES2.src = 'res/img/sprites/blocks/sprite_block2.png';
 	}
 
-	_getField(level) {
+	getField(level) {
 		let field = [];
 
 		let fieldJson = level.slice(0);

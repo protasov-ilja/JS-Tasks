@@ -1,5 +1,6 @@
 class InterfaceController {
-	constructor() {
+	constructor(gameController) {
+		this._gameController = gameController;
 		this.music = true;
 		this.clearStep = null;
 		this.score = 0;
@@ -34,7 +35,7 @@ class InterfaceController {
 		{
 			this._levelButtons[selButton].onclick = () => {
 				this._selectLevel(selButton);
-				gameController.initGame();
+				this._gameController.initGame();
 				this._closeOptionsMenu();
 			};
 		}
@@ -114,7 +115,7 @@ class InterfaceController {
 		this.clearStep = setInterval(step, 1000);
 
 		function step() {
-			if (!gameController.endOfGame)
+			if (!this._gameController.endOfGame)
 			{
 				--currTime;
 
@@ -125,7 +126,7 @@ class InterfaceController {
 				else
 				{
 					clearInterval(this.clearStep);
-					gameController.endOfGame = true;
+					this._gameController.endOfGame = true;
 					this.endTheGame();
 				}
 			}

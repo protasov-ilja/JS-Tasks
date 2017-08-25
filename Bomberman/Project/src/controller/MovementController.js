@@ -1,7 +1,10 @@
 class MovementController {
-	constructor() {
+	constructor(resources, gameController) {
+		this._resources = resources;
+		this._gameController = gameController;
+
 		document.onkeydown = function (event) {
-			if (!gameController.endOfGame && !gameController.player.kill)
+			if (!this._gameController.endOfGame && !this._gameController.player.kill)
 			{
 				switch (event.keyCode)
 				{
@@ -11,59 +14,59 @@ class MovementController {
 					case KeyCode.ARROW_UP:
 					case KeyCode.W:
 						event.preventDefault();
-						gameController.player.direction = Direction.UP;
-						gameController.player.mooving = true;
+						this._gameController.player.direction = Direction.UP;
+						this._gameController.player.mooving = true;
 
 						break;
 					case KeyCode.ARROW_RIGHT:
 					case KeyCode.D:
 						event.preventDefault();
-						gameController.player.direction = Direction.RIGHT;
-						gameController.player.mooving = true;
+						this._gameController.player.direction = Direction.RIGHT;
+						this._gameController.player.mooving = true;
 
 						break;
 					case KeyCode.ARROW_DOWN:
 					case KeyCode.S:
 						event.preventDefault();
-						gameController.player.direction = Direction.DOWN;
-						gameController.player.mooving = true;
+						this._gameController.player.direction = Direction.DOWN;
+						this._gameController.player.mooving = true;
 
 						break;
 					case KeyCode.ARROW_LEFT:
 					case KeyCode.A:
 						event.preventDefault();
-						gameController.player.direction = Direction.LEFT;
-						gameController.player.mooving = true;
+						this._gameController.player.direction = Direction.LEFT;
+						this._gameController.player.mooving = true;
 				}
 			}
 		};
 
 		document.onkeyup = () => {
-			if (!gameController.endOfGame)
+			if (!this._gameController.endOfGame)
 			{
 				switch (event.keyCode)
 				{
 					case KeyCode.ARROW_UP:
 					case KeyCode.W:
-						if (gameController.player.direction == Direction.UP)
+						if (this._gameController.player.direction == Direction.UP)
 						{
-							gameController.player.mooving = false;
+							this._gameController.player.mooving = false;
 						}
 
 						break;
 					case KeyCode.ARROW_RIGHT:
 					case KeyCode.D:
-						if (gameController.player.direction == Direction.RIGHT)
+						if (this._gameController.player.direction == Direction.RIGHT)
 						{
-							gameController.player.mooving = false;
+							this._gameController.player.mooving = false;
 						}
 
 						break;
 					case KeyCode.ARROW_DOWN:
 					case KeyCode.S:
-						if (gameController.player.direction == Direction.DOWN)
+						if (this._gameController.player.direction == Direction.DOWN)
 						{
-							gameController.player.mooving = false;
+							this._gameController.player.mooving = false;
 						}
 
 						break;
@@ -71,7 +74,7 @@ class MovementController {
 					case KeyCode.A:
 						if (gameController.player.direction == Direction.LEFT)
 						{
-							gameController.player.mooving = false;
+							this._gameController.player.mooving = false;
 						}
 				}
 			}
@@ -80,8 +83,8 @@ class MovementController {
 
 	killPlayer(monster) {
 		const playerRect = {
-			left: gameController.player.posX,
-			top: gameController.player.posY - gameController.player.moveSpeed,
+			left: this._gameController.player.posX,
+			top: this._gameController.player.posY - this._gameController.player.moveSpeed,
 			width: Config.PLAYER_SIZE,
 			height: Config.PLAYER_SIZE
 		};
@@ -96,35 +99,35 @@ class MovementController {
 			this.burstPlayer();
 		}
 
-		if (gameController.player.live < 0 && !gameController.player.kill)
+		if (this._gameController.player.live < 0 && !this._gameController.player.kill)
 		{
-			gameController.endOfGame = true;
+			this._gameController.endOfGame = true;
 		}
-		else if (gameController.player.killAnimationComplete)
+		else if (this._gameController.player.killAnimationComplete)
 		{
-			gameController.player.killAnimationComplete = false;
-			gameController.player.killAnimationPlaying = false;
-			gameController.player.kill = false;
+			this._gameController.player.killAnimationComplete = false;
+			this._gameController.player.killAnimationPlaying = false;
+			this._gameController.player.kill = false;
 
-			if (gameController.player.live >= 0)
+			if (this._gameController.player.live >= 0)
 			{
-				liveForm.innerHTML = '0' + gameController.player.live;
-				gameController.player.startTimeAnimation = Date.now();
-				gameController.player.posX = Config.START_POS_PLAYER;
-				gameController.player.posY = Config.START_POS_PLAYER;
+				liveForm.innerHTML = '0' + this._gameController.player.live;
+				this._gameController.player.startTimeAnimation = Date.now();
+				this._gameController.player.posX = Config.START_POS_PLAYER;
+				this._gameController.player.posY = Config.START_POS_PLAYER;
 			}
 		}
 	}
 
 	IntersectCreatures(object) {
-		for (let i = 0; i < gameController.monsters.length; ++i)
+		for (let i = 0; i < this._gameController.monsters.length; ++i)
 		{
-			if ( this.intersect(object, gameController.monsters[i]) ) {
-				if (!gameController.monsters[i].killAnimationPlaying)
+			if ( this.intersect(object, this._gameController.monsters[i]) ) {
+				if (!this._gameController.monsters[i].killAnimationPlaying)
 				{
-					gameController.monsters[i].setKillTime( Date.now() );
-					gameController.monsters[i].killAnimationPlaying = true;
-					gameController.monsters[i].kill = true;
+					this._gameController.monsters[i].setKillTime( Date.now() );
+					this._gameController.monsters[i].killAnimationPlaying = true;
+					this._gameController.monsters[i].kill = true;
 				}
 			}
 		}
@@ -146,12 +149,12 @@ class MovementController {
 	}
 
 	burstPlayer() {
-		if (!gameController.player.killAnimationPlaying)
+		if (!this._gameController.player.killAnimationPlaying)
 		{
-			gameController.player.setKillTime( Date.now() );
-			gameController.player.killAnimationPlaying = true;
-			gameController.player.kill = true;
-			gameController.player.live--;
+			this._gameController.player.setKillTime( Date.now() );
+			this._gameController.player.killAnimationPlaying = true;
+			this._gameController.player.kill = true;
+			this._gameController.player.live--;
 		}
 	}
 
@@ -174,7 +177,7 @@ class MovementController {
 	}
 
 	moveCreature(creature) {
-		if (!gameController.endOfGame && !creature.kill)
+		if (!this._gameController.endOfGame && !creature.kill)
 		{
 			switch (creature.direction)
 			{
@@ -194,13 +197,13 @@ class MovementController {
 	}
 
 	stayBomb() {
-		if (gameController.bombCount < START_BOMB_COUNT)
+		if (this._gameController.bombCount < START_BOMB_COUNT)
 		{
-			let x = Math.round(gameController.player.posX / Config.CELL_SIZE) * Config.CELL_SIZE;
-			let y = Math.round(gameController.player.posY / Config.CELL_SIZE) * Config.CELL_SIZE;
+			let x = Math.round(this._gameController.player.posX / Config.CELL_SIZE) * Config.CELL_SIZE;
+			let y = Math.round(this._gameController.player.posY / Config.CELL_SIZE) * Config.CELL_SIZE;
 
-			gameController.bombCount++;
-			gameController.bombs.push( new Bomb(Date.now(), x, y) );
+			this._gameController.bombCount++;
+			this._gameController.bombs.push( new Bomb(this._resources, Date.now(), x, y) );
 		}
 	}
 
@@ -209,7 +212,7 @@ class MovementController {
 		let currPosY = Math.round(bomb.posY / Config.CELL_SIZE);
 
 		bomb.addFireBlock(Direction.CENTER, Direction.CENTER);
-		this.IntersectCreatures(gameController.field[currPosY][currPosX]);
+		this.IntersectCreatures(this._gameController.field[currPosY][currPosX]);
 		rightExplode(currPosY ,currPosX);
 		leftExplode(currPosY ,currPosX);
 		topExplode(currPosY ,currPosX);
@@ -220,15 +223,15 @@ class MovementController {
 			{
 				if (j < Config.WIDTH)
 				{
-					if (gameController.field[PosY][j].type() === FieldType.GRASS)
+					if (this._gameController.field[PosY][j].type() === FieldType.GRASS)
 					{
 						bomb.addFireBlock(Direction.RIGHT, Direction.RIGHT);
 
-						this.IntersectCreatures(gameController.field[PosY][j]);
+						this.IntersectCreatures(this._gameController.field[PosY][j]);
 					}
-					else if (gameController.field[PosY][j].type() === FieldType.CEMENT)
+					else if (this._gameController.field[PosY][j].type() === FieldType.CEMENT)
 					{
-						gameController.field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
+						this._gameController.field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
 						bomb.addFireBlock(Direction.RIGHT, Direction.WALL);
 						break;
 					}
@@ -246,15 +249,15 @@ class MovementController {
 				if (j > 0) {
 					if (j < Config.WIDTH)
 					{
-						if (gameController.field[PosY][j].type() === FieldType.GRASS)
+						if (this._gameController.field[PosY][j].type() === FieldType.GRASS)
 						{
 							bomb.addFireBlock(Direction.LEFT, Direction.LEFT);
 
-							this.IntersectCreatures(gameController.field[PosY][j]);
+							this.IntersectCreatures(this._gameController.field[PosY][j]);
 						}
-						else if (gameController.field[PosY][j].type() === FieldType.CEMENT)
+						else if (this._gameController.field[PosY][j].type() === FieldType.CEMENT)
 						{
-							gameController.field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
+							this._gameController.field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
 							bomb.addFireBlock(Direction.LEFT, Direction.WALL);
 							break;
 						}
@@ -271,15 +274,15 @@ class MovementController {
 			for (let i = PosY + 1; i < PosY + bomb.explodeLenght; ++i)
 			{
 				if (i < Config.HEIGHT) {
-					if (gameController.field[i][PosX].type() === FieldType.GRASS)
+					if (this._gameController.field[i][PosX].type() === FieldType.GRASS)
 					{
 						bomb.addFireBlock(Direction.DOWN, Direction.DOWN);
 
-						this.IntersectCreatures(gameController.field[i][PosX]);
+						this.IntersectCreatures(this._gameController.field[i][PosX]);
 					}
-					else if (gameController.field[i][PosX].type() === FieldType.CEMENT)
+					else if (this._gameController.field[i][PosX].type() === FieldType.CEMENT)
 					{
-						gameController.field[i][PosX] = new FieldCell(FieldType.GRASS, i, PosX);
+						this._gameController.field[i][PosX] = new FieldCell(FieldType.GRASS, i, PosX);
 						bomb.addFireBlock(Direction.DOWN, Direction.WALL);
 						break;
 					}
@@ -295,15 +298,15 @@ class MovementController {
 			for (let i = PosY - 1; i > PosY - bomb.explodeLenght; --i)
 			{
 				if (i > 0) {
-					if (gameController.field[i][PosX].type() === FieldType.GRASS)
+					if (this._gameController.field[i][PosX].type() === FieldType.GRASS)
 					{
 						bomb.addFireBlock(Direction.UP, Direction.UP);
 
-						this.IntersectCreatures(gameController.field[i][PosX]);
+						this.IntersectCreatures(this._gameController.field[i][PosX]);
 					}
-					else if (gameController.field[i][PosX].type() === FieldType.CEMENT)
+					else if (this._gameController.field[i][PosX].type() === FieldType.CEMENT)
 					{
-						gameController.field[i][PosX] = new FieldCell(FieldType.GRASS, i, PosX);
+						this._gameController.field[i][PosX] = new FieldCell(FieldType.GRASS, i, PosX);
 						bomb.addFireBlock(Direction.UP, Direction.WALL);
 						break;
 					}
@@ -325,7 +328,7 @@ class MovementController {
 		let i = Math.floor(creature.posY /Config. CELL_SIZE);
 
 		const upRowIndex = i - 1;
-		const upRow = gameController.field[upRowIndex];
+		const upRow = this._gameController.field[upRowIndex];
 
 		let wallFound = false;
 		let stayOnBomb = false;
@@ -415,7 +418,7 @@ class MovementController {
 		let i = Math.floor(creature.posY / Config.CELL_SIZE);
 
 		const downRowIndex = i + 1;
-		const downRow = gameController.field[downRowIndex];
+		const downRow = this._gameController.field[downRowIndex];
 
 		let wallFound = false;
 		let stayOnBomb = false;
@@ -505,7 +508,7 @@ class MovementController {
 		let i = Math.floor(creature.posY / Config.CELL_SIZE);
 
 		const rightRowIndex = j + 1;
-		const rightRow = gameController.field;
+		const rightRow = this._gameController.field;
 
 		let wallFound = false;
 		let stayOnBomb = false;
@@ -596,7 +599,7 @@ class MovementController {
 		let i = Math.floor(creature.posY / Config.CELL_SIZE);
 
 		const leftRowIndex = j - 1;
-		const leftRow = gameController.field;
+		const leftRow = this._gameController.field;
 
 		let wallFound = false;
 		let stayOnBomb = false;

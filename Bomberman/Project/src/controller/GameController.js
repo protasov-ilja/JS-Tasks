@@ -3,12 +3,11 @@ const FIELD_COLOR2 = '#ececb7';
 
 class GameController {
 	constructor() {
-		canvas = document.getElementById("canvas");
-		canvas.width = Config.WIDTH;
-		canvas.height = Config.HEIGHT;
-		ctx = canvas.getContext('2d');
+		this.canvas = document.getElementById("canvas");
+		this.canvas.width = Config.WIDTH;
+		this.canvas.height = Config.HEIGHT;
+		this.ctx = this.canvas.getContext('2d');
 
-		this.field = getField(LEVEL_1);
 		this.endOfGame = false;
 		this.player = null;
 		this.monsters = null;
@@ -18,37 +17,39 @@ class GameController {
 		this.bombs = [];
 		this.bombCount = 0;
 
-		const resourcesLoader = new ResourcesLoader();
-		const movementController = new MovementController();
-		const interfaceController = new InterfaceController();
+		this.resourcesLoader = new ResourcesLoader();
+		this.movementController = new MovementController(this.resourcesLoader, this);
+		this.interfaceController = new InterfaceController(this);
 
-		interfaceController.gameMusic.play();
-		resourcesLoader.loadResources(() => { this.initGame(); });
+		this.field = this.resourcesLoader.getField(LEVEL_1);
+
+		this.interfaceController.gameMusic.play();
+		this.resourcesLoader.loadResources(() => { this.initGame(); });
 	}
 
 
 	initGame() {
-		interfaceController.winMusic.pause();
-		interfaceController.winMusic.CurrentTime = 0;
-		interfaceController.gameMusic.play();
+		this.interfaceController.winMusic.pause();
+		this.interfaceController.winMusic.CurrentTime = 0;
+		this.interfaceController.gameMusic.play();
 
 		this.endOfGame = false;
-		this.player = new Player( Date.now() );
+		this.player = new Player(this.resourcesLoader, Date.now() );
 
-		interfaceController.liveForm.innerHTML = '0' + this.player.live;
-		interfaceController.bombForm.innerHTML = '0' + this.player.bombCount;
+		this.interfaceController.liveForm.innerHTML = '0' + this.player.live;
+		this.interfaceController.bombForm.innerHTML = '0' + this.player.bombCount;
 
 		this.monsters = [];
 
-		this.addMonster(this._balloon1, 90, 120, balloonSprites);
-		this.addMonster(this._balloon2, 180, 30, balloonSprites);
+		this.addMonster(this._balloon1, 90, 120, this.resourcesLoader.getSpritesByType(ResourceType.BALLOON_SPRITES) );
+		this.addMonster(this._balloon2, 180, 30, this.resourcesLoader.getSpritesByType(ResourceType.BALLOON_SPRITES) );
 		cancelAnimationFrame(this._requestAnimationFrameId);
-		interfaceController.useTimer();
+		this.interfaceController.useTimer();
 		this.animate();
 	}
 
 	addMonster(monster, currX, currY, sprites) {
-		monster = new Monster(currX, currY, sprites, Date.now() );
+		monster = new Monster(this.resourcesLoader, currX, currY, sprites, Date.now() );
 		this.monsters.push(monster);
 	}
 
@@ -56,13 +57,13 @@ class GameController {
 		step();
 
 		function step() {
-			ctx.clearRect(0, 0, WIDTH, HEIGHT);
+			ctx.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
 
 			this.drawField();
 
 			for (let i = 0; i < this.bombs.length; ++i)
 			{
-				if (this.bombs[i].getCurrTime() - this.bombs[i].getCreateTime() < BOMB_TIMER)
+				if (this.bombs[i].getCurrTime() - this.bombs[i].getCreateTime() < Config.BOMB_TIMER)
 				{
 					this.drawCreature(this.bombs[i], this.bombs[i].getCurrSprite() );
 				}
@@ -70,11 +71,11 @@ class GameController {
 				{
 					if (!this.bombs[i].isExploded())
 					{
-						interfaceController.explodeMusic.pause();
-						interfaceController.explodeMusic.currentTime = 0;
-						interfaceController.explodeMusic.play();
+						this.interfaceController.explodeMusic.pause();
+						this.interfaceController.explodeMusic.currentTime = 0;
+						this.interfaceController.explodeMusic.play();
 						this.bombs[i].explode( this.bombs[i].getCurrTime() );
-						logicOfExplode(this.bombs[i]);
+						this.movementController.logicOfExplode(this.bombs[i]);
 					}
 				}
 			}
@@ -101,28 +102,28 @@ class GameController {
 
 			if (this.player.mooving)
 			{
-				moveCreature(this.player);
+				this.movementController.moveCreature(this.player);
 			}
 
 			for (let i = 0; i < this.monsters.length; ++i)
 			{
-				moveCreature(this.monsters[i]);
+				this.movementController.moveCreature(this.monsters[i]);
 				this.drawCreature(this.monsters[i], this.monsters[i].getCurrSprite() );
-				killPlayer(this.monsters[i]);
-				if ( killMonster(this.monsters[i]) ) {
-					interfaceController.score = score + 100;
-					interfaceController.scoreForm.innerHTML = score;
+				this.movementController.killPlayer(this.monsters[i]);
+				if ( this.movementController.killMonster(this.monsters[i]) ) {
+					this.interfaceController.score = this.interfaceController.score + 100;
+					this.interfaceController.scoreForm.innerHTML = this.interfaceController.score;
 					this.monsters.splice(i, 1);
 				}
 			}
 
 			if (this.endOfGame)
 			{
-				interfaceController.endTheGame();
+				this.interfaceController.endTheGame();
 			}
 			else if (this.monsters.length == 0)
 			{
-				interfaceController.winTheGame();
+				this.interfaceController.winTheGame();
 			}
 			else
 			{
@@ -136,21 +137,21 @@ class GameController {
 	grid() {
 		for (let j = 0; j <= Config.COUNT_OF_CELLS_HEIGHT; j++) {
 			let k = j * 30;
-			ctx.strokeRect(0, k, Config.WIDTH, 1);
+			this.ctx.strokeRect(0, k, Config.WIDTH, 1);
 		}
 
 		for (let i = 0; i <= Config.COUNT_OF_CELLS_WIDTH; i++) {
 			let k = i * 30;
-			ctx.strokeRect(k, 0, 1, Config.HEIGHT);
+			this.ctx.strokeRect(k, 0, 1, Config.HEIGHT);
 		}
 	}
 
 	drawCreature(creature, sprite) {
-		ctx.drawImage(sprite, 0, 0, creature.spriteSize, creature.spriteSize, creature.posX, creature.posY, creature.spriteSize, creature.spriteSize);
+		this.ctx.drawImage(sprite, 0, 0, creature.spriteSize, creature.spriteSize, creature.posX, creature.posY, creature.spriteSize, creature.spriteSize);
 	}
 
 	drawExplode(sprite, posX, posY) {
-		ctx.drawImage(sprite, 0, 0, Config.CELL_SIZE, Config.CELL_SIZE, posX, posY, Config.CELL_SIZE, Config.CELL_SIZE);
+		this.ctx.drawImage(sprite, 0, 0, Config.CELL_SIZE, Config.CELL_SIZE, posX, posY, Config.CELL_SIZE, Config.CELL_SIZE);
 	}
 
 	drawField() {
@@ -175,15 +176,15 @@ class GameController {
 	}
 
 	drawGrass(yPos, xPos) {
-		ctx.fillStyle = FIELD_COLOR1;
-		ctx.fillRect( (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
+		this.ctx.fillStyle = FIELD_COLOR1;
+		this.ctx.fillRect( (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
 	}
 
 	drawIronBlock(yPos, xPos) {
-		ctx.drawImage(spriteBlock1, 0, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
+		this.ctx.drawImage(spriteBlock1, 0, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
 	}
 
 	drawCementBlock(yPos, xPos) {
-		ctx.drawImage(spriteBlock1, 30, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
+		this.ctx.drawImage(spriteBlock1, 30, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
 	}
 }
