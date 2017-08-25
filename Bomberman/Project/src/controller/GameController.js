@@ -11,7 +11,7 @@ class GameController {
 		this.endOfGame = false;
 		this.player = null;
 		this.monsters = null;
-		this._requestAnimationFrameId;
+		this._requestAnimationFrameId = null;
 		this._balloon1 = null;
 		this._balloon2 = null;
 		this.bombs = [];
@@ -21,7 +21,7 @@ class GameController {
 		this.movementController = new MovementController(this.resourcesLoader, this);
 		this.interfaceController = new InterfaceController(this);
 
-		this.field = this.resourcesLoader.getField(LEVEL_1);
+		this.field = FieldLoader.getField(LEVEL_1);
 
 		this.interfaceController.gameMusic.play();
 		this.resourcesLoader.loadResources(() => { this.initGame(); });
@@ -181,10 +181,10 @@ class GameController {
 	}
 
 	drawIronBlock(yPos, xPos) {
-		this.ctx.drawImage(spriteBlock1, 0, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
+		this.ctx.drawImage(this.resourcesLoader.getSpritesByType(ResourceType.BLOCK_SPRITES1), 0, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE); // Рисуем изображение от точки с координатами 0, 0
 	}
 
 	drawCementBlock(yPos, xPos) {
-		this.ctx.drawImage(spriteBlock1, 30, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
+		this.ctx.drawImage(this.resourcesLoader.getSpritesByType(ResourceType.BLOCK_SPRITES1), 30, 0, Config.CELL_SIZE, Config.CELL_SIZE, (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
 	}
 }

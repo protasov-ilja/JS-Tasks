@@ -64,14 +64,14 @@ class InterfaceController {
 	}
 
 	_startNewGame() {
-		canvas.classList.remove('end_game');
+		this._gameController.canvas.classList.remove('end_game');
 		this.winMusic.pause();
 
-		initGame();
+		this._gameController.initGame();
 	}
 
 	_selectLevel(indexButton) {
-		field = getField(this._levelFields[indexButton]);
+		this._gameController.field = FieldLoader.getField(this._levelFields[indexButton]);
 
 		for (let i = 0; i < this._levelButtons.length; ++i)
 		{
@@ -134,13 +134,13 @@ class InterfaceController {
 	}
 
 	endTheGame() {
-		ctx.beginPath();
-		ctx.font = "bold 50pt Arial";
-		ctx.fillStyle = '#ffbe26';
-		ctx.textAlign = 'center';
-		ctx.fillText('Game Over', Config.WIDTH / 2, Config.HEIGHT / 2);
-		ctx.fill();
-		ctx.closePath();
+		this._gameController.ctx.beginPath();
+		this._gameController.ctx.font = "bold 50pt Arial";
+		this._gameController.ctx.fillStyle = '#ffbe26';
+		this._gameController.ctx.textAlign = 'center';
+		this._gameController.ctx.fillText('Game Over', Config.WIDTH / 2, Config.HEIGHT / 2);
+		this._gameController.ctx.fill();
+		this._gameController.ctx.closePath();
 	}
 
 	winTheGame() {
@@ -148,12 +148,12 @@ class InterfaceController {
 		this.gameMusic.CurrentTime = 0;
 		this.winMusic.play();
 
-		ctx.beginPath();
-		ctx.font = "bold 50pt Arial";
-		ctx.fillStyle = '#ff0021';
-		ctx.textAlign = 'center';
-		ctx.fillText('You WIN', Config.WIDTH / 2, Config.HEIGHT / 2);
-		ctx.fill();
-		ctx.closePath();
+		this._gameController.ctx.beginPath();
+		this._gameController.ctx.font = "bold 50pt Arial";
+		this._gameController.ctx.fillStyle = '#ff0021';
+		this._gameController.ctx.textAlign = 'center';
+		this._gameController.ctx.fillText('You WIN', Config.WIDTH / 2, Config.HEIGHT / 2);
+		this._gameController.ctx.fill();
+		this._gameController.ctx.closePath();
 	}
 }
