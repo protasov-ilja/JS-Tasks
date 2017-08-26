@@ -1,6 +1,5 @@
 class Bomb {
-	constructor(resources, createTime, x, y) {
-		this._resources = resources;
+	constructor(createTime, x, y) {
 		this.posX = x;
 		this.posY = y;
 		this.spriteSize = Config.BOMB_SIZE;
@@ -8,10 +7,10 @@ class Bomb {
 		this._exploded = false;
 		this._startExplodeTime = null;
 		this._explodeDuration = Config.EXPLODING_TIME;
-		this.sprites = this._resources.getSpritesByType(ResourceType.BOMB_SPRITES);
+		this.sprites = bombMove;
 		this.stepDuration = 200;
 		this.explodeStepDuration = Config.EXPLODING_TIME / 4;
-		this.numberOfFrames = this.sprites.length;
+		this.numberOfFrames = bombMove.length;
 		this.explodeLenght = 2;
 		this._fireBlocks = [];
 	}

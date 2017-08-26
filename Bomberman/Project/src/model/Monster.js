@@ -1,15 +1,15 @@
-class Monster extends Creature {
-	constructor(resources, x, y, monsterSprites, time) {
+class Monster extends Creature{
+	constructor(x, y, speed, monsterSprites, time) {
 		super();
 		super.posX = x;
 		super.posY = y;
 		super.live = 1;
 		super.startTimeAnimation = time;
-		super.moveSpeed = Config.MONSTER_SPEED;
+		super.moveSpeed = speed;
 		super.spriteSize = Config.MONSTER_SIZE;
 		super.sprites = monsterSprites;
 		super.numberOfFrames = null;
-		this.spritesKill = resources.getSpritesByType(ResourceType.MONSTER_DEATH);
+		this.spritesKill = monsterKill;
 		super.stepDuration = 200;
 	}
 }

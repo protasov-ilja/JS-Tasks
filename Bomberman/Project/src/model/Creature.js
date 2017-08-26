@@ -1,6 +1,5 @@
 class Creature {
-	constructor() {
-		// ,startTimeAnimation, sprites, spritesKill) {
+	constructor(startTimeAnimation, sprites, spritesKill) {
 		this.posX = Config.START_POS_PLAYER;
 		this.posY = Config.START_POS_PLAYER;
 		this.live = Config.START_LIVE;
@@ -9,7 +8,7 @@ class Creature {
 		this.spriteSize = Config.PLAYER_SIZE;
 		this.numberOfFrames = null;
 		this.sprites = null;
-		this.spritesKill = null;
+		this.spritesKill = playerDeath;
 		this.killTime = null;
 		this.startTimeAnimation = null;
 		this.stepDuration = 150;
