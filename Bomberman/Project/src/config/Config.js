@@ -17,5 +17,3 @@ Config = {
 	EXPLODING_TIME: (50 * 4),
 	BOMB_SIZE: 30
 };
-
-let field = getField(LEVEL_1);

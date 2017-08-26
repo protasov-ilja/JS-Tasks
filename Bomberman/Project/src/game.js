@@ -12,6 +12,7 @@ let drop3 = null;
 let requestAnimationFrameId;
 let bombs = [];
 let bombCount = 0;
+let field = null;
 
 window.onload = () => {
 	canvas = document.getElementById("canvas");
@@ -21,6 +22,8 @@ window.onload = () => {
 	gameMusic.play();
 
 	loadingResources();
+
+	field = getField(LEVEL_1);
 };
 
 function initGame() {

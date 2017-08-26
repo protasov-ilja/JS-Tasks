@@ -19,6 +19,7 @@ const levelFields = [LEVEL_1, LEVEL_2, LEVEL_3];
 let music = true;
 let clearStep = null;
 let score = 0;
+let currLevel = 0;
 
 musicButton.onclick = musicOn;
 
@@ -50,12 +51,16 @@ function startNewGame() {
 	canvas.classList.remove('end_game');
 	winMusic.pause();
 
+	field = getField(levelFields[currLevel]);
+
 	initGame();
 }
 
 for (let selButton = 0; selButton < levelButtons.length; ++selButton)
 {
 	levelButtons[selButton].onclick = () => {
+		currLevel = selButton;
+
 		selectLevel(selButton);
 		initGame();
 		closeOptionsMenu();
