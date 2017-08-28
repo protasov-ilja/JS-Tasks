@@ -22,21 +22,17 @@ const burstUp = [];
 const burstDown = [];
 const burstLeft = [];
 const burstRight = [];
-const burstLongUp = [];
-const burstLongLeft = [];
 const burstWall = [];
 
+let spriteBlock = null;
 let canvas = null;
 let ctx = null;
 let loadedResourcesCount = 0;
-let spriteBlock1 = null;
-let spriteBlock2 = null;
-let monsters = [];
 
 function onItemLoaded() {
 	++loadedResourcesCount;
 
-	if (loadedResourcesCount === Config.resourcesToLoadCount)
+	if (loadedResourcesCount === Config.RESOURCES_TO_LOAD_COUNT)
 	{
 		initGame();
 	}
@@ -259,26 +255,6 @@ function loadingExplodeSprites() {
 	burstRight4.src = 'res/img/sprites/burst/right/4.png';
 	burstRight.push(burstRight1, burstRight2, burstRight3, burstRight4);
 
-	const burstLongUp1 = ImageUtils.createImage(onItemLoaded);
-	burstLongUp1.src = 'res/img/sprites/burst/long_up/1.png';
-	const burstLongUp2 = ImageUtils.createImage(onItemLoaded);
-	burstLongUp2.src = 'res/img/sprites/burst/long_up/2.png';
-	const burstLongUp3 = ImageUtils.createImage(onItemLoaded);
-	burstLongUp3.src = 'res/img/sprites/burst/long_up/3.png';
-	const burstLongUp4 = ImageUtils.createImage(onItemLoaded);
-	burstLongUp4.src = 'res/img/sprites/burst/long_up/4.png';
-	burstLongUp.push(burstLongUp1, burstLongUp2, burstLongUp3, burstLongUp4);
-
-	const burstLongLeft1 = ImageUtils.createImage(onItemLoaded);
-	burstLongLeft1.src = 'res/img/sprites/burst/long_left/1.png';
-	const burstLongLeft2 = ImageUtils.createImage(onItemLoaded);
-	burstLongLeft2.src = 'res/img/sprites/burst/long_left/2.png';
-	const burstLongLeft3 = ImageUtils.createImage(onItemLoaded);
-	burstLongLeft3.src = 'res/img/sprites/burst/long_left/3.png';
-	const burstLongLeft4 = ImageUtils.createImage(onItemLoaded);
-	burstLongLeft4.src = 'res/img/sprites/burst/long_left/4.png';
-	burstLongLeft.push(burstLongLeft1, burstLongLeft2, burstLongLeft3, burstLongLeft4);
-
 	const burstWall1 = ImageUtils.createImage(onItemLoaded);
 	burstWall1.src = 'res/img/sprites/burst/wall/1.png';
 	const burstWall2 = ImageUtils.createImage(onItemLoaded);
@@ -304,39 +280,6 @@ function loadingExplodeSprites() {
 }
 
 function loadingBlockSprites() {
-	spriteBlock1 = ImageUtils.createImage(onItemLoaded);
-	spriteBlock1.src = 'res/img/sprites/blocks/sprite_block1.png';
-
-	spriteBlock2 = ImageUtils.createImage(onItemLoaded);
-	spriteBlock2.src = 'res/img/sprites/blocks/sprite_block2.png';
-}
-
-function getField(level) {
-	let field = [];
-
-	let fieldJson = level.slice(0);
-
-	for (let i = 0; i < fieldJson.length; ++i)
-	{
-		let currLine = [];
-
-		for (let j = 0; j < fieldJson[i].length; ++j)
-		{
-			switch(fieldJson[i][j]) {
-				case FieldType.GRASS:
-					currLine.push( new FieldCell(FieldType.GRASS, i, j) );
-					break;
-				case FieldType.IRON:
-					currLine.push( new FieldCell(FieldType.IRON, i, j) );
-					break;
-				case FieldType.CEMENT:
-					currLine.push( new FieldCell(FieldType.CEMENT, i, j) );
-					break;
-			}
-		}
-
-		field.push(currLine);
-	}
-
-	return field;
+	spriteBlock = ImageUtils.createImage(onItemLoaded);
+	spriteBlock.src = 'res/img/sprites/blocks/sprite_block1.png';
 }

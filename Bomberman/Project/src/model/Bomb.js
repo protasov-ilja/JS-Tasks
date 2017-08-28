@@ -9,7 +9,7 @@ class Bomb {
 		this._explodeDuration = Config.EXPLODING_TIME;
 		this.sprites = bombMove;
 		this.stepDuration = 200;
-		this.explodeStepDuration = Config.EXPLODING_TIME / 4;
+		this.explodeStepDuration = 50;
 		this.numberOfFrames = bombMove.length;
 		this.explodeLenght = 2;
 		this._fireBlocks = [];

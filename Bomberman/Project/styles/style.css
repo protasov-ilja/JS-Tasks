@@ -6,7 +6,8 @@
 }
 
 body {
-    background: url("../res/img/background/Bomberman_fon.png") center;
+    background: url(../res/img/background/Bomberman_fon.png) no-repeat center center fixed;
+    background-size: cover;
 }
 
 .selected {

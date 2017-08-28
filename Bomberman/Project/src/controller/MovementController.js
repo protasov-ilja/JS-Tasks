@@ -1,5 +1,3 @@
-field = getField(LEVEL_1);
-
 document.onkeydown = function (event) {
 	if (!endOfGame && !player.kill)
 	{

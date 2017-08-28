@@ -22,6 +22,20 @@ let score = 0;
 let currLevel = 0;
 
 musicButton.onclick = musicOn;
+newGameButton.onclick = startNewGame;
+optionsButton.onclick = openOptionsMenu;
+exitOptionsButton.onclick = closeOptionsMenu;
+
+for (let selButton = 0; selButton < levelButtons.length; ++selButton)
+{
+	levelButtons[selButton].onclick = () => {
+		currLevel = selButton;
+
+		selectLevel(selButton);
+		initGame();
+		closeOptionsMenu();
+	};
+}
 
 function musicOn() {
 	if (music)
@@ -45,8 +59,6 @@ function SoundController(music) {
 	explodeMusic.volume = i;
 }
 
-newGameButton.onclick = startNewGame;
-
 function startNewGame() {
 	canvas.classList.remove('end_game');
 	winMusic.pause();
@@ -54,17 +66,6 @@ function startNewGame() {
 	field = getField(levelFields[currLevel]);
 
 	initGame();
-}
-
-for (let selButton = 0; selButton < levelButtons.length; ++selButton)
-{
-	levelButtons[selButton].onclick = () => {
-		currLevel = selButton;
-
-		selectLevel(selButton);
-		initGame();
-		closeOptionsMenu();
-	};
 }
 
 function selectLevel(indexButton) {
@@ -93,13 +94,9 @@ function levelOff(currLevel) {
 	currLevel.classList.add('unselected');
 }
 
-optionsButton.onclick = openOptionsMenu;
-
 function openOptionsMenu() {
 	optionsContainer.classList.remove('none');
 }
-
-exitOptionsButton.onclick = closeOptionsMenu;
 
 function closeOptionsMenu() {
 	optionsContainer.classList.add('none');

@@ -6,7 +6,6 @@ class Creature {
 		this.direction = Direction.DOWN;
 		this.moveSpeed = Config.PLAYER_SPEED;
 		this.spriteSize = Config.PLAYER_SIZE;
-		this.numberOfFrames = null;
 		this.sprites = null;
 		this.spritesKill = playerDeath;
 		this.killTime = null;

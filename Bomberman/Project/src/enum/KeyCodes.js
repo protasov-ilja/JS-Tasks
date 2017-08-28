@@ -1,4 +1,4 @@
-KeyCode = {
+const KeyCode = {
 	ARROW_UP: 38,
 	W: 87,
 	ARROW_DOWN: 40,
