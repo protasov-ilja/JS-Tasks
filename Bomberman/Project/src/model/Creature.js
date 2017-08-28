@@ -1,16 +1,16 @@
 class Creature {
-	constructor(startTimeAnimation, sprites, spritesKill) {
-		this.posX = Config.START_POS_PLAYER;
-		this.posY = Config.START_POS_PLAYER;
-		this.live = Config.START_LIVE;
+	constructor(startTimeAnimation, sprites, spritesKill, x, y, liveCount, speed, size, stepTime) {
+		this.posX = x;
+		this.posY = y;
+		this.live = liveCount;
 		this.direction = Direction.DOWN;
-		this.moveSpeed = Config.PLAYER_SPEED;
-		this.spriteSize = Config.PLAYER_SIZE;
-		this.sprites = null;
-		this.spritesKill = playerDeath;
+		this.moveSpeed = speed;
+		this.spriteSize = size;
+		this._sprites = sprites;
+		this._spritesKill = spritesKill;
 		this.killTime = null;
-		this.startTimeAnimation = null;
-		this.stepDuration = 150;
+		this._startTimeAnimation = startTimeAnimation;
+		this.stepDuration = stepTime;
 		this.kill = false;
 		this.killAnimationPlaying = false;
 		this.killAnimationComplete = false;
@@ -21,7 +21,7 @@ class Creature {
 	}
 
 	getCurrStep(numberOfFrames) {
-		let time = (!this.kill) ? this.startTimeAnimation : this.killTime;
+		let time = (!this.kill) ? this._startTimeAnimation : this.killTime;
 		let currTime = ( Date.now() ) - time;
 		let progressAnimation = currTime % (this.stepDuration * numberOfFrames); // прогресс анимации
 
@@ -40,16 +40,14 @@ class Creature {
 
 		if (!this.kill)
 		{
-			let animation = this.sprites;
+			let animation = this._sprites;
 
 			stepAnimation = animation[this.direction];
 		}
 		else
 		{
-			stepAnimation = this.spritesKill;
+			stepAnimation = this._spritesKill;
 		}
-
-		this.numberOfFrames = stepAnimation.length;
 
 		let currAnimation = stepAnimation[this.getCurrStep(stepAnimation.length)];
 

@@ -1,9 +1,7 @@
 class Player extends Creature {
-    constructor(_startTimeAnimation) {
-    	super();
+    constructor(startTimeAnimation) {
+    	super(startTimeAnimation, playerSprites, playerDeath, Config.START_POS_PLAYER, Config.START_POS_PLAYER, Config.START_LIVE, Config.PLAYER_SPEED, Config.PLAYER_SIZE, 150);
 		this.bombCount = Config.START_BOMB_COUNT;
-		super.sprites = playerSprites;
-		super.startTimeAnimation = _startTimeAnimation;
 		this.mooving = false;
     }
 }
