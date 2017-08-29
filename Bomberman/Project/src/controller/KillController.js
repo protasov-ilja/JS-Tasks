@@ -1,18 +1,5 @@
 function checkForKillPlayer(monster) {
-	const playerRect = {
-		left: player.posX,
-		top: player.posY - player._moveSpeed,
-		width: Config.PLAYER_SIZE,
-		height: Config.PLAYER_SIZE
-	};
-	const monsterRect = {
-		left: monster.posX,
-		top: monster.posY - monster._moveSpeed,
-		width: Config.MONSTER_SIZE,
-		height: Config.MONSTER_SIZE
-	};
-
-	if (MathUtils.intersectsRects(playerRect, monsterRect)) {
+	if (MathUtils.intersectsRects(player.getRect(), monster.getRect())) {
 		killPlayer();
 	}
 
@@ -49,7 +36,7 @@ function checkForIntersectCellExplodeWithCreatures(object) {
 		}
 	}
 
-	if ( isIntersects(object, player) )
+	if (isIntersects(object, player))
 	{
 		killPlayer();
 	}
@@ -79,13 +66,6 @@ function killPlayer() {
 }
 
 function isIntersects(object, creature) {
-	let creatureRect = {
-		left: creature.posX,
-		top: creature.posY,
-		width: creature.spriteSize,
-		height: creature.spriteSize
-	};
-
 	let objectRect = {
 		left: object.posX,
 		top: object.posY,
@@ -93,5 +73,5 @@ function isIntersects(object, creature) {
 		height: Config.CELL_SIZE
 	};
 
-	return MathUtils.intersectsRects(objectRect, creatureRect);
+	return MathUtils.intersectsRects(objectRect, creature.getRect());
 }

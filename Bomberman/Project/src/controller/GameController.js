@@ -50,7 +50,7 @@ function animate() {
 	drawField();
 	checkIsBombExploded();
 	movePlayer();
-	checkMonsters();
+	processMonsters();
 	checkEndOfGame();
 
 	requestAnimationFrameId = requestAnimationFrame(animate); // вызов шага
@@ -61,15 +61,19 @@ function checkIsBombExploded() {
 		if (Date.now() - bombs[i].getCreateTime() < Config.BOMB_TIMER) {
 			drawObject(bombs[i], bombs[i].getCurrSprite());
 		}
-		else {
-			if (!bombs[i].isExploded()) {
+		else
+		{
+			if (!bombs[i].isExploded())
+			{
 				stopCurrSoundAndPlayNew(explodeMusic, explodeMusic);
 				bombs[i].explode(Date.now());
 				explodeBomb(bombs[i]);
-			} else if (bombs[i].isExploded())
+			}
+			else
 			{
 				// Рисуем взрыв
 				const fireBlocks = bombs[i].fireBlocks();
+
 				for (const block of fireBlocks) {
 					const sprites = burst[block.type];
 					drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
@@ -93,12 +97,13 @@ function movePlayer() {
 	drawObject(player, player.getCurrSprite());
 }
 
-function checkMonsters() {
+function processMonsters() {
 	for (let i = 0; i < monsters.length; ++i)
 	{
 		moveCreature(monsters[i]);
 		drawObject(monsters[i], monsters[i].getCurrSprite());
 		checkForKillPlayer(monsters[i]);
+
 		if (isMonsterDead(monsters[i])) {
 			score = score + Config.SCORE_BONUS;
 			scoreForm.innerHTML = score;
