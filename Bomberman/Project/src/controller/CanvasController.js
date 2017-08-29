@@ -1,6 +1,10 @@
 let canvas = null;
 let ctx = null;
 
+function clearField() {
+	ctx.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
+}
+
 function drawObject(creature, sprite) {
 	ctx.drawImage(sprite, 0, 0, creature.spriteSize, creature.spriteSize, creature.posX, creature.posY, creature.spriteSize, creature.spriteSize);
 }

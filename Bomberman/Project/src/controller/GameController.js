@@ -48,8 +48,7 @@ function addMonster(monster, currX, currY, sprites) {
 function animate() {
 	clearField();
 	drawField();
-	checkIsBombExplode();
-	checkIsBombExplodeEnd();
+	checkIsBombExploded();
 	movePlayer();
 	checkMonsters();
 	checkEndOfGame();
@@ -57,11 +56,7 @@ function animate() {
 	requestAnimationFrameId = requestAnimationFrame(animate); // вызов шага
 }
 
-function clearField() {
-	ctx.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
-}
-
-function checkIsBombExplode() {
+function checkIsBombExploded() {
 	for (let i = 0; i < bombs.length; ++i) {
 		if (Date.now() - bombs[i].getCreateTime() < Config.BOMB_TIMER) {
 			drawObject(bombs[i], bombs[i].getCurrSprite());
@@ -87,10 +82,6 @@ function checkIsBombExplode() {
 			}
 		}
 	}
-}
-
-function checkIsBombExplodeEnd() {
-
 }
 
 function movePlayer() {
