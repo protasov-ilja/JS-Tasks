@@ -32,12 +32,12 @@ class Creature {
 
 	getCurrStep(numberOfFrames) {
 		let time = this.dying ? this._dyingTime : this._startTimeAnimation;
-		let currTime = ( Date.now() ) - time;
+		let currTime = (Date.now()) - time;
 		let progressAnimation = currTime % (this._stepDuration * numberOfFrames); // прогресс анимации
 
-		progressAnimation = Math.floor(progressAnimation / ( (this._stepDuration * numberOfFrames) / numberOfFrames) );
+		progressAnimation = Math.floor(progressAnimation / ((this._stepDuration * numberOfFrames) / numberOfFrames));
 
-		if ( (this.dying) && (progressAnimation >= numberOfFrames - 1) )
+		if ((this.dying) && (progressAnimation >= numberOfFrames - 1))
 		{
 			this.dyingAnimationComplete = true;
 		}
@@ -47,6 +47,7 @@ class Creature {
 
 	getCurrSprite() {
 		let stepAnimation = null;
+
 		if (this.dying)
 		{
 			stepAnimation = this._spritesDeath;

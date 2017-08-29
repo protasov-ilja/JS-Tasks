@@ -1,5 +1,6 @@
 function switchVolume(music) {
 	let volume = music ? 1 : 0;
+
 	gameMusic.volume = volume;
 	winMusic.volume = volume;
 	explodeMusic.volume = volume;

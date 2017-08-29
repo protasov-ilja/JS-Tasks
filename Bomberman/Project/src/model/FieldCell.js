@@ -9,4 +9,13 @@ class FieldCell {
 	type() {
 		return this._type;
 	}
+
+	getRect() {
+		return {
+			left: this.posX,
+			top: this.posY,
+			width: Config.CELL_SIZE,
+			height: Config.CELL_SIZE
+		}
+	}
 }

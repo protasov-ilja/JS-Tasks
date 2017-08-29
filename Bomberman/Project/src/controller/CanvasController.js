@@ -49,13 +49,15 @@ function drawCementBlock(yPos, xPos) {
 
 //сетка
 function grid() {
-	for (let j = 0; j <= Config.COUNT_OF_CELLS_HEIGHT; j++) {
+	for (let j = 0; j <= Config.COUNT_OF_CELLS_HEIGHT; j++)
+	{
 		let k = j * Config.CELL_SIZE;
 
 		ctx.strokeRect(0, k, Config.WIDTH, 1);
 	}
 
-	for (let i = 0; i <= Config.COUNT_OF_CELLS_WIDTH; i++) {
+	for (let i = 0; i <= Config.COUNT_OF_CELLS_WIDTH; i++)
+	{
 		let k = i * Config.CELL_SIZE;
 
 		ctx.strokeRect(k, 0, 1, Config.HEIGHT);

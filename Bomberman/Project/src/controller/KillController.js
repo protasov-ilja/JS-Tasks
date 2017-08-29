@@ -65,13 +65,6 @@ function killPlayer() {
 	}
 }
 
-function isIntersects(object, creature) {
-	let objectRect = {
-		left: object.posX,
-		top: object.posY,
-		width: Config.CELL_SIZE,
-		height: Config.CELL_SIZE
-	};
-
-	return MathUtils.intersectsRects(objectRect, creature.getRect());
+function isIntersects(cellExplode, creature) {
+	return MathUtils.intersectsRects(cellExplode.getRect(), creature.getRect());
 }

@@ -39,7 +39,7 @@ function moveUp(creature) {
 			if (upRow[currColumn].type() != FieldType.GRASS)
 			{
 				const creatureRect = creature.getRect();
-				const wallRect = {left: currColumn * Config.CELL_SIZE, top: upRowIndex * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
+				const wallRect = upRow[currColumn].getRect();
 
 				if (MathUtils.intersectsVertical(creatureRect, wallRect))
 				{
@@ -104,7 +104,7 @@ function moveDown(creature) {
 			if (downRow[currColumn].type() != FieldType.GRASS)
 			{
 				const creatureRect = creature.getRect();
-				const wallRect = {left: currColumn * Config.CELL_SIZE, top: downRowIndex * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
+				const wallRect = downRow[currColumn].getRect();
 
 				if (MathUtils.intersectsVertical(creatureRect, wallRect))
 				{
@@ -169,7 +169,7 @@ function moveRight(creature) {
 			if (rightRow[currColumn][rightRowIndex].type() != FieldType.GRASS)
 			{
 				const creatureRect = creature.getRect();
-				const wallRect = {left: rightRowIndex * Config.CELL_SIZE, top: currColumn * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
+				const wallRect = rightRow[currColumn][rightRowIndex].getRect();
 
 				if (MathUtils.intersectsHorizontal(creatureRect, wallRect))
 				{
@@ -234,7 +234,7 @@ function moveLeft(creature) {
 			if (leftRow[currColumn][leftRowIndex].type() != FieldType.GRASS)
 			{
 				const creatureRect = creature.getRect();
-				const wallRect = {left: leftRowIndex * Config.CELL_SIZE, top: currColumn * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
+				const wallRect = leftRow[currColumn][leftRowIndex].getRect();
 
 				if (MathUtils.intersectsHorizontal(creatureRect, wallRect))
 				{
@@ -287,7 +287,7 @@ function checkStayOnBomb(wallFound, creature) {
 	{
 		for (const bomb of bombs)
 		{
-			if (MathUtils.intersectsRects( bomb.getRect(), creature.getRect() ))
+			if (MathUtils.intersectsRects(bomb.getRect(), creature.getRect()))
 			{
 				return true;
 			}

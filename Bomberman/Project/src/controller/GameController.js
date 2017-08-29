@@ -57,8 +57,10 @@ function animate() {
 }
 
 function checkIsBombExploded() {
-	for (let i = 0; i < bombs.length; ++i) {
-		if (Date.now() - bombs[i].getCreateTime() < Config.BOMB_TIMER) {
+	for (let i = 0; i < bombs.length; ++i)
+	{
+		if (Date.now() - bombs[i].getCreateTime() < Config.BOMB_TIMER)
+		{
 			drawObject(bombs[i], bombs[i].getCurrSprite());
 		}
 		else
@@ -74,12 +76,14 @@ function checkIsBombExploded() {
 				// Рисуем взрыв
 				const fireBlocks = bombs[i].fireBlocks();
 
-				for (const block of fireBlocks) {
+				for (const block of fireBlocks)
+				{
 					const sprites = burst[block.type];
 					drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
 				}
 
-				if (bombs[i].isExplodeCompleted(Date.now())) {
+				if (bombs[i].isExplodeCompleted(Date.now()))
+				{
 					bombs.splice(i, 1); // удаляем бомбу i
 					--bombCount;// уменьшаем индекс bombCount на 1
 				}
