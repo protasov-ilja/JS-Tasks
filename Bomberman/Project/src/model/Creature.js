@@ -4,28 +4,28 @@ class Creature {
 		this.posY = y;
 		this.live = liveCount;
 		this.direction = Direction.DOWN;
-		this.moveSpeed = speed;
+		this._moveSpeed = speed;
 		this.spriteSize = size;
 		this._sprites = sprites;
 		this._spritesKill = spritesKill;
-		this.killTime = null;
+		this._killTime = null;
 		this._startTimeAnimation = startTimeAnimation;
-		this.stepDuration = stepTime;
+		this._stepDuration = stepTime;
 		this.kill = false;
 		this.killAnimationPlaying = false;
 		this.killAnimationComplete = false;
 	}
 
 	setKillTime(time) {
-		this.killTime = time;
+		this._killTime = time;
 	}
 
 	getCurrStep(numberOfFrames) {
-		let time = (!this.kill) ? this._startTimeAnimation : this.killTime;
+		let time = (!this.kill) ? this._startTimeAnimation : this._killTime;
 		let currTime = ( Date.now() ) - time;
-		let progressAnimation = currTime % (this.stepDuration * numberOfFrames); // прогресс анимации
+		let progressAnimation = currTime % (this._stepDuration * numberOfFrames); // прогресс анимации
 
-		progressAnimation = Math.floor(progressAnimation / ( (this.stepDuration * numberOfFrames) / numberOfFrames) );
+		progressAnimation = Math.floor(progressAnimation / ( (this._stepDuration * numberOfFrames) / numberOfFrames) );
 
 		if ( (this.kill) && (progressAnimation >= numberOfFrames - 1) )
 		{

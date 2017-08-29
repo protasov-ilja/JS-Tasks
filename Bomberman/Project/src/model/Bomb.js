@@ -7,10 +7,9 @@ class Bomb {
 		this._exploded = false;
 		this._startExplodeTime = null;
 		this._explodeDuration = Config.EXPLODING_TIME;
-		this.sprites = bombMove;
-		this.stepDuration = 200;
-		this.explodeStepDuration = 50;
-		this.numberOfFrames = bombMove.length;
+		this._sprites = bombMove;
+		this._stepDuration = 200;
+		this._explodeStepDuration = 50;
 		this.explodeLenght = 2;
 		this._fireBlocks = [];
 	}
@@ -34,8 +33,8 @@ class Bomb {
 
 	getCurrStep(numberOfFrames) {
 		let currTime = ( Date.now() ) - (this._exploded ? this._startExplodeTime : this._createTime);
-		let progressAnimation = currTime % ( (this._exploded ? this.explodeStepDuration : this.stepDuration) * numberOfFrames); // прогресс анимации
-		progressAnimation = Math.floor(progressAnimation / ( ( (this._exploded ? this.explodeStepDuration : this.stepDuration) * numberOfFrames) / numberOfFrames) );
+		let progressAnimation = currTime % ( (this._exploded ? this._explodeStepDuration : this._stepDuration) * numberOfFrames); // прогресс анимации
+		progressAnimation = Math.floor(progressAnimation / ( ( (this._exploded ? this._explodeStepDuration : this._stepDuration) * numberOfFrames) / numberOfFrames) );
 
 		return progressAnimation;
 	}
@@ -45,7 +44,7 @@ class Bomb {
 	}
 
 	getCurrSprite() {
-		let stepAnimation = this.sprites;
+		let stepAnimation = this._sprites;
 		let currAnimation = stepAnimation[this.getCurrStep(stepAnimation.length)];
 
 		return currAnimation;

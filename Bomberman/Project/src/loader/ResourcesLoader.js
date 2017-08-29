@@ -25,8 +25,6 @@ const burstRight = [];
 const burstWall = [];
 
 let spriteBlock = null;
-let canvas = null;
-let ctx = null;
 let loadedResourcesCount = 0;
 
 function onItemLoaded() {
@@ -38,7 +36,7 @@ function onItemLoaded() {
 	}
 }
 
-function loadingResources() {
+function loadResources() {
 	loadingPlayerSprites();
 	loadingMonsterBalloonSprites();
 	loadingMonsterDropSprites();
@@ -274,8 +272,6 @@ function loadingExplodeSprites() {
 	burst[Direction.RIGHT] = burstRight;
 	burst[Direction.LEFT] = burstLeft;
 	burst[Direction.CENTER] = burstCenter;
-	burst[Direction.LONG_UP] = burstUp;
-	burst[Direction.LONG_LEFT] = burstRight;
 	burst[Direction.WALL] = burstWall;
 }
 

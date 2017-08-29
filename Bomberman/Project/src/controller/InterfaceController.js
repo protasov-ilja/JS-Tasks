@@ -37,31 +37,8 @@ for (let selButton = 0; selButton < levelButtons.length; ++selButton)
 	};
 }
 
-function musicOn() {
-	if (music)
-	{
-		musicButton.innerHTML = 'OFF';
-		music = false;
-	}
-	else
-	{
-		musicButton.innerHTML = 'ON';
-		music = true;
-	}
-
-	SoundController(music);
-}
-
-function SoundController(music) {
-	let i = music ? 1 : 0;
-	gameMusic.volume = i;
-	winMusic.volume = i;
-	explodeMusic.volume = i;
-}
-
 function startNewGame() {
 	canvas.classList.remove('end_game');
-	winMusic.pause();
 
 	field = getField(levelFields[currLevel]);
 
@@ -73,25 +50,13 @@ function selectLevel(indexButton) {
 
 	for (let i = 0; i < levelButtons.length; ++i)
 	{
-		if (i == indexButton)
-		{
-			levelOn(levelButtons[i]);
-		}
-		else
-		{
-			levelOff(levelButtons[i]);
-		}
+		setLevelButtonSelected(levelButtons[i], i == indexButton);
 	}
 }
 
-function levelOn(currLevel) {
-	currLevel.classList.add('selected');
-	currLevel.classList.remove('unselected');
-}
-
-function levelOff(currLevel) {
-	currLevel.classList.remove('selected');
-	currLevel.classList.add('unselected');
+function setLevelButtonSelected(button, selected) {
+	button.classList.remove(selected ? 'unselected' : 'selected');
+	button.classList.add(selected ? 'selected' : 'unselected');
 }
 
 function openOptionsMenu() {
@@ -129,28 +94,4 @@ function useTimer() {
 			}
 		}
 	}
-}
-
-function endTheGame() {
-	ctx.beginPath();
-	ctx.font = "bold 50pt Arial";
-	ctx.fillStyle = '#ffbe26';
-	ctx.textAlign = 'center';
-	ctx.fillText('Game Over', Config.WIDTH / 2, Config.HEIGHT / 2);
-	ctx.fill();
-	ctx.closePath();
-}
-
-function winTheGame() {
-	gameMusic.pause();
-	gameMusic.CurrentTime = 0;
-	winMusic.play();
-
-	ctx.beginPath();
-	ctx.font = "bold 50pt Arial";
-	ctx.fillStyle = '#ff0021';
-	ctx.textAlign = 'center';
-	ctx.fillText('You WIN', Config.WIDTH / 2, Config.HEIGHT / 2);
-	ctx.fill();
-	ctx.closePath();
 }

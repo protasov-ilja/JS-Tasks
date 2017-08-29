@@ -5,7 +5,7 @@ window.onload = () => {
 	ctx = canvas.getContext('2d');
 	gameMusic.play();
 
-	loadingResources();
+	loadResources();
 
 	field = getField(LEVEL_1);
 };
