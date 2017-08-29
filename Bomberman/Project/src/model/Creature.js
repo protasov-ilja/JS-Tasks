@@ -26,7 +26,7 @@ class Creature {
 		}
 	}
 
-	setKillTime(time) {
+	setDyingTime(time) {
 		this._dyingTime = time;
 	}
 

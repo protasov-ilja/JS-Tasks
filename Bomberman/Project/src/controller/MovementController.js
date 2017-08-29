@@ -30,7 +30,6 @@ function moveUp(creature) {
 	const upRow = field[upRowIndex];
 
 	let wallFound = false;
-	let stayOnBomb = false;
 	let dy = creature._moveSpeed;
 
 	if (upRowIndex >= 0)
@@ -55,7 +54,7 @@ function moveUp(creature) {
 		}
 	}
 
-	stayOnBomb = checkStayOnBomb(wallFound, creature);
+	const stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
@@ -96,7 +95,6 @@ function moveDown(creature) {
 	const downRow = field[downRowIndex];
 
 	let wallFound = false;
-	let stayOnBomb = false;
 	let dy = creature._moveSpeed;
 
 	if ((downRowIndex < Config.COUNT_OF_CELLS_HEIGHT) && (downRowIndex >= 0))
@@ -121,7 +119,7 @@ function moveDown(creature) {
 		}
 	}
 
-	stayOnBomb = checkStayOnBomb(wallFound, creature);
+	const stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
@@ -162,7 +160,6 @@ function moveRight(creature) {
 	const rightRow = field;
 
 	let wallFound = false;
-	let stayOnBomb = false;
 	let dy = creature._moveSpeed;
 
 	if ((rightRowIndex < Config.WIDTH / Config.CELL_SIZE) && (rightRowIndex >= 0))
@@ -187,7 +184,7 @@ function moveRight(creature) {
 		}
 	}
 
-	stayOnBomb = checkStayOnBomb(wallFound, creature);
+	const stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
@@ -228,7 +225,6 @@ function moveLeft(creature) {
 	const leftRow = field;
 
 	let wallFound = false;
-	let stayOnBomb = false;
 	let dy = creature._moveSpeed;
 
 	if (leftRowIndex >= 0)
@@ -253,7 +249,7 @@ function moveLeft(creature) {
 		}
 	}
 
-	stayOnBomb = checkStayOnBomb(wallFound, creature);
+	const stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{

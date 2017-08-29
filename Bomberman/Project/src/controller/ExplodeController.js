@@ -33,7 +33,7 @@ function explodeBomb(bomb) {
 				}
 				else if (field[PosY][j].type() === FieldType.CEMENT)
 				{
-					field[PosY][j] = new FieldCell(FieldType.GRASS, PosY, j);
+					field[PosY][j] = new FieldCell(FieldType.GRASS);
 					field[PosY][j].posX = j * Config.CELL_SIZE;
 					field[PosY][j].posY = PosY * Config.CELL_SIZE;
 					bomb.addFireBlock(Direction.RIGHT, Direction.WALL);

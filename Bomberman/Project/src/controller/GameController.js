@@ -17,6 +17,8 @@ function initGame() {
 
 	endOfGame = false;
 	player = new Player( Date.now() );
+	score = 0;
+	scoreForm.innerHTML = score + '000';
 
     liveForm.innerHTML = '0' + player.live;
     bombForm.innerHTML = '0' + player.bombCount;
@@ -60,44 +62,35 @@ function clearField() {
 }
 
 function checkIsBombExplode() {
-	for (let i = 0; i < bombs.length; ++i)
-	{
-		if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < Config.BOMB_TIMER)
-		{
+	for (let i = 0; i < bombs.length; ++i) {
+		if (Date.now() - bombs[i].getCreateTime() < Config.BOMB_TIMER) {
 			drawObject(bombs[i], bombs[i].getCurrSprite());
 		}
-		else
-		{
-			if (!bombs[i].isExploded())
-			{
+		else {
+			if (!bombs[i].isExploded()) {
 				stopCurrSoundAndPlayNew(explodeMusic, explodeMusic);
-				bombs[i].explode(bombs[i].getCurrTime());
+				bombs[i].explode(Date.now());
 				explodeBomb(bombs[i]);
+			} else if (bombs[i].isExploded())
+			{
+				// Рисуем взрыв
+				const fireBlocks = bombs[i].fireBlocks();
+				for (const block of fireBlocks) {
+					const sprites = burst[block.type];
+					drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
+				}
+
+				if (bombs[i].isExplodeCompleted(Date.now())) {
+					bombs.splice(i, 1); // удаляем бомбу i
+					--bombCount;// уменьшаем индекс bombCount на 1
+				}
 			}
 		}
 	}
 }
 
 function checkIsBombExplodeEnd() {
-	for (let i = 0; i < bombs.length; ++i)
-	{
-		if (bombs[i].isExploded())
-		{
-			// Рисуем взрыв
-			const fireBlocks = bombs[i].fireBlocks();
-			for (const block of fireBlocks)
-			{
-				const sprites = burst[block.type];
-				drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
-			}
 
-			if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) )
-			{
-				bombs.splice(i, 1); // удаляем бомбу i
-				--bombCount;// уменьшаем индекс bombCount на 1
-			}
-		}
-	}
 }
 
 function movePlayer() {
@@ -105,6 +98,8 @@ function movePlayer() {
 	{
 		moveCreature(player);
 	}
+
+	drawObject(player, player.getCurrSprite());
 }
 
 function checkMonsters() {
@@ -114,7 +109,7 @@ function checkMonsters() {
 		drawObject(monsters[i], monsters[i].getCurrSprite());
 		checkForKillPlayer(monsters[i]);
 		if (isMonsterDead(monsters[i])) {
-			score = score + 100;
+			score = score + Config.SCORE_BONUS;
 			scoreForm.innerHTML = score;
 			monsters.splice(i, 1);
 		}
@@ -129,10 +124,6 @@ function checkEndOfGame() {
 	else if (monsters.length == 0)
 	{
 		winTheGame();
-	}
-	else
-	{
-		drawObject(player, player.getCurrSprite());
 	}
 }
 

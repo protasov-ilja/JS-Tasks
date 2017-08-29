@@ -42,7 +42,7 @@ function checkForIntersectCellExplodeWithCreatures(object) {
 		if (isIntersects(object, monsters[i])) {
 			if (!monsters[i].dyingAnimationPlaying)
 			{
-				monsters[i].setKillTime( Date.now() );
+				monsters[i].setDyingTime( Date.now() );
 				monsters[i].dyingAnimationPlaying = true;
 				monsters[i].dying = true;
 			}
@@ -71,7 +71,7 @@ function isMonsterDead(monster) {
 function killPlayer() {
 	if (!player.dyingAnimationPlaying)
 	{
-		player.setKillTime(Date.now());
+		player.setDyingTime(Date.now());
 		player.dyingAnimationPlaying = true;
 		player.dying = true;
 		player.live--;

@@ -51,10 +51,6 @@ class Bomb {
 		return progressAnimation;
 	}
 
-	getCurrTime() {
-		return Date.now();
-	}
-
 	getCurrSprite() {
 		let stepAnimation = this._sprites;
 		let currAnimation = stepAnimation[this.getCurrStep(stepAnimation.length)];

@@ -1,7 +1,7 @@
 class FieldCell {
 	constructor(typeCell) {
-		this.posX = null;
-		this.posY = null;
+		this.posX = 0;
+		this.posY = 0;
 
 		this._type = typeCell;
 	}
