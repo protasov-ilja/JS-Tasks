@@ -1,9 +1,7 @@
-const FIELD_COLOR = 'green';
-
 let canvas = null;
 let ctx = null;
 
-function drawCreature(creature, sprite) {
+function drawObject(creature, sprite) {
 	ctx.drawImage(sprite, 0, 0, creature.spriteSize, creature.spriteSize, creature.posX, creature.posY, creature.spriteSize, creature.spriteSize);
 }
 
@@ -33,8 +31,8 @@ function drawField() {
 }
 
 function drawGrass(yPos, xPos) {
-	ctx.fillStyle = FIELD_COLOR;
-	ctx.fillRect( (xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
+	ctx.fillStyle = Config.FIELD_COLOR;
+	ctx.fillRect((xPos * Config.CELL_SIZE), (yPos * Config.CELL_SIZE), Config.CELL_SIZE, Config.CELL_SIZE);
 }
 
 function drawIronBlock(yPos, xPos) {
@@ -48,17 +46,19 @@ function drawCementBlock(yPos, xPos) {
 //сетка
 function grid() {
 	for (let j = 0; j <= Config.COUNT_OF_CELLS_HEIGHT; j++) {
-		let k = j * 30;
+		let k = j * Config.CELL_SIZE;
+
 		ctx.strokeRect(0, k, Config.WIDTH, 1);
 	}
 
 	for (let i = 0; i <= Config.COUNT_OF_CELLS_WIDTH; i++) {
-		let k = i * 30;
+		let k = i * Config.CELL_SIZE;
+
 		ctx.strokeRect(k, 0, 1, Config.HEIGHT);
 	}
 }
 
-function endTheGame() {
+function drawTheEndOfGame() {
 	ctx.beginPath();
 	ctx.font = "bold 50pt Arial";
 	ctx.fillStyle = '#ffbe26';
@@ -68,9 +68,7 @@ function endTheGame() {
 	ctx.closePath();
 }
 
-function winTheGame() {
-	soundPlay(winMusic, gameMusic);
-
+function drawTheWinOfGame() {
 	ctx.beginPath();
 	ctx.font = "bold 50pt Arial";
 	ctx.fillStyle = '#ff0021';

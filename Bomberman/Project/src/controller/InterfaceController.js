@@ -14,7 +14,6 @@ const timer = document.getElementById('timeForm');
 const bombForm = document.getElementById('bombNumber');
 const liveForm = document.getElementById('liveNumber');
 const levelButtons = [chooseLevel1, chooseLevel2, chooseLevel3];
-const levelFields = [LEVEL_1, LEVEL_2, LEVEL_3];
 
 let music = true;
 let clearStep = null;
@@ -26,28 +25,39 @@ newGameButton.onclick = startNewGame;
 optionsButton.onclick = openOptionsMenu;
 exitOptionsButton.onclick = closeOptionsMenu;
 
-for (let selButton = 0; selButton < levelButtons.length; ++selButton)
+for (let i = 0; i < levelButtons.length; ++i)
 {
-	levelButtons[selButton].onclick = () => {
-		currLevel = selButton;
+	levelButtons[i].onclick = () => {
+		currLevel = i;
 
-		selectLevel(selButton);
+		selectLevel(i);
 		initGame();
 		closeOptionsMenu();
 	};
 }
 
+function musicOn() {
+	if (music)
+	{
+		musicButton.innerHTML = 'OFF';
+		music = false;
+	}
+	else
+	{
+		musicButton.innerHTML = 'ON';
+		music = true;
+	}
+
+	switchVolume(music);
+}
+
 function startNewGame() {
 	canvas.classList.remove('end_game');
-
-	field = getField(levelFields[currLevel]);
 
 	initGame();
 }
 
 function selectLevel(indexButton) {
-	field = getField(levelFields[indexButton]);
-
 	for (let i = 0; i < levelButtons.length; ++i)
 	{
 		setLevelButtonSelected(levelButtons[i], i == indexButton);

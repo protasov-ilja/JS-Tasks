@@ -1,5 +1,5 @@
 function moveCreature(creature) {
-	if (!endOfGame && !creature.kill)
+	if (!endOfGame && !creature.dying)
 	{
 		switch (creature.direction)
 		{
@@ -39,14 +39,14 @@ function moveUp(creature) {
 		{
 			if (upRow[currColumn].type() != FieldType.GRASS)
 			{
-				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+				const creatureRect = creature.getRect();
 				const wallRect = {left: currColumn * Config.CELL_SIZE, top: upRowIndex * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
 
-				if ( MathUtils.intersectsVertical(creatureRect, wallRect) )
+				if (MathUtils.intersectsVertical(creatureRect, wallRect))
 				{
 					wallFound = true;
 
-					const delta = Math.max(0, creatureRect.top - (wallRect.top + wallRect.height) );
+					const delta = Math.max(0, creatureRect.top - (wallRect.top + wallRect.height));
 					dy = delta < creature._moveSpeed ? delta : creature._moveSpeed;
 
 					break;
@@ -55,40 +55,16 @@ function moveUp(creature) {
 		}
 	}
 
-	if (!wallFound)
-	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
-		for (const bomb of bombs)
-		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsRects(objectRect, creatureRect) )
-			{
-				stayOnBomb = true;
-				break;
-			}
-		}
-	}
+	stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+		const creatureRect = creature.getRect();
 
 		for (const bomb of bombs)
 		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsVertical(objectRect, creatureRect) )
+			const objectRect = bomb.getRect();
+			if (MathUtils.intersectsVertical(objectRect, creatureRect))
 			{
 				const delta = creatureRect.top - (objectRect.top + objectRect.height);
 
@@ -101,7 +77,7 @@ function moveUp(creature) {
 		}
 	}
 
-	if ( (dy == 0) && (creature instanceof Monster) )
+	if ((dy == 0) && (creature instanceof Monster))
 	{
 		changeDirection(creature)
 	}
@@ -123,20 +99,20 @@ function moveDown(creature) {
 	let stayOnBomb = false;
 	let dy = creature._moveSpeed;
 
-	if ( (downRowIndex < Config.COUNT_OF_CELLS_HEIGHT) && (downRowIndex >= 0) )
+	if ((downRowIndex < Config.COUNT_OF_CELLS_HEIGHT) && (downRowIndex >= 0))
 	{
 		for (let currColumn = Math.max(0, j - 1); (currColumn < downRow.length) && (currColumn <= j + 1) ; ++currColumn)
 		{
 			if (downRow[currColumn].type() != FieldType.GRASS)
 			{
-				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+				const creatureRect = creature.getRect();
 				const wallRect = {left: currColumn * Config.CELL_SIZE, top: downRowIndex * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
 
 				if (MathUtils.intersectsVertical(creatureRect, wallRect))
 				{
 					wallFound = true;
 
-					const delta = Math.max(0, wallRect.top - (creatureRect.top + creatureRect.height) );
+					const delta = Math.max(0, wallRect.top - (creatureRect.top + creatureRect.height));
 					dy = delta < creature._moveSpeed ? delta : creature._moveSpeed;
 
 					break;
@@ -145,40 +121,16 @@ function moveDown(creature) {
 		}
 	}
 
-	if (!wallFound)
-	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
-		for (const bomb of bombs)
-		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsRects(objectRect, creatureRect) )
-			{
-				stayOnBomb = true;
-				break;
-			}
-		}
-	}
+	stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+		const creatureRect = creature.getRect();
 
 		for (const bomb of bombs)
 		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsVertical(objectRect, creatureRect) )
+			const objectRect = bomb.getRect();
+			if (MathUtils.intersectsVertical(objectRect, creatureRect))
 			{
 				const delta = objectRect.top - (creatureRect.top + creatureRect.height); // player.y - (bomb.y + bomb.height)
 
@@ -191,7 +143,7 @@ function moveDown(creature) {
 		}
 	}
 
-	if ( (dy == 0) && (creature instanceof Monster) )
+	if ((dy == 0) && (creature instanceof Monster))
 	{
 		changeDirection(creature)
 	}
@@ -213,20 +165,20 @@ function moveRight(creature) {
 	let stayOnBomb = false;
 	let dy = creature._moveSpeed;
 
-	if ( (rightRowIndex < Config.WIDTH / Config.CELL_SIZE) && (rightRowIndex >= 0) )
+	if ((rightRowIndex < Config.WIDTH / Config.CELL_SIZE) && (rightRowIndex >= 0))
 	{
 		for (let currColumn = Math.max(0, i - 1); (currColumn < rightRow.length) && (currColumn <= i + 1) ; ++currColumn)
 		{
 			if (rightRow[currColumn][rightRowIndex].type() != FieldType.GRASS)
 			{
-				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+				const creatureRect = creature.getRect();
 				const wallRect = {left: rightRowIndex * Config.CELL_SIZE, top: currColumn * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
 
-				if ( MathUtils.intersectsHorisontal(creatureRect, wallRect) )
+				if (MathUtils.intersectsHorizontal(creatureRect, wallRect))
 				{
 					wallFound = true;
 
-					const delta = Math.max(0, wallRect.left - (creatureRect.left + creatureRect.width) ); //player.y - wall.y + wall.height
+					const delta = Math.max(0, wallRect.left - (creatureRect.left + creatureRect.width)); //player.y - wall.y + wall.height
 					dy = delta < creature._moveSpeed ? delta : creature._moveSpeed;
 
 					break;
@@ -235,41 +187,16 @@ function moveRight(creature) {
 		}
 	}
 
-	if (!wallFound)
-	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
-
-		for (const bomb of bombs)
-		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsRects(objectRect, creatureRect) )
-			{
-				stayOnBomb = true;
-				break;
-			}
-		}
-	}
+	stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+		const creatureRect = creature.getRect();
 
 		for (const bomb of bombs)
 		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsHorisontal(objectRect, creatureRect) )
+			const objectRect =  bomb.getRect();
+			if (MathUtils.intersectsHorizontal(objectRect, creatureRect))
 			{
 				const delta = objectRect.left - (creatureRect.left + creatureRect.width);
 
@@ -282,7 +209,7 @@ function moveRight(creature) {
 		}
 	}
 
-	if ( (dy == 0) && (creature instanceof Monster) )
+	if ((dy == 0) && (creature instanceof Monster))
 	{
 		changeDirection(creature)
 	}
@@ -310,14 +237,14 @@ function moveLeft(creature) {
 		{
 			if (leftRow[currColumn][leftRowIndex].type() != FieldType.GRASS)
 			{
-				const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+				const creatureRect = creature.getRect();
 				const wallRect = {left: leftRowIndex * Config.CELL_SIZE, top: currColumn * Config.CELL_SIZE, width: Config.CELL_SIZE, height: Config.CELL_SIZE};
 
-				if ( MathUtils.intersectsHorisontal(creatureRect, wallRect) )
+				if (MathUtils.intersectsHorizontal(creatureRect, wallRect))
 				{
 					wallFound = true;
 
-					const delta = Math.max(0, creatureRect.left - (wallRect.left + wallRect.width) );
+					const delta = Math.max(0, creatureRect.left - (wallRect.left + wallRect.width));
 					dy = delta < creature._moveSpeed ? delta : creature._moveSpeed;
 
 					break;
@@ -326,41 +253,16 @@ function moveLeft(creature) {
 		}
 	}
 
-	if (!wallFound)
-	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
-
-		for (const bomb of bombs)
-		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsRects(objectRect, creatureRect) )
-			{
-				stayOnBomb = true;
-				break;
-			}
-		}
-	}
+	stayOnBomb = checkStayOnBomb(wallFound, creature);
 
 	if (!wallFound && !stayOnBomb)
 	{
-		const creatureRect = {left: creature.posX, top: creature.posY, width: creature.spriteSize, height: creature.spriteSize};
+		const creatureRect = creature.getRect();
 
 		for (const bomb of bombs)
 		{
-			let objectRect = {
-				left: bomb.posX,
-				top: bomb.posY,
-				width: Config.BOMB_SIZE,
-				height: Config.BOMB_SIZE
-			};
-
-			if ( MathUtils.intersectsHorisontal(objectRect, creatureRect) )
+			const objectRect = bomb.getRect();
+			if (MathUtils.intersectsHorizontal(objectRect, creatureRect))
 			{
 				const delta = creatureRect.left - (objectRect.left + objectRect.height);
 
@@ -373,7 +275,7 @@ function moveLeft(creature) {
 		}
 	}
 
-	if ( (dy == 0) && (creature instanceof Monster) )
+	if ((dy == 0) && (creature instanceof Monster))
 	{
 		changeDirection(creature)
 	}
@@ -382,4 +284,19 @@ function moveLeft(creature) {
 		creature.posX = creature.posX - dy;
 		creature.direction = Direction.LEFT;
 	}
+}
+
+function checkStayOnBomb(wallFound, creature) {
+	if (!wallFound)
+	{
+		for (const bomb of bombs)
+		{
+			if (MathUtils.intersectsRects( bomb.getRect(), creature.getRect() ))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

@@ -1,4 +1,4 @@
-function killPlayer(monster) {
+function checkForKillPlayer(monster) {
 	const playerRect = {
 		left: player.posX,
 		top: player.posY - player._moveSpeed,
@@ -12,19 +12,19 @@ function killPlayer(monster) {
 		height: Config.MONSTER_SIZE
 	};
 
-	if ( MathUtils.intersectsRects(playerRect, monsterRect) ) {
-		burstPlayer();
+	if (MathUtils.intersectsRects(playerRect, monsterRect)) {
+		killPlayer();
 	}
 
-	if (player.live < 0 && !player.kill)
+	if (player.live < 0 && !player.dying)
 	{
 		endOfGame = true;
 	}
-	else if (player.killAnimationComplete)
+	else if (player.dyingAnimationComplete)
 	{
-		player.killAnimationComplete = false;
-		player.killAnimationPlaying = false;
-		player.kill = false;
+		player.dyingAnimationComplete = false;
+		player.dyingAnimationPlaying = false;
+		player.dying = false;
 
 		if (player.live >= 0)
 		{
@@ -36,46 +36,49 @@ function killPlayer(monster) {
 	}
 }
 
-function IntersectCreatures(object) {
+function checkForIntersectCellExplodeWithCreatures(object) {
 	for (let i = 0; i < monsters.length; ++i)
 	{
-		if ( intersect(object, monsters[i]) ) {
-			if (!monsters[i].killAnimationPlaying)
+		if (isIntersects(object, monsters[i])) {
+			if (!monsters[i].dyingAnimationPlaying)
 			{
 				monsters[i].setKillTime( Date.now() );
-				monsters[i].killAnimationPlaying = true;
-				monsters[i].kill = true;
+				monsters[i].dyingAnimationPlaying = true;
+				monsters[i].dying = true;
 			}
 		}
 	}
 
-	if ( intersect(object, player) )
+	if ( isIntersects(object, player) )
 	{
-		burstPlayer();
+		killPlayer();
 	}
 }
 
-function killMonster(monster) {
-	if (monster.killAnimationComplete)
+function isMonsterDead(monster) {
+	if (monster.dyingAnimationComplete)
 	{
-		monster.killAnimationComplete = false;
-		monster.killAnimationPlaying = false;
-		monster.kill = false;
+		monster.dyingAnimationComplete = false;
+		monster.dyingAnimationPlaying = false;
+		monster.dying = false;
+
 		return true;
 	}
+
+	return false;
 }
 
-function burstPlayer() {
-	if (!player.killAnimationPlaying)
+function killPlayer() {
+	if (!player.dyingAnimationPlaying)
 	{
-		player.setKillTime( Date.now() );
-		player.killAnimationPlaying = true;
-		player.kill = true;
+		player.setKillTime(Date.now());
+		player.dyingAnimationPlaying = true;
+		player.dying = true;
 		player.live--;
 	}
 }
 
-function intersect(object, creature) {
+function isIntersects(object, creature) {
 	let creatureRect = {
 		left: creature.posX,
 		top: creature.posY,
@@ -84,8 +87,8 @@ function intersect(object, creature) {
 	};
 
 	let objectRect = {
-		left: object._posX,
-		top: object._posY,
+		left: object.posX,
+		top: object.posY,
 		width: Config.CELL_SIZE,
 		height: Config.CELL_SIZE
 	};

@@ -3,15 +3,25 @@ class Bomb {
 		this.posX = x;
 		this.posY = y;
 		this.spriteSize = Config.BOMB_SIZE;
+		this.explodeLenght = 2;
+
 		this._createTime = createTime;
 		this._exploded = false;
 		this._startExplodeTime = null;
 		this._explodeDuration = Config.EXPLODING_TIME;
 		this._sprites = bombMove;
-		this._stepDuration = 200;
+		this._normalStepDuration = 200;
 		this._explodeStepDuration = 50;
-		this.explodeLenght = 2;
 		this._fireBlocks = [];
+	}
+
+	getRect() {
+		return {
+			left: this.posX,
+			top: this.posY,
+			width: Config.BOMB_SIZE,
+			height: Config.BOMB_SIZE
+		}
 	}
 
 	getCreateTime() {
@@ -32,9 +42,11 @@ class Bomb {
 	}
 
 	getCurrStep(numberOfFrames) {
+		const duration = (this._exploded ? this._explodeStepDuration : this._normalStepDuration);
+
 		let currTime = ( Date.now() ) - (this._exploded ? this._startExplodeTime : this._createTime);
-		let progressAnimation = currTime % ( (this._exploded ? this._explodeStepDuration : this._stepDuration) * numberOfFrames); // прогресс анимации
-		progressAnimation = Math.floor(progressAnimation / ( ( (this._exploded ? this._explodeStepDuration : this._stepDuration) * numberOfFrames) / numberOfFrames) );
+		let progressAnimation = currTime % ( duration * numberOfFrames); // прогресс анимации
+		progressAnimation = Math.floor(progressAnimation / ( ( duration * numberOfFrames) / numberOfFrames) );
 
 		return progressAnimation;
 	}

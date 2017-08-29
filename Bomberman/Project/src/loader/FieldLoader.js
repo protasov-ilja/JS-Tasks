@@ -9,17 +9,23 @@ function getField(level) {
 
 		for (let j = 0; j < fieldJson[i].length; ++j)
 		{
+			let currCell;
+
 			switch(fieldJson[i][j]) {
-				case FieldType.GRASS:
-					currLine.push( new FieldCell(FieldType.GRASS, i, j) );
+				case 0:
+					currCell = new FieldCell(FieldType.GRASS);
 					break;
-				case FieldType.IRON:
-					currLine.push( new FieldCell(FieldType.IRON, i, j) );
+				case 1:
+					currCell = new FieldCell(FieldType.CEMENT);
 					break;
-				case FieldType.CEMENT:
-					currLine.push( new FieldCell(FieldType.CEMENT, i, j) );
+				case 2:
+					currCell = new FieldCell(FieldType.IRON);
 					break;
 			}
+
+			currCell.posX = j * Config.CELL_SIZE;
+			currCell.posY = i * Config.CELL_SIZE;
+			currLine.push(currCell);
 		}
 
 		field.push(currLine);

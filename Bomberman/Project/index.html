@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="res/img/bomber_favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <title>Bomberman</title>
+  </head>
+  <body>
+    <div class="container_options none" id="optionsContainer">
+      <div class="options_title">
+        <h2>OPTIONS</h2>
+        <div class="exit_button" id="exitOptionsButton">X</div>
+        <div class="clear"></div>
+      </div>
+      <div class="options_main">
+        <div class="level_block">
+          <p class="level_text">LEVEL:</p>
+          <div class="level_button selected" id="levelOne">1</div>
+          <div class="level_button unselected" id="levelTwo">2</div>
+          <div class="level_button unselected" id="levelThree">3</div>
+          <div class="clear"></div>
+        </div>
+        <div class="music_block">
+          <p class="music_text">MUSIC</p>
+          <div class="music_button" id="musicButton">ON</div>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container_main">
+      <div class="header">
+        <h1 class="logo">Bomberman</h1>
+        <div class="menu">
+          <div class="button" id="newGameButton">NEWGAME</div>
+          <div class="button" id="gameOptions">OPTIONS</div>
+          <div class="clear"></div>
+        </div>
+        <div class="time">
+          <p class="time_text">TIME:</p>
+          <p class="time_amount" id="timeForm">300</p>
+          <div class="clear"></div>
+        </div>
+        <div class="live">
+          <p class="live_text">LIVE:</p>
+          <p class="live_amount" id="liveNumber">00</p>
+          <div class="clear"></div>
+        </div>
+        <div class="score" id="scoreNumber">0000</div>
+        <div class="bomb">
+          <p class="bomb_text">BOMB:</p>
+          <p class="bomb_amount" id="bombNumber">0</p>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+      </div>
+        <div class="game_container">
+          <canvas id="canvas" class="game">Canvas не работает</canvas>
+          <div class="clear"></div>
+        </div>
+    </div>
+    <audio id="gameMusic" loop autoplay src="res/music/game.mp3">
+      <source src="res/music/game.mp3">
+    </audio>
+    <audio id="winMusic" loop>
+      <source src="res/music/win.mp3">
+    </audio>
+    <audio id="explodeMusic">
+      <source src="res/music/explode.mp3">
+    </audio>
+    <script type="text/javascript" src="src/enum/Field.js"></script>
+    <script type="text/javascript" src="src/loader/ResourcesLoader.js"></script>
+    <script type="text/javascript" src="src/loader/FieldLoader.js"></script>
+    <script type="text/javascript" src="src/config/Levels.js"></script>
+    <script type="text/javascript" src="src/model/FieldCell.js"></script>
+    <script type="text/javascript" src="src/enum/DirectionConst.js"></script>
+    <script type="text/javascript" src="src/Game.js"></script>
+    <script type="text/javascript" src="src/controller/CanvasController.js"></script>
+    <script type="text/javascript" src="src/controller/GameController.js"></script>
+    <script type="text/javascript" src="src/model/Creature.js"></script>
+    <script type="text/javascript" src="src/model/Player.js"></script>
+    <script type="text/javascript" src="src/model/Monster.js"></script>
+    <script type="text/javascript" src="src/enum/KeyCodes.js"></script>
+    <script type="text/javascript" src="src/config/Config.js"></script>
+    <script type="text/javascript" src="src/utils/ImageUtils.js"></script>
+    <script type="text/javascript" src="src/controller/SoundController.js"></script>
+    <script type="text/javascript" src="src/controller/InterfaceController.js"></script>
+    <script type="text/javascript" src="src/controller/KeyboardController.js"></script>
+    <script type="text/javascript" src="src/controller/ExplodeController.js"></script>
+    <script type="text/javascript" src="src/controller/MovementController.js"></script>
+    <script type="text/javascript" src="src/controller/KillController.js"></script>
+    <script type="text/javascript" src="src/utils/MathUtils.js"></script>
+    <script type="text/javascript" src="src/model/Bomb.js"></script>
+  </body>
+</html>

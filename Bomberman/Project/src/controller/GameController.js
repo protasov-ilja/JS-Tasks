@@ -13,7 +13,7 @@ let bombCount = 0;
 let field = null;
 
 function initGame() {
-	soundPlay(gameMusic, winMusic);
+	stopCurrSoundAndPlayNew(gameMusic, winMusic);
 
 	endOfGame = false;
 	player = new Player( Date.now() );
@@ -22,6 +22,8 @@ function initGame() {
     bombForm.innerHTML = '0' + player.bombCount;
 
 	monsters = [];
+
+	field = getField(LEVELS[currLevel]);
 
 	addMonster(drop1, 360, 90, dropSprites);
 	addMonster(drop2, 270, 300, dropSprites);
@@ -37,88 +39,109 @@ function initGame() {
 function addMonster(monster, currX, currY, sprites) {
 	let speed = sprites == dropSprites ? Config.MONSTER_DROP_SPEED : Config.MONSTER_BALLOON_SPEED;
 
-	monster = new Monster(currX, currY, speed, sprites, Date.now() );
+	monster = new Monster(currX, currY, speed, sprites, Date.now());
 	monsters.push(monster);
 }
 
 function animate() {
-	step();
+	clearField();
+	drawField();
+	checkIsBombExplode();
+	checkIsBombExplodeEnd();
+	movePlayer();
+	checkMonsters();
+	checkEndOfGame();
 
-	function step() {
-		ctx.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
+	requestAnimationFrameId = requestAnimationFrame(animate); // вызов шага
+}
 
-		drawField();
+function clearField() {
+	ctx.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
+}
 
-		for (let i = 0; i < bombs.length; ++i)
+function checkIsBombExplode() {
+	for (let i = 0; i < bombs.length; ++i)
+	{
+		if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < Config.BOMB_TIMER)
 		{
-			if (bombs[i].getCurrTime() - bombs[i].getCreateTime() < Config.BOMB_TIMER)
-			{
-				drawCreature(bombs[i], bombs[i].getCurrSprite() );
-			}
-			else
-			{
-				if (!bombs[i].isExploded())
-				{
-					soundPlay(explodeMusic, explodeMusic);
-					// explodeMusic.pause();
-					// explodeMusic.currentTime = 0;
-					// explodeMusic.play();
-					bombs[i].explode( bombs[i].getCurrTime() );
-					getExplode(bombs[i]);
-				}
-			}
-		}
-
-		for (let i = 0; i < bombs.length; ++i)
-		{
-			if ( bombs[i].isExploded() )
-			{
-				// Рисуем взрыв
-				const fireBlocks = bombs[i].fireBlocks();
-				for (const block of fireBlocks)
-				{
-					const sprites = burst[block.type];
-					drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
-				}
-
-				if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) )
-				{
-					bombs.splice(i, 1); // удаляем бомбу i
-					--bombCount;// уменьшаем индекс bombCount на 1
-				}
-			}
-		}
-
-		if (player.mooving)
-		{
-			moveCreature(player);
-		}
-
-		for (let i = 0; i < monsters.length; ++i)
-		{
-			moveCreature(monsters[i]);
-			drawCreature(monsters[i], monsters[i].getCurrSprite() );
-			killPlayer(monsters[i]);
-			if ( killMonster(monsters[i]) ) {
-				score = score + 100;
-				scoreForm.innerHTML = score;
-				monsters.splice(i, 1);
-			}
-		}
-
-		if (endOfGame)
-		{
-			endTheGame();
-		}
-		else if (monsters.length == 0)
-		{
-			winTheGame();
+			drawObject(bombs[i], bombs[i].getCurrSprite());
 		}
 		else
 		{
-			drawCreature(player, player.getCurrSprite() );
+			if (!bombs[i].isExploded())
+			{
+				stopCurrSoundAndPlayNew(explodeMusic, explodeMusic);
+				bombs[i].explode(bombs[i].getCurrTime());
+				explodeBomb(bombs[i]);
+			}
 		}
-
-		requestAnimationFrameId = requestAnimationFrame(step); // вызов шага
 	}
+}
+
+function checkIsBombExplodeEnd() {
+	for (let i = 0; i < bombs.length; ++i)
+	{
+		if (bombs[i].isExploded())
+		{
+			// Рисуем взрыв
+			const fireBlocks = bombs[i].fireBlocks();
+			for (const block of fireBlocks)
+			{
+				const sprites = burst[block.type];
+				drawExplode(sprites[bombs[i].getCurrStep(sprites.length)], block.x, block.y);
+			}
+
+			if ( bombs[i].isExplodeCompleted(bombs[i].getCurrTime() ) )
+			{
+				bombs.splice(i, 1); // удаляем бомбу i
+				--bombCount;// уменьшаем индекс bombCount на 1
+			}
+		}
+	}
+}
+
+function movePlayer() {
+	if (player.mooving)
+	{
+		moveCreature(player);
+	}
+}
+
+function checkMonsters() {
+	for (let i = 0; i < monsters.length; ++i)
+	{
+		moveCreature(monsters[i]);
+		drawObject(monsters[i], monsters[i].getCurrSprite());
+		checkForKillPlayer(monsters[i]);
+		if (isMonsterDead(monsters[i])) {
+			score = score + 100;
+			scoreForm.innerHTML = score;
+			monsters.splice(i, 1);
+		}
+	}
+}
+
+function checkEndOfGame() {
+	if (endOfGame)
+	{
+		endTheGame();
+	}
+	else if (monsters.length == 0)
+	{
+		winTheGame();
+	}
+	else
+	{
+		drawObject(player, player.getCurrSprite());
+	}
+}
+
+function endTheGame() {
+	drawTheEndOfGame();
+}
+
+function winTheGame() {
+	stopCurrSoundAndPlayNew(winMusic, gameMusic);
+
+	drawTheWinOfGame();
 }

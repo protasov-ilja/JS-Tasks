@@ -1,10 +1,10 @@
 document.onkeydown = function (event) {
-	if (!endOfGame && !player.kill)
+	if (!endOfGame && !player.dying)
 	{
 		switch (event.keyCode)
 		{
 			case KeyCode.SPACE:
-				stayBomb();
+				placeBomb();
 				break;
 			case KeyCode.ARROW_UP:
 			case KeyCode.W:

@@ -1,6 +1,6 @@
 class MathUtils {
 	static intersectsRects(a, b) {
-		return ( MathUtils.intersectsVertical(a, b) && MathUtils.intersectsHorisontal(a, b) );
+		return ( MathUtils.intersectsVertical(a, b) && MathUtils.intersectsHorizontal(a, b) );
 	};
 
 	static intersectsVertical(a, b) {
@@ -8,7 +8,7 @@ class MathUtils {
 			( b.left < (a.left + a.width) );
 	}
 
-	static intersectsHorisontal(a, b) {
+	static intersectsHorizontal(a, b) {
 		return ( a.top < (b.top + b.height) ) &&
 			( b.top < (a.top + a.height) );
 	}

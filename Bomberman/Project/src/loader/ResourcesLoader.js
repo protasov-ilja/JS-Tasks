@@ -14,7 +14,7 @@ const dropDownDirection = [];
 const dropUpDirection = [];
 const dropRightDirection = [];
 const dropLeftDirection = [];
-const monsterKill = [];
+const monsterDeath = [];
 const bombMove = [];
 const burst = [];
 const burstCenter = [];
@@ -108,17 +108,17 @@ function loadingMonsterBalloonSprites() {
 	const balloonDown1 = ImageUtils.createImage(onItemLoaded);
 	balloonDown1.src = 'res/img/sprites/monster_balloon/monster_down/1.png';
 	const balloonDown2 = ImageUtils.createImage(onItemLoaded);
-	balloonDown2.src = 'res/img/sprites/monster_balloon/monster_down//2.png';
+	balloonDown2.src = 'res/img/sprites/monster_balloon/monster_down/2.png';
 	const balloonDown3 = ImageUtils.createImage(onItemLoaded);
-	balloonDown3.src = 'res/img/sprites/monster_balloon/monster_down//3.png';
+	balloonDown3.src = 'res/img/sprites/monster_balloon/monster_down/3.png';
 	balloonDownDirection.push(balloonDown1, balloonDown2, balloonDown3);
 
 	const balloonUp1 = ImageUtils.createImage(onItemLoaded);
 	balloonUp1.src = 'res/img/sprites/monster_balloon/monster_up/1.png';
 	const balloonUp2 = ImageUtils.createImage(onItemLoaded);
-	balloonUp2.src = 'res/img/sprites/monster_balloon/monster_up//2.png';
+	balloonUp2.src = 'res/img/sprites/monster_balloon/monster_up/2.png';
 	const balloonUp3 = ImageUtils.createImage(onItemLoaded);
-	balloonUp3.src = 'res/img/sprites/monster_balloon/monster_up//3.png';
+	balloonUp3.src = 'res/img/sprites/monster_balloon/monster_up/3.png';
 	balloonUpDirection.push(balloonUp1, balloonUp2, balloonUp3);
 
 	const balloonRight1 = ImageUtils.createImage(onItemLoaded);
@@ -145,7 +145,7 @@ function loadingMonsterBalloonSprites() {
 	monsterKill3.src = 'res/img/sprites/monster_balloon/death/3.png';
 	const monsterKill4 = ImageUtils.createImage(onItemLoaded);
 	monsterKill4.src = 'res/img/sprites/monster_balloon/death/3.png';
-	monsterKill.push(monsterKill1, monsterKill2, monsterKill3, monsterKill4);
+	monsterDeath.push(monsterKill1, monsterKill2, monsterKill3, monsterKill4);
 
 	balloonSprites[Direction.DOWN] = balloonDownDirection;
 	balloonSprites[Direction.UP] = balloonUpDirection;
@@ -157,9 +157,9 @@ function loadingMonsterDropSprites() {
 	const dropDown1 = ImageUtils.createImage(onItemLoaded);
 	dropDown1.src = 'res/img/sprites/monster_drop/monster_down/1.png';
 	const dropDown2 = ImageUtils.createImage(onItemLoaded);
-	dropDown2.src = 'res/img/sprites/monster_drop/monster_down//2.png';
+	dropDown2.src = 'res/img/sprites/monster_drop/monster_down/2.png';
 	const dropDown3 = ImageUtils.createImage(onItemLoaded);
-	dropDown3.src = 'res/img/sprites/monster_drop/monster_down//3.png';
+	dropDown3.src = 'res/img/sprites/monster_drop/monster_down/3.png';
 	dropDownDirection.push(dropDown1, dropDown2, dropDown3);
 
 	const dropUp1 = ImageUtils.createImage(onItemLoaded);
@@ -262,9 +262,9 @@ function loadingExplodeSprites() {
 	const burstWall4 = ImageUtils.createImage(onItemLoaded);
 	burstWall4.src = 'res/img/sprites/burst/wall/4.png';
 	const burstWall5 = ImageUtils.createImage(onItemLoaded);
-	burstWall3.src = 'res/img/sprites/burst/wall/5.png';
+	burstWall5.src = 'res/img/sprites/burst/wall/5.png';
 	const burstWall6 = ImageUtils.createImage(onItemLoaded);
-	burstWall4.src = 'res/img/sprites/burst/wall/6.png';
+	burstWall6.src = 'res/img/sprites/burst/wall/6.png';
 	burstWall.push(burstWall1, burstWall2, burstWall3, burstWall4, burstWall5, burstWall6);
 
 	burst[Direction.DOWN] = burstDown;

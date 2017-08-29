@@ -1,35 +1,45 @@
 class Creature {
-	constructor(startTimeAnimation, sprites, spritesKill, x, y, liveCount, speed, size, stepTime) {
+	constructor(startTimeAnimation, sprites, spritesDeath, x, y, liveCount, speed, size, stepTime) {
 		this.posX = x;
 		this.posY = y;
 		this.live = liveCount;
 		this.direction = Direction.DOWN;
-		this._moveSpeed = speed;
 		this.spriteSize = size;
+		this.dying = false;
+		this.dyingAnimationPlaying = false;
+		this.dyingAnimationComplete = false;
+
+		this._moveSpeed = speed;
 		this._sprites = sprites;
-		this._spritesKill = spritesKill;
-		this._killTime = null;
+		this._spritesDeath = spritesDeath;
+		this._dyingTime = null;
 		this._startTimeAnimation = startTimeAnimation;
 		this._stepDuration = stepTime;
-		this.kill = false;
-		this.killAnimationPlaying = false;
-		this.killAnimationComplete = false;
+	}
+
+	getRect() {
+		return {
+			left: this.posX,
+			top: this.posY,
+			width: this.spriteSize,
+			height: this.spriteSize
+		}
 	}
 
 	setKillTime(time) {
-		this._killTime = time;
+		this._dyingTime = time;
 	}
 
 	getCurrStep(numberOfFrames) {
-		let time = (!this.kill) ? this._startTimeAnimation : this._killTime;
+		let time = this.dying ? this._dyingTime : this._startTimeAnimation;
 		let currTime = ( Date.now() ) - time;
 		let progressAnimation = currTime % (this._stepDuration * numberOfFrames); // прогресс анимации
 
 		progressAnimation = Math.floor(progressAnimation / ( (this._stepDuration * numberOfFrames) / numberOfFrames) );
 
-		if ( (this.kill) && (progressAnimation >= numberOfFrames - 1) )
+		if ( (this.dying) && (progressAnimation >= numberOfFrames - 1) )
 		{
-			this.killAnimationComplete = true;
+			this.dyingAnimationComplete = true;
 		}
 
 		return progressAnimation;
@@ -37,20 +47,15 @@ class Creature {
 
 	getCurrSprite() {
 		let stepAnimation = null;
-
-		if (!this.kill)
+		if (this.dying)
 		{
-			let animation = this._sprites;
-
-			stepAnimation = animation[this.direction];
+			stepAnimation = this._spritesDeath;
 		}
 		else
 		{
-			stepAnimation = this._spritesKill;
+			stepAnimation = this._sprites[this.direction];
 		}
 
-		let currAnimation = stepAnimation[this.getCurrStep(stepAnimation.length)];
-
-		return currAnimation;
+		return stepAnimation[this.getCurrStep(stepAnimation.length)];
 	}
 }
